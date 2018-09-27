@@ -37,7 +37,7 @@ namespace WindowsFormsApp1
         {
             if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text))
             {
-                registerForm = new RegisterForm(this);
+                registerForm = new RegisterForm(this, nameInput.Text);
                 registerForm.Show();
                 this.Hide();
             } else {

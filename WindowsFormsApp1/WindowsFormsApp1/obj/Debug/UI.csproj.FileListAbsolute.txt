@@ -31,7 +31,6 @@ C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\zh-cn\Z
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\zh-tw\ZedGraph.resources.dll
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\UI.csproj.CopyComplete
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\Librarian.ExistingUserForm.resources
-C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\UI.csprojAssemblyReference.cache
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\ZedGraph.xml
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\de\ZedGraph.resources.dll
 C:\Users\Darius\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\es\ZedGraph.resources.dll

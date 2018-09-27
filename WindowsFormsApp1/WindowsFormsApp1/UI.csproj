@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,14 +72,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\Desktop\Form1.cs">
-      <Link>Form1.cs</Link>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="..\..\..\..\Desktop\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-      <Link>Form1.Designer.cs</Link>
-    </Compile>
     <Compile Include="AI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,6 +90,12 @@
     </Compile>
     <Compile Include="FirstPage.Designer.cs">
       <DependentUpon>FirstPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI.designer.cs">
+      <DependentUpon>UI.cs</DependentUpon>
     </Compile>
     <Compile Include="RegisterForm.cs">
       <SubType>Form</SubType>
@@ -148,10 +147,6 @@
     <Compile Include="UserInformation.Designer.cs">
       <DependentUpon>UserInformation.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="..\..\..\..\Desktop\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-      <Link>Form1.resx</Link>
-    </EmbeddedResource>
     <EmbeddedResource Include="AI.resx">
       <DependentUpon>AI.cs</DependentUpon>
     </EmbeddedResource>
@@ -160,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FirstPage.resx">
       <DependentUpon>FirstPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI.resx">
+      <DependentUpon>UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RegisterForm.resx">
       <DependentUpon>RegisterForm.cs</DependentUpon>
@@ -219,45 +217,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_09.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_03.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_13.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_05.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_13-14.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\taipt_09-10.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ai.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\userImage.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\img_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\input.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\login.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\bg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\log.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

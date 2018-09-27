@@ -43,12 +43,19 @@ namespace Librarian
         public bool saveButtonClicked = false;
         private bool savingInProgress = false;
 
+        private ExistingUserForm form;
+
         public FaceCamera(int camWidth, int camHeight, PictureBox camPicBox)
         {
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             this.camPicBox = camPicBox;
             LoadRecognizer();
+        }
+
+        public void initiateForm(ExistingUserForm form)
+        {
+            this.form = form;
         }
 
         public void RecognizeExistingFace()
@@ -71,14 +78,19 @@ namespace Librarian
             camPicBox.Image = null;
             captureThread?.Abort();
             videoCapture?.Dispose();
-           
         }
 
         private void StartStreaming(String userLabel)
         {
-            
             captureThread = new Thread(() => DisplayCam(userLabel));
             captureThread.Start();
+        }
+
+        private void callTestMethod()
+        {
+            StopStreaming();
+            MessageBox.Show("la");
+            form.sendString("success");
         }
 
         private void DisplayCam(String userLabel)
@@ -113,8 +125,7 @@ namespace Librarian
                         {
                             if (existingUser)
                             {
-                                MessageBox.Show("HELLO " + label);
-                                StopStreaming();
+                                callTestMethod();
                             }
                             else if (newUser && !savingInProgress)
                             {
@@ -160,7 +171,6 @@ namespace Librarian
             MessageBox.Show("NEW USER '" + label + "' HAS BEEN ADDED TO THE SYSTEM!");
             StopStreaming();
             TrainRecognizer();
-
         }
 
         /*Loads the recognizer with faces and their labels*/
@@ -208,6 +218,7 @@ namespace Librarian
         /*Resizes the snapshot from camera and puts the frame picture on it*/
         public static Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)
         {
+            cameraFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
             var framedPhoto = new Bitmap(width, height);
             var camWidth = (double)cameraFrame.Width;
             var camHeight = (double)cameraFrame.Height;

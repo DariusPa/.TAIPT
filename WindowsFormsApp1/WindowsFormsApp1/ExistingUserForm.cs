@@ -14,6 +14,7 @@ namespace Librarian
     public partial class ExistingUserForm : Form
     {
         private FirstPage firstPage;
+        private UI userMenu;
         private FaceCamera faceCam;
 
         public ExistingUserForm(FirstPage firstPage)
@@ -21,6 +22,7 @@ namespace Librarian
             InitializeComponent();
             this.firstPage = firstPage;
             this.faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height, loginPicBox);
+            faceCam.initiateForm(this);
         }
 
         private void returnButton_Click(object sender, EventArgs e)
@@ -41,7 +43,17 @@ namespace Librarian
         private void ExistingUserForm_Shown(object sender, EventArgs e)
         {
             faceCam.RecognizeExistingFace();
+        }
 
+        public void sendString(string text)
+        {
+            if(text == "success")
+            {
+                MessageBox.Show("ok");
+                UI user = new UI();
+                user.Show();
+                this.Close();
+            }
         }
     }
 }

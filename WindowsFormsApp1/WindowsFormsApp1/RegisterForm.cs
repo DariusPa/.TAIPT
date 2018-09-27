@@ -17,10 +17,11 @@ namespace Librarian
         private FaceCamera faceCam;
         private String userLabel;
 
-        public RegisterForm(FirstPage firstPage)
+        public RegisterForm(FirstPage firstPage, string userName)
         {
             InitializeComponent();
             this.firstPage = firstPage;
+            this.userLabel = userName;
             this.faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, registerPicBox);
         }
 
@@ -28,19 +29,6 @@ namespace Librarian
         {
             this.Hide();
             firstPage.Show();
-        }
-
-        private void registerButton_Click(object sender, EventArgs e)
-        {
-            var userLabel = nameBox.Text;
-            if (userLabel != "")
-            {
-                nameBox.Hide();
-                registerButton.Hide();
-                registerPicBox.Show();
-                saveFaceButton.Show();
-                faceCam.AddNewFace(userLabel);
-            }
         }
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -59,11 +47,9 @@ namespace Librarian
 
         private void RegisterForm_Shown(object sender, EventArgs e)
         {
-            cancelButton.Show();
-            nameBox.Show();
+            registerPicBox.Show();
             saveFaceButton.Show();
-            registerPicBox.Hide();
-            saveFaceButton.Hide();
+            faceCam.AddNewFace(userLabel);
         }
     }
 }
