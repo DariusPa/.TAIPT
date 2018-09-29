@@ -20,7 +20,7 @@ namespace WindowsFormsApp1
         private FirstPage firstPage;
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
 
-        public UI(FirstPage firstPage, string userName, string userSurname) 
+        public UI(FirstPage firstPage, string userName, string userSurname)
         {
             InitializeComponent();
 
@@ -180,7 +180,6 @@ namespace WindowsFormsApp1
                 StringBuilder sb = new StringBuilder();
                 foreach (char c in text)
                 {
-                    Thread.CurrentThread.Join();
                     if (mustTerminate)
                     {
                         Thread.CurrentThread.Abort();
@@ -188,13 +187,19 @@ namespace WindowsFormsApp1
                     sb.Append(c);
                     if (lbl.InvokeRequired)
                     {
-                        lbl.Invoke((MethodInvoker)delegate { lbl.Text = sb.ToString(); });
+                        try
+                        {
+                            lbl.Invoke((MethodInvoker)delegate { lbl.Text = sb.ToString(); });
+                        } catch (Exception e)
+                        {
+                            //TODO: handle it xd
+                        }
                     }
                     else
                     {
                         lbl.Text = sb.ToString();
                     }
-                    Thread.Sleep(rnd.Next(50,80));
+                    Thread.Sleep(rnd.Next(50, 80));
                 }
             });
         }
