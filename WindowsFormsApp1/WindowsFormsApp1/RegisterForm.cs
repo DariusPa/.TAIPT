@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1;
@@ -22,13 +23,12 @@ namespace Librarian
             InitializeComponent();
             this.firstPage = firstPage;
             this.userLabel = userName;
-            this.faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, registerPicBox);
+            this.faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, registerPicBox,this);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            firstPage.Show();
+            this.Close();
         }
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -39,9 +39,9 @@ namespace Librarian
 
         private void saveFaceButton_Click(object sender, EventArgs e)
         {
+            faceCam.saveButtonClicked = true;
             cancelButton.Hide();
             saveFaceButton.Hide();
-            faceCam.saveButtonClicked = true;
 
         }
 
@@ -51,5 +51,11 @@ namespace Librarian
             saveFaceButton.Show();
             faceCam.AddNewFace(userLabel);
         }
+
+        private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+           
+        }
+
     }
 }

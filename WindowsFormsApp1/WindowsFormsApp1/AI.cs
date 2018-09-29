@@ -16,5 +16,17 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
+
+        public Label guideLabel
+        {
+            get
+            {
+                return guideText;
+            }
+            set
+            {
+                guideText = value;
+            }
+        }
     }
 }
