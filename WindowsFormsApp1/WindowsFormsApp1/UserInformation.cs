@@ -23,14 +23,40 @@ namespace WindowsFormsApp1
                 return _instance;
             }
         }
+
         public UserInformation()
         {
             InitializeComponent();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        public UserInformation(string userName, string userSurname) :this()
         {
+            this.userName = userName;
+            this.userSurname = userSurname;
 
+        }
+
+        public string userName
+        {
+            get
+            {
+                return nameLabel.Text;
+            }
+            set
+            {
+                nameLabel.Text = value;
+            }
+        }
+        public string userSurname
+        {
+            get
+            {
+                return surnameLabel.Text;
+            }
+            set
+            {
+                surnameLabel.Text = value;
+            }
         }
     }
 }
