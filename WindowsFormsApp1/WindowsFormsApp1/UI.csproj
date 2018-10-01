@@ -55,6 +55,7 @@
       <HintPath>..\..\..\..\Desktop\.TAIPT-facial_recognition\Librarian\Librarian\bin\Debug\Emgu.CV.World.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Speech" />
@@ -78,6 +79,8 @@
     <Compile Include="AI.Designer.cs">
       <DependentUpon>AI.cs</DependentUpon>
     </Compile>
+    <Compile Include="DAL.cs" />
+    <Compile Include="dbcontact\dbClass.cs" />
     <Compile Include="ExistingUserForm.cs">
       <SubType>Form</SubType>
     </Compile>

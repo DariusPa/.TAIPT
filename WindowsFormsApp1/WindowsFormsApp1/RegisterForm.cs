@@ -57,5 +57,9 @@ namespace Librarian
            
         }
 
+        private void RegisterForm_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+             Application.Exit();
+        }
     }
 }
