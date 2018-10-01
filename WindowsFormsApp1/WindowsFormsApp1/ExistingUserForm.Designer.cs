@@ -36,19 +36,20 @@
             // loginPicBox
             // 
             this.loginPicBox.AccessibleName = "";
-            this.loginPicBox.Location = new System.Drawing.Point(9, 10);
-            this.loginPicBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginPicBox.Location = new System.Drawing.Point(4, 5);
+            this.loginPicBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.loginPicBox.Name = "loginPicBox";
-            this.loginPicBox.Size = new System.Drawing.Size(975, 1048);
+            this.loginPicBox.Size = new System.Drawing.Size(488, 545);
             this.loginPicBox.TabIndex = 0;
             this.loginPicBox.TabStop = false;
+            this.loginPicBox.Click += new System.EventHandler(this.loginPicBox_Click);
             // 
             // returnButton
             // 
-            this.returnButton.Location = new System.Drawing.Point(406, 1071);
-            this.returnButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.returnButton.Location = new System.Drawing.Point(203, 557);
+            this.returnButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.returnButton.Name = "returnButton";
-            this.returnButton.Size = new System.Drawing.Size(154, 70);
+            this.returnButton.Size = new System.Drawing.Size(77, 36);
             this.returnButton.TabIndex = 1;
             this.returnButton.Text = "Return";
             this.returnButton.UseVisualStyleBackColor = true;
@@ -56,16 +57,16 @@
             // 
             // ExistingUserForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(992, 1151);
+            this.ClientSize = new System.Drawing.Size(501, 389);
             this.Controls.Add(this.returnButton);
             this.Controls.Add(this.loginPicBox);
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.MaximumSize = new System.Drawing.Size(1018, 1222);
-            this.MinimumSize = new System.Drawing.Size(1018, 1222);
+            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.MaximumSize = new System.Drawing.Size(517, 654);
+            this.MinimumSize = new System.Drawing.Size(517, 396);
             this.Name = "ExistingUserForm";
             this.Text = ".TAIPT Library | Login";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExistingUserForm_FormClosed);
