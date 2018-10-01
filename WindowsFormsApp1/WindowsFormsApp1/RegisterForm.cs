@@ -57,5 +57,9 @@ namespace Librarian
            
         }
 
+        private void registerPicBox_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

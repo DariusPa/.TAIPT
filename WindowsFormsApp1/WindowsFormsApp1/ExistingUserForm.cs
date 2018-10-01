@@ -53,5 +53,9 @@ namespace Librarian
             faceCam.RecognizeExistingFace();
         }
 
+        private void loginPicBox_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

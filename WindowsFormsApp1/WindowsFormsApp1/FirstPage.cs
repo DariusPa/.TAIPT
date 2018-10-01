@@ -10,11 +10,15 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace WindowsFormsApp1
 {
     public partial class FirstPage : Form
     {
+        bool invalid = false;
         private RegisterForm registerForm;
         private ExistingUserForm existingUserForm;
 
@@ -49,11 +53,17 @@ namespace WindowsFormsApp1
                 {
                     label5.Text = "Surname (required)";
                 }
-                if (string.IsNullOrWhiteSpace(emailInput.Text))
+                if (IsValidEmail(emailInput.Text) == false)
                 {
                     label6.Text = "E-mail (required)";
                 }
             }
+        }
+        public bool IsValidEmail (string strIn)
+        {
+            var foo = new EmailAddressAttribute();
+            bool bar = foo.IsValid(strIn);
+            return bar;
         }
 
         private void keydown_func(object sender, KeyPressEventArgs e)
@@ -78,5 +88,9 @@ namespace WindowsFormsApp1
             this.Hide();
         }
 
+        private void FirstPage_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
