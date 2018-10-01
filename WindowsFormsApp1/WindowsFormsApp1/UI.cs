@@ -15,13 +15,20 @@ namespace WindowsFormsApp1
 {
     public partial class UI : Form
     {
+        private Boolean run = true;
+        private Boolean show = true;
+        private Boolean restart = false;
         private string userName;
         private string userSurname;
         private FirstPage firstPage;
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
+        private Label lbl;
+        private string text = "";
+        private Thread t;
 
         public UI(FirstPage firstPage, string userName, string userSurname)
         {
+            WindowState = FormWindowState.Maximized;
             InitializeComponent();
 
             this.firstPage = firstPage;
@@ -38,8 +45,8 @@ namespace WindowsFormsApp1
         {
             // On load show homepage user control 
             containerPanel.Controls.Add(Homepage.Instance);
-            Homepage.Instance.Dock = DockStyle.Fill;
-            Homepage.Instance.BringToFront();
+            Search.Instance.Dock = DockStyle.Fill;
+            Search.Instance.BringToFront();
 
             // Remove outline on all buttons
             foreach (Control button in this.Controls)
@@ -53,10 +60,12 @@ namespace WindowsFormsApp1
 
         private void TellUser(string msg)
         {
-            SlowWriter.Write(msg, ai1?.guideLabel);
+            ai1.guideLabel.Text = "";
+            this.text = msg;
+            show = true;
+            restart = true;
             synthesizer.SpeakAsyncCancelAll();
             synthesizer.SpeakAsync(msg);
-
         }
 
         private void searchButton_Click(object sender, EventArgs e)
@@ -154,7 +163,10 @@ namespace WindowsFormsApp1
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            TellUser("Welcome" + userName);
+            lbl = ai1.guideLabel;
+            t = new Thread(new ThreadStart(slowWriter));
+            t.Start();
+            TellUser("Welcome, " + userName);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -164,46 +176,47 @@ namespace WindowsFormsApp1
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SlowWriter.mustTerminate = true;
-            //if you want to close application by pressing "x" use this:
-            //Application.Exit();
+            run = false;
         }
-    }
 
-
-    public class SlowWriter
-    {
-        public static bool mustTerminate;
-        public static void Write(string text, Label lbl)
+        public void slowWriter()
         {
-            Task.Run(() =>
+            while (run == true)
             {
-                Random rnd = new Random();
-                StringBuilder sb = new StringBuilder();
-                foreach (char c in text)
+                if (show == true)
                 {
-                    if (mustTerminate)
+                replay:
+                    Random rnd = new Random();
+                    StringBuilder sb = new StringBuilder();
+                    foreach (char c in text)
                     {
-                        Thread.CurrentThread.Abort();
-                    }
-                    sb.Append(c);
-                    if (lbl.InvokeRequired)
-                    {
-                        try
+                        if (restart == true)
                         {
-                            lbl.Invoke((MethodInvoker)delegate { lbl.Text = sb.ToString(); });
-                        } catch (Exception e)
-                        {
-                            //TODO: handle it xd
+                            restart = false;
+                            goto replay;
                         }
+                        sb.Append(c);
+                        if (lbl.InvokeRequired)
+                        {
+                            try
+                            {
+                                lbl.Invoke((MethodInvoker)delegate { lbl.Text = sb.ToString(); });
+                            }
+                            catch (Exception e)
+                            {
+                                //TODO: handle it xd
+                            }
+                        }
+                        else
+                        {
+                            lbl.Text = sb.ToString();
+                        }
+                        Thread.Sleep(rnd.Next(50, 80));
                     }
-                    else
-                    {
-                        lbl.Text = sb.ToString();
-                    }
-                    Thread.Sleep(rnd.Next(50, 80));
+                    show = false;
                 }
-            });
+
+            }
         }
     }
 }
