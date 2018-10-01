@@ -20,6 +20,8 @@ namespace WindowsFormsApp1
 
         public FirstPage()
         {
+            WindowState = FormWindowState.Maximized;
+            //StartPosition = FormStartPosition.CenterScreen;
             InitializeComponent();
             loginButton.FlatAppearance.BorderSize = 0;
         }
@@ -77,5 +79,6 @@ namespace WindowsFormsApp1
             existingUserForm.Show();
             this.Hide();
         }
+
     }
 }

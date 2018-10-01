@@ -14,14 +14,17 @@ namespace Librarian
 {
     class FaceCamera
     {
-        private static String frameSrc = "images/FaceFrame.png";
-        private static Bitmap faceFrame = (Bitmap)Bitmap.FromFile(frameSrc);
+        private Thread savingThread;
+        private Thread captureThread;
+
+        private Form form;
+
+        private static string projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
+        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(projectPath + "\\FaceFrame.png");
+        private CascadeClassifier face = new CascadeClassifier(projectPath + "\\haarcascade_frontalface_default.xml");
+        private string labelFile = "Faces/TrainedLabels.txt";
 
         private VideoCapture videoCapture;
-        private Thread captureThread;
-        private CascadeClassifier face = new CascadeClassifier("haarcascade_frontalface_default.xml");
-        //private bool isSaved;
-
         private int eigenThresh = 2000;     //The bigger, the less accurate
         private FaceRecognizer faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
         private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
@@ -30,39 +33,29 @@ namespace Librarian
         private bool isTrained = false;
         private int faceCount;
         private Size camSize;
-
-        private string labelFile = "Faces/TrainedLabels.txt";
         private PictureBox camPicBox;
-
         private int picturesPerUser = 10;
-        private bool newUser;
-        private bool existingUser;
-
         private Image<Gray, Byte> detectedFace;
 
+        private bool newUser;
+        private bool existingUser;
+        private bool saved;
         public bool saveButtonClicked = false;
-        private bool savingInProgress = false;
 
-        private ExistingUserForm form;
 
-        public FaceCamera(int camWidth, int camHeight, PictureBox camPicBox)
+        public FaceCamera(int camWidth, int camHeight, PictureBox camPicBox, Form form)
         {
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             this.camPicBox = camPicBox;
-            LoadRecognizer();
-        }
-
-        public void initiateForm(ExistingUserForm form)
-        {
             this.form = form;
+            LoadRecognizer();
         }
 
         public void RecognizeExistingFace()
         {
             existingUser = true;
             newUser = false;
-            TrainRecognizer();
             StartStreaming("");
         }
 
@@ -77,20 +70,15 @@ namespace Librarian
         {
             camPicBox.Image = null;
             captureThread?.Abort();
+            savingThread?.Abort();
             videoCapture?.Dispose();
         }
 
         private void StartStreaming(String userLabel)
         {
+            TrainRecognizer();
             captureThread = new Thread(() => DisplayCam(userLabel));
             captureThread.Start();
-        }
-
-        private void callTestMethod()
-        {
-            StopStreaming();
-            MessageBox.Show("la");
-            form.sendString("success");
         }
 
         private void DisplayCam(String userLabel)
@@ -104,7 +92,7 @@ namespace Librarian
                 CvInvoke.CvtColor(frame, gray, ColorConversion.Bgr2Gray);
                 CvInvoke.EqualizeHist(gray, gray);
 
-                var square = FaceCamera.FrameSquarePicture(frame.Bitmap, camSize.Width, camSize.Height);
+                var square = FrameSquarePicture(frame.Bitmap, camSize.Width, camSize.Height);
                 camPicBox.Image = square;
 
                 frame.Dispose();
@@ -125,12 +113,15 @@ namespace Librarian
                         {
                             if (existingUser)
                             {
-                                callTestMethod();
+                                ((ExistingUserForm)form).userName = label;
+                                form.BeginInvoke(new Action(() => form.Close()));
+                                return;
                             }
-                            else if (newUser && !savingInProgress)
+                            else if (newUser)
                             {
                                 MessageBox.Show("USER '" + userLabel + "' IS ALREADY KNOWN TO THE SYSTEM AS '" + label + "'");
-                                StopStreaming();
+                                form.BeginInvoke(new Action(() => form.Close()));
+                                return;
                             }
                             detectedFace.Dispose();
 
@@ -138,12 +129,23 @@ namespace Librarian
                         }
                     }
 
-                    if (newUser && saveButtonClicked)
+                    if (newUser)
                     {
-                        savingInProgress = true;
-                        Thread saveFace = new Thread(() => SaveNewFace(userLabel));
-                        saveFace.Start();
+                        if (saveButtonClicked)
+                        {
+                            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
+                            savingThread = saveFace;
+                            saveFace.Start();
+                        }
+                        else if (saved)
+                        {
+                            MessageBox.Show("NEW USER '" + userLabel + "' HAS BEEN ADDED TO THE SYSTEM!");
+                            form.BeginInvoke(new Action(() => form.Close()));
+                            return;
+                        }
+                        
                     }
+
                     break;
                 }
 
@@ -152,25 +154,35 @@ namespace Librarian
 
         private void SaveNewFace(String label)
         {
+            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
+            List<String> faceLabelsTemp = new List<String>();
+            List<int> faceIDTemp = new List<int>();
+            int faceCountTemp = faceCount;
+
             saveButtonClicked = false;
-            for (int picturesSaved = 0; picturesSaved < picturesPerUser; )
+
+            for (int picturesSaved = 0; picturesSaved < picturesPerUser;)
             {
                 if (detectedFace != null)
                 {
-                    detectedFace.Save(String.Format("Faces/{0}.bmp", faceCount));
-                    File.AppendAllText(labelFile, label + "%");
-
-                    trainedFaces.Add(detectedFace);
-                    faceLabels.Add(label);
-                    faceID.Add(++faceCount);
+                    trainedFacesTemp.Add(detectedFace);
+                    faceLabelsTemp.Add(label);
+                    faceIDTemp.Add(++faceCountTemp);
                     picturesSaved++;
                     Thread.Sleep(500);
                 }
             }
-            
-            MessageBox.Show("NEW USER '" + label + "' HAS BEEN ADDED TO THE SYSTEM!");
-            StopStreaming();
-            TrainRecognizer();
+            /*New faces are added in one transaction to avoid the bug of saving empty images when
+            process terminates after recognising that the 'new' person already exists in the database*/
+            for(int i = 0; i < picturesPerUser; i++)
+            {
+                trainedFacesTemp[i].Save(String.Format("Faces/{0}.bmp", faceCount));
+                File.AppendAllText(labelFile, label + "%");
+                trainedFaces.Add(trainedFacesTemp[i]);
+                faceLabels.Add(faceLabelsTemp[i]);
+                faceID.Add(++faceCount);
+            }
+            saved = true;
         }
 
         /*Loads the recognizer with faces and their labels*/
@@ -216,7 +228,7 @@ namespace Librarian
         }
 
         /*Resizes the snapshot from camera and puts the frame picture on it*/
-        public static Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)
+        private Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)
         {
             cameraFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
             var framedPhoto = new Bitmap(width, height);

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AI));
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.guideText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,21 +45,36 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // guideText
+            // 
+            this.guideText.AutoSize = true;
+            this.guideText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(202)))), ((int)(((byte)(236)))));
+            this.guideText.ForeColor = System.Drawing.Color.Black;
+            this.guideText.Location = new System.Drawing.Point(172, 40);
+            this.guideText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.guideText.MaximumSize = new System.Drawing.Size(750, 81);
+            this.guideText.Name = "guideText";
+            this.guideText.Size = new System.Drawing.Size(0, 25);
+            this.guideText.TabIndex = 1;
+            // 
             // AI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.guideText);
             this.Controls.Add(this.pictureBox1);
             this.Name = "AI";
             this.Size = new System.Drawing.Size(1000, 150);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label guideText;
     }
 }

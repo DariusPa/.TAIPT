@@ -14,15 +14,18 @@ namespace Librarian
     public partial class ExistingUserForm : Form
     {
         private FirstPage firstPage;
-        private UI userMenu;
+        private UI uiForm;
         private FaceCamera faceCam;
+
+        public string userName = "";
+
 
         public ExistingUserForm(FirstPage firstPage)
         {
+            WindowState = FormWindowState.Maximized;
             InitializeComponent();
             this.firstPage = firstPage;
-            this.faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height, loginPicBox);
-            faceCam.initiateForm(this);
+            this.faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height, loginPicBox,this);
         }
 
         private void returnButton_Click(object sender, EventArgs e)
@@ -33,7 +36,13 @@ namespace Librarian
         private void ExistingUserForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             faceCam.StopStreaming();
-            firstPage.Show();
+            if (!userName.Equals(""))
+            {
+                //TODO: get user's surname
+                uiForm = new UI(firstPage,userName,"");
+                uiForm.Show();
+            }
+            else firstPage.Show();
         }
 
         private void ExistingUserForm_Load(object sender, EventArgs e)
@@ -45,15 +54,5 @@ namespace Librarian
             faceCam.RecognizeExistingFace();
         }
 
-        public void sendString(string text)
-        {
-            if(text == "success")
-            {
-                MessageBox.Show("ok");
-                UI user = new UI();
-                user.Show();
-                this.Close();
-            }
-        }
     }
 }
