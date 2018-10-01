@@ -53,5 +53,9 @@ namespace Librarian
             faceCam.RecognizeExistingFace();
         }
 
+        private void ExistingUserForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

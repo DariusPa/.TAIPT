@@ -165,6 +165,8 @@ namespace WindowsFormsApp1
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
             SlowWriter.mustTerminate = true;
+            //if you want to close application by pressing "x" use this:
+            //Application.Exit();
         }
     }
 

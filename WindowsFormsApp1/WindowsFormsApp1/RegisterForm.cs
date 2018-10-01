@@ -17,6 +17,7 @@ namespace Librarian
         private FirstPage firstPage;
         private FaceCamera faceCam;
         private String userLabel;
+        private int UID;
 
         public RegisterForm(FirstPage firstPage, string userName)
         {
@@ -57,5 +58,9 @@ namespace Librarian
            
         }
 
+        private void RegisterForm_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+             Application.Exit();
+        }
     }
 }

@@ -37,10 +37,10 @@
             // saveFaceButton
             // 
             this.saveFaceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.saveFaceButton.Location = new System.Drawing.Point(720, 1085);
-            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.saveFaceButton.Location = new System.Drawing.Point(270, 455);
+            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.saveFaceButton.Name = "saveFaceButton";
-            this.saveFaceButton.Size = new System.Drawing.Size(301, 68);
+            this.saveFaceButton.Size = new System.Drawing.Size(113, 29);
             this.saveFaceButton.TabIndex = 2;
             this.saveFaceButton.Text = "Save your face";
             this.saveFaceButton.UseVisualStyleBackColor = true;
@@ -49,19 +49,19 @@
             // registerPicBox
             // 
             this.registerPicBox.AccessibleName = "";
-            this.registerPicBox.Location = new System.Drawing.Point(283, 14);
-            this.registerPicBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.registerPicBox.Location = new System.Drawing.Point(106, 6);
+            this.registerPicBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.registerPicBox.Name = "registerPicBox";
-            this.registerPicBox.Size = new System.Drawing.Size(1160, 1017);
+            this.registerPicBox.Size = new System.Drawing.Size(435, 426);
             this.registerPicBox.TabIndex = 3;
             this.registerPicBox.TabStop = false;
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(1091, 1085);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.cancelButton.Location = new System.Drawing.Point(409, 455);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(352, 68);
+            this.cancelButton.Size = new System.Drawing.Size(132, 29);
             this.cancelButton.TabIndex = 4;
             this.cancelButton.Text = "Cancel registration";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -69,19 +69,20 @@
             // 
             // RegisterForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1635, 1172);
+            this.ClientSize = new System.Drawing.Size(619, 491);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.registerPicBox);
             this.Controls.Add(this.saveFaceButton);
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.MaximumSize = new System.Drawing.Size(1667, 1260);
-            this.MinimumSize = new System.Drawing.Size(1667, 1260);
+            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.MaximumSize = new System.Drawing.Size(635, 551);
+            this.MinimumSize = new System.Drawing.Size(635, 475);
             this.Name = "RegisterForm";
             this.Text = ".TAIPT Library | Register";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RegisterForm_FormClosing_1);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RegisterForm_FormClosed);
             this.Shown += new System.EventHandler(this.RegisterForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.registerPicBox)).EndInit();
