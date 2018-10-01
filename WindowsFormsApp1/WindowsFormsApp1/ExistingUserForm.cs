@@ -22,6 +22,9 @@ namespace Librarian
 
         public ExistingUserForm(FirstPage firstPage)
         {
+            WindowState = FormWindowState.Maximized;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(0, 0);
             InitializeComponent();
             this.firstPage = firstPage;
             this.faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height, loginPicBox,this);

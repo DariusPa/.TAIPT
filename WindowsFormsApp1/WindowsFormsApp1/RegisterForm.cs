@@ -21,6 +21,9 @@ namespace Librarian
 
         public RegisterForm(FirstPage firstPage, string userName)
         {
+            WindowState = FormWindowState.Maximized;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(0, 0);
             InitializeComponent();
             this.firstPage = firstPage;
             this.userLabel = userName;

@@ -21,6 +21,9 @@ namespace WindowsFormsApp1
 
         public FirstPage()
         {
+            WindowState = FormWindowState.Maximized;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(0, 0);
             InitializeComponent();
             loginButton.FlatAppearance.BorderSize = 0;
         }
