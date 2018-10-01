@@ -80,7 +80,6 @@
       <DependentUpon>AI.cs</DependentUpon>
     </Compile>
     <Compile Include="DAL.cs" />
-    <Compile Include="dbcontact\dbClass.cs" />
     <Compile Include="ExistingUserForm.cs">
       <SubType>Form</SubType>
     </Compile>

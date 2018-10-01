@@ -17,6 +17,7 @@ namespace Librarian
         private FirstPage firstPage;
         private FaceCamera faceCam;
         private String userLabel;
+        private int UID;
 
         public RegisterForm(FirstPage firstPage, string userName)
         {

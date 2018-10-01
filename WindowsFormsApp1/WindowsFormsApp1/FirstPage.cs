@@ -11,7 +11,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.dbcontact;
 
 namespace WindowsFormsApp1
 {
@@ -19,7 +18,6 @@ namespace WindowsFormsApp1
     {
         private RegisterForm registerForm;
         private ExistingUserForm existingUserForm;
-        dbClass c = new dbClass();
 
         public FirstPage()
         {
@@ -63,10 +61,18 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
+                    //inserting user to db
                     DAL.ExecSP("InsertUser", sqlParams);
 
-                    MessageBox.Show("Creating user: " + nameInput.Text + " "+ surnameInput.Text + " " + emailInput.Text);
+                    //get user ID
+                    //DataTable dtUserInfo = DAL.ExecSP("GetLastUserInfo",validationSqlParams);
+                    //MessageBox.Show(dtUserInfo.Rows[0]["UID"].ToString());
+                    //int UID = Int32.Parse(dtUserInfo.Rows[0]["UID"].ToString());
+                    //int UID = 0;
 
+
+
+                    MessageBox.Show("Creating user:"  + nameInput.Text + " "+ surnameInput.Text + " " + emailInput.Text);
                     registerForm = new RegisterForm(this, nameInput.Text);
                     registerForm.Show();
                     this.Hide();

@@ -12,7 +12,7 @@ namespace WindowsFormsApp1
     {
         public static DataTable ExecSP(string spName, List<SqlParameter> sqlParams = null)
         {
-            string strConnect = "Server=DESKTOP-5FF4H1J;Database=fdb;Trusted_Connection=True;";
+            string strConnect = "Server="+Environment.MachineName+";Database=fdb;Trusted_Connection=True;";
 
             SqlConnection conn = new SqlConnection();
 
@@ -39,7 +39,7 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex)
             {
-                throw;
+                //throw;
             }
             finally
             {
