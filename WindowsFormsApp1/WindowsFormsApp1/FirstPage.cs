@@ -1,18 +1,11 @@
-﻿using Librarian;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace VirtualLibrarian
 {
     public partial class FirstPage : Form
     {
@@ -28,17 +21,10 @@ namespace WindowsFormsApp1
             loginButton.FlatAppearance.BorderSize = 0;
         }
 
-        private void FirstPage_Load(object sender, EventArgs e)
-        {
-        }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void ContinueButton_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void continueButton_Click(object sender, EventArgs e)
-        {
+            //TODO: save new user AFTER taking his pictures
             if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text))
             {
                 //registration parameters
@@ -97,7 +83,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void keydown_func(object sender, KeyPressEventArgs e)
+        private void Keydown_func(object sender, KeyPressEventArgs e)
         {
             RichTextBox textBox = (RichTextBox)sender;
             if (textBox.Name == "nameInput")
@@ -112,36 +98,11 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void loginButton_Click(object sender, EventArgs e)
+        private void LoginButton_Click(object sender, EventArgs e)
         {
             existingUserForm = new ExistingUserForm(this);
             existingUserForm.Show();
             this.Hide();
-        }
-
-        private void nameInput_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void surnameInput_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void emailInput_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FirstPage_Load_1(object sender, EventArgs e)
-        {
-
         }
 
         private void FirstPage_FormClosing(object sender, FormClosingEventArgs e)

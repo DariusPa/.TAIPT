@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace VirtualLibrarian
 {
     partial class PersonalInfo
     {
@@ -45,7 +45,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Personal information";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // PersonalInfo
             // 
@@ -55,7 +54,6 @@
             this.Controls.Add(this.label1);
             this.Name = "PersonalInfo";
             this.Size = new System.Drawing.Size(1017, 796);
-            this.Load += new System.EventHandler(this.PersonalInfo_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

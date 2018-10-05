@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace VirtualLibrarian
 {
     public partial class UserInformation : UserControl
     {
@@ -31,32 +23,20 @@ namespace WindowsFormsApp1
 
         public UserInformation(string userName, string userSurname) :this()
         {
-            this.userName = userName;
-            this.userSurname = userSurname;
+            UserName = userName;
+            UserSurname = userSurname;
 
         }
 
-        public string userName
+        public string UserName
         {
-            get
-            {
-                return nameLabel.Text;
-            }
-            set
-            {
-                nameLabel.Text = value;
-            }
+            get { return nameLabel.Text; }
+            set { nameLabel.Text = value; }
         }
-        public string userSurname
+        public string UserSurname
         {
-            get
-            {
-                return surnameLabel.Text;
-            }
-            set
-            {
-                surnameLabel.Text = value;
-            }
+            get { return surnameLabel.Text; }
+            set { surnameLabel.Text = value; }
         }
     }
 }

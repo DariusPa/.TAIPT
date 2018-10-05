@@ -1,4 +1,4 @@
-﻿namespace Librarian
+﻿namespace VirtualLibrarian
 {
     partial class RegisterForm
     {
@@ -53,7 +53,7 @@
             this.saveFaceButton.TabIndex = 5;
             this.saveFaceButton.Text = "Start";
             this.saveFaceButton.UseVisualStyleBackColor = true;
-            this.saveFaceButton.Click += new System.EventHandler(this.saveFaceButton_Click);
+            this.saveFaceButton.Click += new System.EventHandler(this.SaveFaceButton_Click);
             this.saveFaceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
             this.saveFaceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.saveFaceButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));

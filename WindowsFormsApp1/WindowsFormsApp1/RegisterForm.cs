@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1;
 
-namespace Librarian
+namespace VirtualLibrarian
 {
     public partial class RegisterForm : Form
     {
         private FirstPage firstPage;
         private FaceCamera faceCam;
-        private String userLabel;
-        private int UID;
+        private string userLabel;
 
         public RegisterForm(FirstPage firstPage, string userName)
         {
@@ -41,12 +32,11 @@ namespace Librarian
             firstPage.Show();
         }
 
-        private void saveFaceButton_Click(object sender, EventArgs e)
+        private void SaveFaceButton_Click(object sender, EventArgs e)
         {
             faceCam.saveButtonClicked = true;
             cancelButton.Hide();
             saveFaceButton.Hide();
-
         }
 
         private void RegisterForm_Shown(object sender, EventArgs e)
@@ -56,14 +46,5 @@ namespace Librarian
             faceCam.AddNewFace(userLabel);
         }
 
-        private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-           
-        }
-
-        private void RegisterForm_FormClosing_1(object sender, FormClosingEventArgs e)
-        {
-             Application.Exit();
-        }
     }
 }

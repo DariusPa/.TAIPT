@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace VirtualLibrarian
 {
     public partial class PersonalInfo : UserControl
     {
@@ -27,15 +27,6 @@ namespace WindowsFormsApp1
         public PersonalInfo()
         {
             InitializeComponent();
-        }
-
-        private void PersonalInfo_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

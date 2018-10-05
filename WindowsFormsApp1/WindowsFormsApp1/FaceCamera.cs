@@ -8,9 +8,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Librarian
+namespace VirtualLibrarian
 {
     class FaceCamera
     {
@@ -19,10 +18,12 @@ namespace Librarian
 
         private Form form;
 
-        private static string projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
-        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(projectPath + "\\FaceFrame.png");
-        private CascadeClassifier face = new CascadeClassifier(projectPath + "\\haarcascade_frontalface_default.xml");
-        private string labelFile = "Faces/TrainedLabels.txt";
+        private static string resourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
+        private static string facesPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Data\\Faces";
+
+        private string labelFile = facesPath + "\\TrainedLabels.txt";
+        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
+        private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
 
         private VideoCapture videoCapture;
         private int eigenThresh = 2000;     //The bigger, the less accurate
@@ -143,7 +144,6 @@ namespace Librarian
                             form.BeginInvoke(new Action(() => form.Close()));
                             return;
                         }
-                        
                     }
 
                     break;
@@ -176,7 +176,7 @@ namespace Librarian
             process terminates after recognising that the 'new' person already exists in the database*/
             for(int i = 0; i < picturesPerUser; i++)
             {
-                trainedFacesTemp[i].Save(String.Format("Faces/{0}.bmp", faceCount));
+                trainedFacesTemp[i].Save(String.Format("{0}\\{1}.bmp", facesPath,faceCount));
                 File.AppendAllText(labelFile, label + "%");
                 trainedFaces.Add(trainedFacesTemp[i]);
                 faceLabels.Add(faceLabelsTemp[i]);
@@ -188,15 +188,27 @@ namespace Librarian
         /*Loads the recognizer with faces and their labels*/
         private void LoadRecognizer()
         {
+            if (!File.Exists(labelFile))
+                File.Create(labelFile).Dispose();
             string[] labels = File.ReadAllText(labelFile).Split('%');
             faceCount = labels.Length - 1;
 
-            for (int j = 0; j < faceCount; j++)
+            try
             {
-                trainedFaces.Add(new Image<Gray, byte>("Faces/" + j + ".bmp"));
-                faceLabels.Add(labels[j]);
-                faceID.Add(j);
+                for (int j = 0; j < faceCount; j++)
+                {
+                    trainedFaces.Add(new Image<Gray, byte>(facesPath + "\\" + j + ".bmp"));
+                    faceLabels.Add(labels[j]);
+                    faceID.Add(j);
+                }
+            } catch (Exception e)
+            {
+                trainedFaces.Clear();
+                faceLabels.Clear();
+                faceID.Clear();
+                faceCount = 0;
             }
+
 
             TrainRecognizer();
         }

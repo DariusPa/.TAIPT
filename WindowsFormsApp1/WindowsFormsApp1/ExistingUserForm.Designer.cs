@@ -1,4 +1,4 @@
-﻿namespace Librarian
+﻿namespace VirtualLibrarian
 {
     partial class ExistingUserForm
     {
@@ -52,7 +52,7 @@
             this.returnButton.TabIndex = 4;
             this.returnButton.Text = "Cancel";
             this.returnButton.UseVisualStyleBackColor = true;
-            this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
+            this.returnButton.Click += new System.EventHandler(this.ReturnButton_Click);
             this.returnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.returnButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.returnButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
@@ -78,7 +78,6 @@
             this.Name = "ExistingUserForm";
             this.Text = ".TAIPT Library | Login";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExistingUserForm_FormClosed);
-            this.Load += new System.EventHandler(this.ExistingUserForm_Load);
             this.Shown += new System.EventHandler(this.ExistingUserForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.loginPicBox)).EndInit();
             this.ResumeLayout(false);

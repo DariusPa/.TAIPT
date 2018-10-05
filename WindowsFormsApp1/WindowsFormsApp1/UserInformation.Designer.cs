@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace VirtualLibrarian
 {
     partial class UserInformation
     {
@@ -64,7 +64,7 @@
             // pictureBox1
             // 
             this.pictureBox1.ErrorImage = null;
-            this.pictureBox1.Image = global::WindowsFormsApp1.Properties.Resources.userImage;
+            this.pictureBox1.Image = global::VirtualLibrarian.Properties.Resources.userImage;
             this.pictureBox1.Location = new System.Drawing.Point(527, 45);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";

@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp1
+﻿namespace VirtualLibrarian
 {
     partial class FirstPage
     {
@@ -110,8 +110,7 @@
             this.nameInput.Size = new System.Drawing.Size(164, 17);
             this.nameInput.TabIndex = 7;
             this.nameInput.Text = "";
-            this.nameInput.TextChanged += new System.EventHandler(this.nameInput_TextChanged);
-            this.nameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keydown_func);
+            this.nameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Keydown_func);
             // 
             // surnameInput
             // 
@@ -126,8 +125,7 @@
             this.surnameInput.Size = new System.Drawing.Size(164, 17);
             this.surnameInput.TabIndex = 9;
             this.surnameInput.Text = "";
-            this.surnameInput.TextChanged += new System.EventHandler(this.surnameInput_TextChanged);
-            this.surnameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keydown_func);
+            this.surnameInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Keydown_func);
             // 
             // emailInput
             // 
@@ -142,8 +140,7 @@
             this.emailInput.Size = new System.Drawing.Size(164, 17);
             this.emailInput.TabIndex = 11;
             this.emailInput.Text = "";
-            this.emailInput.TextChanged += new System.EventHandler(this.emailInput_TextChanged);
-            this.emailInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.keydown_func);
+            this.emailInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Keydown_func);
             // 
             // label5
             // 
@@ -187,24 +184,23 @@
             this.continueButton.TabIndex = 14;
             this.continueButton.Text = "CONTINUE";
             this.continueButton.UseVisualStyleBackColor = false;
-            this.continueButton.Click += new System.EventHandler(this.continueButton_Click);
+            this.continueButton.Click += new System.EventHandler(this.ContinueButton_Click);
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::WindowsFormsApp1.Properties.Resources.input;
-            this.pictureBox4.InitialImage = global::WindowsFormsApp1.Properties.Resources.input;
+            this.pictureBox4.Image = global::VirtualLibrarian.Properties.Resources.input;
+            this.pictureBox4.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox4.Location = new System.Drawing.Point(26, 366);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(195, 42);
             this.pictureBox4.TabIndex = 10;
             this.pictureBox4.TabStop = false;
-            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Image = global::WindowsFormsApp1.Properties.Resources.input;
-            this.pictureBox3.InitialImage = global::WindowsFormsApp1.Properties.Resources.input;
+            this.pictureBox3.Image = global::VirtualLibrarian.Properties.Resources.input;
+            this.pictureBox3.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox3.Location = new System.Drawing.Point(26, 289);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox3.Name = "pictureBox3";
@@ -214,20 +210,19 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::WindowsFormsApp1.Properties.Resources.input;
-            this.pictureBox2.InitialImage = global::WindowsFormsApp1.Properties.Resources.input;
+            this.pictureBox2.Image = global::VirtualLibrarian.Properties.Resources.input;
+            this.pictureBox2.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox2.Location = new System.Drawing.Point(26, 213);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(195, 42);
             this.pictureBox2.TabIndex = 6;
             this.pictureBox2.TabStop = false;
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // loginButton
             // 
             this.loginButton.BackColor = System.Drawing.Color.Transparent;
-            this.loginButton.BackgroundImage = global::WindowsFormsApp1.Properties.Resources.log;
+            this.loginButton.BackgroundImage = global::VirtualLibrarian.Properties.Resources.log;
             this.loginButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.loginButton.FlatAppearance.BorderSize = 0;
             this.loginButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
@@ -239,14 +234,14 @@
             this.loginButton.Size = new System.Drawing.Size(124, 111);
             this.loginButton.TabIndex = 15;
             this.loginButton.UseVisualStyleBackColor = false;
-            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
+            this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
             // FirstPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = global::WindowsFormsApp1.Properties.Resources.bg;
+            this.BackgroundImage = global::VirtualLibrarian.Properties.Resources.bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(621, 517);
             this.Controls.Add(this.loginButton);
@@ -271,7 +266,6 @@
             this.Name = "FirstPage";
             this.Text = ".TAIPT Library";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FirstPage_FormClosing);
-            this.Load += new System.EventHandler(this.FirstPage_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

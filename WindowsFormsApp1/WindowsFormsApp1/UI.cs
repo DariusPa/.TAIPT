@@ -1,23 +1,17 @@
-﻿using Librarian;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Threading;
 
-namespace WindowsFormsApp1
+namespace VirtualLibrarian
 {
     public partial class UI : Form
     {
-        private Boolean run = true;
-        private Boolean show = true;
-        private Boolean restart = false;
+        private bool run = true;
+        private bool show = true;
+        private bool restart = false;
         private string userName;
         private string userSurname;
         private FirstPage firstPage;
@@ -35,8 +29,8 @@ namespace WindowsFormsApp1
             this.firstPage = firstPage;
             this.userName = userName;
             this.userSurname = userSurname;
-            userInformation1.userName = userName;
-            userInformation1.userSurname = userSurname;
+            userInformation1.UserName = userName;
+            userInformation1.UserSurname = userSurname;
 
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
@@ -69,7 +63,7 @@ namespace WindowsFormsApp1
             synthesizer.SpeakAsync(msg);
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private void SearchButton_Click(object sender, EventArgs e)
         {
             TellUser("Here you can find a book which you want to take.");
             if (!containerPanel.Controls.Contains(Search.Instance))
@@ -82,7 +76,7 @@ namespace WindowsFormsApp1
                 Search.Instance.BringToFront();
         }
 
-        private void personalInfoButton_Click(object sender, EventArgs e)
+        private void PersonalInfoButton_Click(object sender, EventArgs e)
         {
             TellUser("Here you can see your personal information.");
             if (!containerPanel.Controls.Contains(PersonalInfo.Instance))
@@ -95,7 +89,7 @@ namespace WindowsFormsApp1
                 PersonalInfo.Instance.BringToFront();
         }
 
-        private void returnButton_Click(object sender, EventArgs e)
+        private void ReturnButton_Click(object sender, EventArgs e)
         {
             TellUser("Here you can return a book.");
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
@@ -108,7 +102,7 @@ namespace WindowsFormsApp1
                 ReturnBook.Instance.BringToFront();
         }
 
-        private void historyButton_Click(object sender, EventArgs e)
+        private void HistoryButton_Click(object sender, EventArgs e)
         {
             TellUser("Here you can see your readings history.");
             if (!containerPanel.Controls.Contains(History.Instance))
@@ -121,7 +115,7 @@ namespace WindowsFormsApp1
                 History.Instance.BringToFront();
         }
 
-        private void settingsButton_Click(object sender, EventArgs e)
+        private void SettingsButton_Click(object sender, EventArgs e)
         {
             TellUser("Here you can change your account settings.");
             if (!containerPanel.Controls.Contains(Settings.Instance))
@@ -134,26 +128,21 @@ namespace WindowsFormsApp1
                 Settings.Instance.BringToFront();
         }
 
-        private void logoutButton_Click(object sender, EventArgs e)
+        private void LogoutButton_Click(object sender, EventArgs e)
         {
             TellUser("See you soon.");
             this.Close();
         }
 
 
-        private void ChangeCursor(System.Windows.Forms.Button Btn)
+        private void ChangeCursor(Button Btn)
         {
             Btn.TabStop = false;
             Btn.FlatStyle = FlatStyle.Flat;
             Btn.FlatAppearance.BorderSize = 0;
         }
 
-        private void containerPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        public void sendString(string text)
+        public void SendString(string text)
         {
             if (text == "success")
             {
@@ -165,7 +154,7 @@ namespace WindowsFormsApp1
         private void UI_Shown(object sender, EventArgs e)
         {
             lbl = ai1.guideLabel;
-            t = new Thread(new ThreadStart(slowWriter));
+            t = new Thread(new ThreadStart(WriteSlowly));
             t.Start();
             TellUser("Welcome, " + userName);
         }
@@ -177,21 +166,22 @@ namespace WindowsFormsApp1
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
+            this.Controls.Clear();
             run = false;
         }
 
-        public void slowWriter()
+        public void WriteSlowly()
         {
-            while (run == true)
+            while (run)
             {
-                if (show == true)
+                if (show)
                 {
                 replay:
                     Random rnd = new Random();
                     StringBuilder sb = new StringBuilder();
                     foreach (char c in text)
                     {
-                        if (restart == true)
+                        if (restart)
                         {
                             restart = false;
                             goto replay;
@@ -205,7 +195,7 @@ namespace WindowsFormsApp1
                             }
                             catch (Exception e)
                             {
-                                //TODO: handle it xd
+                                //throw 
                             }
                         }
                         else
