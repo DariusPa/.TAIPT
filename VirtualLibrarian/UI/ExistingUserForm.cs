@@ -11,7 +11,7 @@ namespace VirtualLibrarian
         private UI uiForm;
         private FaceCamera faceCam;
 
-        public string userName;
+        public string userName="";
 
 
         public ExistingUserForm(FirstPage firstPage)
