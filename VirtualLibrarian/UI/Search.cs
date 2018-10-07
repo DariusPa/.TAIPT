@@ -64,14 +64,14 @@ namespace VirtualLibrarian
         private void barcodeCamera_BarcodeDetected(object sender, BarcodeDetectedEventArgs e)
         {
             Book book = Library.Instance.books.Find(x => x.ID == int.Parse(e.DecodedText));
-            if (Reader!= null && book!= null)
+            if (Reader!= null && book!= null && Library.Instance.IssueBookToReader(Reader, book))
             {
-                if (Library.Instance.IssueBookToReader(Reader, book))
-                    MessageBox.Show("Book has been issued");
-                else MessageBox.Show("Issuing failed!");
+                MessageBox.Show("OK");
             }
-            
-            
+            else MessageBox.Show("Issuing failed!");
+
+
+
 
         }
     }

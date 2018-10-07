@@ -36,23 +36,15 @@
             // loginPicBox
             // 
             this.loginPicBox.AccessibleName = "";
-            this.loginPicBox.Location = new System.Drawing.Point(0, -1);
-            this.loginPicBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginPicBox.Location = new System.Drawing.Point(-9, -1);
+            this.loginPicBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.loginPicBox.Name = "loginPicBox";
-            this.loginPicBox.Size = new System.Drawing.Size(1000, 1000);
+            this.loginPicBox.Size = new System.Drawing.Size(689, 656);
             this.loginPicBox.TabIndex = 3;
             this.loginPicBox.TabStop = false;
             // 
             // returnButton
             // 
-            this.returnButton.Location = new System.Drawing.Point(713, 915);
-            this.returnButton.Margin = new System.Windows.Forms.Padding(2);
-            this.returnButton.Name = "returnButton";
-            this.returnButton.Size = new System.Drawing.Size(264, 55);
-            this.returnButton.TabIndex = 4;
-            this.returnButton.Text = "Cancel";
-            this.returnButton.UseVisualStyleBackColor = true;
-            this.returnButton.Click += new System.EventHandler(this.ReturnButton_Click);
             this.returnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.returnButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.returnButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
@@ -62,19 +54,27 @@
             this.returnButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.returnButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.returnButton.ForeColor = System.Drawing.Color.White;
+            this.returnButton.Location = new System.Drawing.Point(475, 586);
+            this.returnButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.returnButton.Name = "returnButton";
+            this.returnButton.Size = new System.Drawing.Size(176, 35);
+            this.returnButton.TabIndex = 4;
+            this.returnButton.Text = "Cancel";
+            this.returnButton.UseVisualStyleBackColor = false;
+            this.returnButton.Click += new System.EventHandler(this.ReturnButton_Click);
             // 
             // ExistingUserForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(992, 1151);
+            this.ClientSize = new System.Drawing.Size(673, 647);
             this.Controls.Add(this.returnButton);
             this.Controls.Add(this.loginPicBox);
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1028, 1058);
-            this.MinimumSize = new System.Drawing.Size(1028, 1058);
+            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.MaximumSize = new System.Drawing.Size(691, 694);
+            this.MinimumSize = new System.Drawing.Size(691, 675);
             this.Name = "ExistingUserForm";
             this.Text = ".TAIPT Library | Login";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ExistingUserForm_FormClosed);

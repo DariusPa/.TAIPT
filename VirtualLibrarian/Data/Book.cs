@@ -47,6 +47,7 @@ namespace Data
             Status = Status.Available;
             Reader = -1;
         }
+
     }
 
     //TODO implement

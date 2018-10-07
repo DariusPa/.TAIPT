@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\admin.png" />
     <None Include="Resources\QR.png" />
   </ItemGroup>
   <ItemGroup>

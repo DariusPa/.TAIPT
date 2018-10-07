@@ -37,10 +37,10 @@
             // registerPicBox
             // 
             this.registerPicBox.AccessibleName = "";
-            this.registerPicBox.Location = new System.Drawing.Point(0, -1);
-            this.registerPicBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.registerPicBox.Location = new System.Drawing.Point(-6, -1);
+            this.registerPicBox.Margin = new System.Windows.Forms.Padding(1);
             this.registerPicBox.Name = "registerPicBox";
-            this.registerPicBox.Size = new System.Drawing.Size(667, 640);
+            this.registerPicBox.Size = new System.Drawing.Size(681, 642);
             this.registerPicBox.TabIndex = 3;
             this.registerPicBox.TabStop = false;
             // 
@@ -56,7 +56,7 @@
             this.saveFaceButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.saveFaceButton.ForeColor = System.Drawing.Color.White;
             this.saveFaceButton.Location = new System.Drawing.Point(261, 586);
-            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(1);
             this.saveFaceButton.Name = "saveFaceButton";
             this.saveFaceButton.Size = new System.Drawing.Size(151, 35);
             this.saveFaceButton.TabIndex = 5;
@@ -76,7 +76,7 @@
             this.cancelButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.cancelButton.ForeColor = System.Drawing.Color.White;
             this.cancelButton.Location = new System.Drawing.Point(475, 586);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(1);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(176, 35);
             this.cancelButton.TabIndex = 4;
@@ -94,7 +94,7 @@
             this.Controls.Add(this.saveFaceButton);
             this.Controls.Add(this.registerPicBox);
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.MaximumSize = new System.Drawing.Size(691, 694);
             this.MinimumSize = new System.Drawing.Size(691, 675);
             this.Name = "RegisterForm";

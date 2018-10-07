@@ -31,6 +31,11 @@ namespace Data
              Readings.Add(book.ID);
         }
 
+        public void ReturnBook(Book book)
+        {
+            Readings.Remove(book.ID);
+        }
+
 
     }
 }

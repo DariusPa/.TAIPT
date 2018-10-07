@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FirstPage));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -233,21 +234,16 @@
             // 
             // adminButton
             // 
-            this.adminButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
-            this.adminButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.adminButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
-            this.adminButton.FlatAppearance.BorderSize = 0;
-            this.adminButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(152)))), ((int)(((byte)(230)))));
-            this.adminButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(152)))), ((int)(((byte)(230)))));
+            this.adminButton.BackColor = System.Drawing.Color.Transparent;
+            this.adminButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("adminButton.BackgroundImage")));
+            this.adminButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.adminButton.CausesValidation = false;
             this.adminButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.adminButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.adminButton.ForeColor = System.Drawing.Color.White;
-            this.adminButton.Location = new System.Drawing.Point(34, 572);
-            this.adminButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.adminButton.Location = new System.Drawing.Point(12, 580);
             this.adminButton.Name = "adminButton";
-            this.adminButton.Size = new System.Drawing.Size(156, 43);
-            this.adminButton.TabIndex = 16;
-            this.adminButton.Text = "ADMIN";
+            this.adminButton.Size = new System.Drawing.Size(39, 34);
+            this.adminButton.TabIndex = 17;
             this.adminButton.UseVisualStyleBackColor = false;
             this.adminButton.Click += new System.EventHandler(this.adminButton_Click);
             // 

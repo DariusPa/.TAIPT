@@ -71,6 +71,16 @@ namespace Data
             else return false;
         }
 
+        public bool ReturnBook(User reader, Book book)
+        {
+            if (reader.Readings.Contains(book.ID) && book.Reader == reader.ID)
+            {
+                book.Return();
+                reader.ReturnBook(book);
+                return true;
+            }
+            else return false;
+        }
 
 
 

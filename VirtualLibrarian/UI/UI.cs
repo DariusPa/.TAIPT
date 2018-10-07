@@ -7,6 +7,7 @@ using System.Threading;
 using Data;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace VirtualLibrarian
 {
@@ -103,11 +104,18 @@ namespace VirtualLibrarian
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
+                ReturnBook.Instance.reader = reader;
                 ReturnBook.Instance.Dock = DockStyle.Fill;
                 ReturnBook.Instance.BringToFront();
             }
             else
                 ReturnBook.Instance.BringToFront();
+
+            var query = from s in Library.Instance.books
+                        where s.Reader == reader.ID
+                        select new { s.ID, s.Author, s.Title };
+
+            ReturnBook.Instance.dataGridView.DataSource = query.ToList();
         }
 
         private void HistoryButton_Click(object sender, EventArgs e)
