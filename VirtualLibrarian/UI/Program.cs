@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,9 +15,16 @@ namespace VirtualLibrarian
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
+            Library.Instance.LoadData();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FirstPage());
+        }
+
+        static void OnProcessExit(object sender, EventArgs e)
+        {
+            Library.Instance.SerializeData();
         }
     }
 }

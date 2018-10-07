@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -60,9 +61,11 @@ namespace VirtualLibrarian
                     //int UID = 0;
 
 
-
+                    
                     MessageBox.Show("Creating user:"  + nameInput.Text + " "+ surnameInput.Text + " " + emailInput.Text);
-                    registerForm = new RegisterForm(this, nameInput.Text);
+                    User reader = new User(nameInput.Text, surnameInput.Text, emailInput.Text);
+                    Library.Instance.readers.Add(reader);
+                    registerForm = new RegisterForm(this, reader.ID.ToString());
                     registerForm.Show();
                     this.Hide();
                 }
@@ -107,7 +110,17 @@ namespace VirtualLibrarian
 
         private void FirstPage_FormClosing(object sender, FormClosingEventArgs e)
         {
+            
             Application.Exit();
+            //Environment.Exit(Environment.ExitCode);
+        }
+
+
+        //TEMP FUNCTION
+        private void adminButton_Click(object sender, EventArgs e)
+        {
+            AdminForm adminForm = new AdminForm();
+            adminForm.Show();
         }
     }
 }

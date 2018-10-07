@@ -42,20 +42,20 @@
             // 
             // containerPanel
             // 
-            this.containerPanel.Location = new System.Drawing.Point(905, 193);
-            this.containerPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.containerPanel.Location = new System.Drawing.Point(452, 100);
+            this.containerPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.containerPanel.Name = "containerPanel";
-            this.containerPanel.Size = new System.Drawing.Size(1356, 987);
+            this.containerPanel.Size = new System.Drawing.Size(678, 509);
             this.containerPanel.TabIndex = 2;
             // 
             // settingsButton
             // 
             this.settingsButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(206)))), ((int)(((byte)(180)))));
             this.settingsButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_13;
-            this.settingsButton.Location = new System.Drawing.Point(55, 934);
-            this.settingsButton.Margin = new System.Windows.Forms.Padding(4);
+            this.settingsButton.Location = new System.Drawing.Point(28, 482);
+            this.settingsButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.settingsButton.Name = "settingsButton";
-            this.settingsButton.Size = new System.Drawing.Size(380, 247);
+            this.settingsButton.Size = new System.Drawing.Size(190, 127);
             this.settingsButton.TabIndex = 7;
             this.settingsButton.UseVisualStyleBackColor = false;
             this.settingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
@@ -64,10 +64,10 @@
             // 
             this.logoutButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(161)))), ((int)(((byte)(153)))), ((int)(((byte)(188)))));
             this.logoutButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_13_14;
-            this.logoutButton.Location = new System.Drawing.Point(467, 934);
-            this.logoutButton.Margin = new System.Windows.Forms.Padding(4);
+            this.logoutButton.Location = new System.Drawing.Point(234, 482);
+            this.logoutButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.logoutButton.Name = "logoutButton";
-            this.logoutButton.Size = new System.Drawing.Size(380, 247);
+            this.logoutButton.Size = new System.Drawing.Size(190, 127);
             this.logoutButton.TabIndex = 6;
             this.logoutButton.UseVisualStyleBackColor = false;
             this.logoutButton.Click += new System.EventHandler(this.LogoutButton_Click);
@@ -76,10 +76,10 @@
             // 
             this.historyButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(99)))), ((int)(((byte)(74)))));
             this.historyButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_09_10;
-            this.historyButton.Location = new System.Drawing.Point(467, 656);
-            this.historyButton.Margin = new System.Windows.Forms.Padding(4);
+            this.historyButton.Location = new System.Drawing.Point(234, 339);
+            this.historyButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.historyButton.Name = "historyButton";
-            this.historyButton.Size = new System.Drawing.Size(380, 247);
+            this.historyButton.Size = new System.Drawing.Size(190, 127);
             this.historyButton.TabIndex = 5;
             this.historyButton.UseVisualStyleBackColor = false;
             this.historyButton.Click += new System.EventHandler(this.HistoryButton_Click);
@@ -88,10 +88,10 @@
             // 
             this.returnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(129)))), ((int)(((byte)(156)))));
             this.returnButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_09;
-            this.returnButton.Location = new System.Drawing.Point(55, 656);
-            this.returnButton.Margin = new System.Windows.Forms.Padding(4);
+            this.returnButton.Location = new System.Drawing.Point(28, 339);
+            this.returnButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.returnButton.Name = "returnButton";
-            this.returnButton.Size = new System.Drawing.Size(380, 247);
+            this.returnButton.Size = new System.Drawing.Size(190, 127);
             this.returnButton.TabIndex = 4;
             this.returnButton.UseVisualStyleBackColor = false;
             this.returnButton.Click += new System.EventHandler(this.ReturnButton_Click);
@@ -100,10 +100,10 @@
             // 
             this.personalInfoButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(204)))), ((int)(((byte)(92)))));
             this.personalInfoButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_05;
-            this.personalInfoButton.Location = new System.Drawing.Point(467, 384);
-            this.personalInfoButton.Margin = new System.Windows.Forms.Padding(4);
+            this.personalInfoButton.Location = new System.Drawing.Point(234, 198);
+            this.personalInfoButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.personalInfoButton.Name = "personalInfoButton";
-            this.personalInfoButton.Size = new System.Drawing.Size(380, 247);
+            this.personalInfoButton.Size = new System.Drawing.Size(190, 127);
             this.personalInfoButton.TabIndex = 1;
             this.personalInfoButton.UseVisualStyleBackColor = false;
             this.personalInfoButton.Click += new System.EventHandler(this.PersonalInfoButton_Click);
@@ -112,10 +112,10 @@
             // 
             this.searchButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(111)))), ((int)(((byte)(105)))));
             this.searchButton.Image = global::VirtualLibrarian.Properties.Resources.taipt_03;
-            this.searchButton.Location = new System.Drawing.Point(55, 384);
-            this.searchButton.Margin = new System.Windows.Forms.Padding(4);
+            this.searchButton.Location = new System.Drawing.Point(28, 198);
+            this.searchButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(380, 247);
+            this.searchButton.Size = new System.Drawing.Size(190, 127);
             this.searchButton.TabIndex = 0;
             this.searchButton.UseVisualStyleBackColor = false;
             this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
@@ -123,29 +123,29 @@
             // ai1
             // 
             this.ai1.BackColor = System.Drawing.Color.White;
-            this.ai1.Location = new System.Drawing.Point(905, 0);
-            this.ai1.Margin = new System.Windows.Forms.Padding(5);
+            this.ai1.Location = new System.Drawing.Point(452, 0);
+            this.ai1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.ai1.Name = "ai1";
-            this.ai1.Size = new System.Drawing.Size(1333, 186);
+            this.ai1.Size = new System.Drawing.Size(666, 96);
             this.ai1.TabIndex = 8;
             // 
             // userInformation1
             // 
             this.userInformation1.BackColor = System.Drawing.Color.White;
-            this.userInformation1.Location = new System.Drawing.Point(55, 69);
-            this.userInformation1.Margin = new System.Windows.Forms.Padding(5);
+            this.userInformation1.Location = new System.Drawing.Point(28, 36);
+            this.userInformation1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.userInformation1.Name = "userInformation1";
-            this.userInformation1.Size = new System.Drawing.Size(792, 308);
+            this.userInformation1.Size = new System.Drawing.Size(396, 159);
             this.userInformation1.TabIndex = 3;
             this.userInformation1.UserName = "NAME";
             this.userInformation1.UserSurname = "SURNAME";
             // 
             // UI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(2269, 1214);
+            this.ClientSize = new System.Drawing.Size(962, 545);
             this.Controls.Add(this.ai1);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.logoutButton);
@@ -155,9 +155,9 @@
             this.Controls.Add(this.containerPanel);
             this.Controls.Add(this.personalInfoButton);
             this.Controls.Add(this.searchButton);
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MaximumSize = new System.Drawing.Size(2301, 1302);
-            this.MinimumSize = new System.Drawing.Size(2301, 1302);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(1160, 695);
+            this.MinimumSize = new System.Drawing.Size(968, 553);
             this.Name = "UI";
             this.Text = ".TAIPT Library | Logged in";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UI_FormClosing);

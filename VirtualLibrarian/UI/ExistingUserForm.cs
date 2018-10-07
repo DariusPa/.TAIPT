@@ -11,7 +11,7 @@ namespace VirtualLibrarian
         private UI uiForm;
         private FaceCamera faceCam;
 
-        public string userName="";
+        public string userID="";
 
 
         public ExistingUserForm(FirstPage firstPage)
@@ -32,10 +32,10 @@ namespace VirtualLibrarian
         private void ExistingUserForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             faceCam.StopStreaming();
-            if (!userName.Equals(""))
+            if (!userID.Equals(""))
             {
                 //TODO: get user's surname
-                uiForm = new UI(firstPage,userName,"");
+                uiForm = new UI(firstPage,userID);
                 uiForm.Show();
             }
             else firstPage.Show();
@@ -46,9 +46,5 @@ namespace VirtualLibrarian
             faceCam.RecognizeExistingFace();
         }
 
-        private void ExistingUserForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Application.Exit();
-        }
     }
 }

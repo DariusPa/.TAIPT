@@ -38,22 +38,14 @@
             // 
             this.registerPicBox.AccessibleName = "";
             this.registerPicBox.Location = new System.Drawing.Point(0, -1);
-            this.registerPicBox.Margin = new System.Windows.Forms.Padding(2);
+            this.registerPicBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
             this.registerPicBox.Name = "registerPicBox";
-            this.registerPicBox.Size = new System.Drawing.Size(1000, 1000);
+            this.registerPicBox.Size = new System.Drawing.Size(667, 640);
             this.registerPicBox.TabIndex = 3;
             this.registerPicBox.TabStop = false;
             // 
             // saveFaceButton
             // 
-            this.saveFaceButton.Location = new System.Drawing.Point(391, 915);
-            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(2);
-            this.saveFaceButton.Name = "saveFaceButton";
-            this.saveFaceButton.Size = new System.Drawing.Size(226, 55);
-            this.saveFaceButton.TabIndex = 5;
-            this.saveFaceButton.Text = "Start";
-            this.saveFaceButton.UseVisualStyleBackColor = true;
-            this.saveFaceButton.Click += new System.EventHandler(this.SaveFaceButton_Click);
             this.saveFaceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
             this.saveFaceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.saveFaceButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
@@ -63,17 +55,17 @@
             this.saveFaceButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveFaceButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.saveFaceButton.ForeColor = System.Drawing.Color.White;
+            this.saveFaceButton.Location = new System.Drawing.Point(261, 586);
+            this.saveFaceButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.saveFaceButton.Name = "saveFaceButton";
+            this.saveFaceButton.Size = new System.Drawing.Size(151, 35);
+            this.saveFaceButton.TabIndex = 5;
+            this.saveFaceButton.Text = "Start";
+            this.saveFaceButton.UseVisualStyleBackColor = false;
+            this.saveFaceButton.Click += new System.EventHandler(this.SaveFaceButton_Click);
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(713, 915);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(2);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(264, 55);
-            this.cancelButton.TabIndex = 4;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             this.cancelButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(228)))), ((int)(((byte)(104)))), ((int)(((byte)(104)))));
             this.cancelButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.cancelButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(84)))), ((int)(((byte)(84)))));
@@ -83,20 +75,28 @@
             this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cancelButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.cancelButton.ForeColor = System.Drawing.Color.White;
+            this.cancelButton.Location = new System.Drawing.Point(475, 586);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(176, 35);
+            this.cancelButton.TabIndex = 4;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = false;
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // RegisterForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1002, 987);
+            this.ClientSize = new System.Drawing.Size(673, 632);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.saveFaceButton);
             this.Controls.Add(this.registerPicBox);
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximumSize = new System.Drawing.Size(1028, 1058);
-            this.MinimumSize = new System.Drawing.Size(1028, 1058);
+            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.MaximumSize = new System.Drawing.Size(691, 694);
+            this.MinimumSize = new System.Drawing.Size(691, 675);
             this.Name = "RegisterForm";
             this.Text = ".TAIPT Library | Register";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.RegisterForm_FormClosed);

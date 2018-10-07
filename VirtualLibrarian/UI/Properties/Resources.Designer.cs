@@ -156,6 +156,16 @@ namespace VirtualLibrarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap QR {
+            get {
+                object obj = ResourceManager.GetObject("QR", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap taipt_03 {
             get {
                 object obj = ResourceManager.GetObject("taipt_03", resourceCulture);

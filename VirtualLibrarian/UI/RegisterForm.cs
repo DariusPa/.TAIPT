@@ -10,14 +10,15 @@ namespace VirtualLibrarian
         private FaceCamera faceCam;
         private string userLabel;
 
-        public RegisterForm(FirstPage firstPage, string userName)
+        public RegisterForm(FirstPage firstPage, string userID)
         {
+          
             WindowState = FormWindowState.Maximized;
             StartPosition = FormStartPosition.Manual;
             Location = new Point(0, 0);
             InitializeComponent();
             this.firstPage = firstPage;
-            this.userLabel = userName;
+            this.userLabel = userID;
             this.faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, registerPicBox,this);
         }
 

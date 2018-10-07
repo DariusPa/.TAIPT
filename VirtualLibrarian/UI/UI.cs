@@ -4,6 +4,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Threading;
+using Data;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace VirtualLibrarian
 {
@@ -20,15 +23,19 @@ namespace VirtualLibrarian
         private string text = "";
         private Thread t;
 
-        public UI(FirstPage firstPage, string userName, string userSurname)
+        private User reader;
+
+        public UI(FirstPage firstPage, string userID)
         {
+            this.reader = Library.Instance.readers.Find(x => x.ID == int.Parse(userID));
+
             WindowState = FormWindowState.Maximized;
             StartPosition = FormStartPosition.Manual;
             Location = new Point(0, 0);
             InitializeComponent();
             this.firstPage = firstPage;
-            this.userName = userName;
-            this.userSurname = userSurname;
+            this.userName = reader.Name;
+            this.userSurname = reader.Surname;
             userInformation1.UserName = userName;
             userInformation1.UserSurname = userSurname;
 
@@ -70,6 +77,7 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
+                Search.Instance.Reader = reader;
                 Search.Instance.BringToFront();
             }
             else
@@ -113,6 +121,12 @@ namespace VirtualLibrarian
             }
             else
                 History.Instance.BringToFront();
+
+            var query = from s in Library.Instance.books
+                         where s.Reader == reader.ID
+                         select new { s.Author, s.Title };
+
+            History.Instance.dataGridView.DataSource = query.ToList();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
@@ -130,7 +144,6 @@ namespace VirtualLibrarian
 
         private void LogoutButton_Click(object sender, EventArgs e)
         {
-            TellUser("See you soon.");
             this.Close();
         }
 
@@ -166,6 +179,7 @@ namespace VirtualLibrarian
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
+            TellUser("See you soon.");
             this.Controls.Clear();
             run = false;
         }
@@ -209,5 +223,6 @@ namespace VirtualLibrarian
 
             }
         }
+
     }
 }

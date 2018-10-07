@@ -82,6 +82,7 @@ namespace VirtualLibrarian
             captureThread.Start();
         }
 
+
         private void DisplayCam(String userLabel)
         {
             while (videoCapture.IsOpened)
@@ -114,13 +115,13 @@ namespace VirtualLibrarian
                         {
                             if (existingUser)
                             {
-                                ((ExistingUserForm)form).userName = label;
+                                ((ExistingUserForm)form).userID = label;
                                 form.BeginInvoke(new Action(() => form.Close()));
                                 return;
                             }
                             else if (newUser)
                             {
-                                MessageBox.Show("USER '" + userLabel + "' IS ALREADY KNOWN TO THE SYSTEM AS '" + label + "'");
+                                MessageBox.Show("USER IS ALREADY KNOWN TO THE SYSTEM");
                                 form.BeginInvoke(new Action(() => form.Close()));
                                 return;
                             }
@@ -140,7 +141,7 @@ namespace VirtualLibrarian
                         }
                         else if (saved)
                         {
-                            MessageBox.Show("NEW USER '" + userLabel + "' HAS BEEN ADDED TO THE SYSTEM!");
+                            MessageBox.Show("NEW USER HAS BEEN ADDED TO THE SYSTEM!");
                             form.BeginInvoke(new Action(() => form.Close()));
                             return;
                         }
