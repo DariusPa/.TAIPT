@@ -28,7 +28,7 @@ namespace Data
 
         public void TakeBook(Book book)
         {
-             Readings.Add(book.ID);
+            Readings.Add(book.ID);
         }
 
         public void ReturnBook(Book book)

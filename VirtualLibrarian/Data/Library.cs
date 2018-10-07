@@ -41,7 +41,7 @@ namespace Data
 
         public void SerializeData()
         {
-            File.WriteAllText(dirPath+"\\books.json", JsonConvert.SerializeObject(books));
+            File.WriteAllText(dirPath + "\\books.json", JsonConvert.SerializeObject(books));
             File.WriteAllText(dirPath + "\\authors.json", JsonConvert.SerializeObject(authors));
             File.WriteAllText(dirPath + "\\readers.json", JsonConvert.SerializeObject(readers));
         }
@@ -53,7 +53,8 @@ namespace Data
                 books = JsonConvert.DeserializeObject<List<Book>>(File.ReadAllText(dirPath + "\\books.json"));
                 authors = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(dirPath + "\\authors.json"));
                 readers = JsonConvert.DeserializeObject<List<User>>(File.ReadAllText(dirPath + "\\readers.json"));
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 //TODO: handle properly
                 Console.Write(e.Message);

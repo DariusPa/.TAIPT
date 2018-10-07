@@ -234,7 +234,7 @@
             // 
             // adminButton
             // 
-            this.adminButton.BackColor = System.Drawing.Color.Transparent;
+            this.adminButton.BackColor = System.Drawing.Color.White;
             this.adminButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("adminButton.BackgroundImage")));
             this.adminButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.adminButton.CausesValidation = false;

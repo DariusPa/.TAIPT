@@ -18,7 +18,7 @@ namespace Data
         public Status Status { get; set; }
 
         public int Reader { get; set; }
-        
+
 
         public Book()
         {
