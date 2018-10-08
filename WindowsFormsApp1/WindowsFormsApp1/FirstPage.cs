@@ -36,7 +36,6 @@ namespace WindowsFormsApp1
         {
 
         }
-
         private void continueButton_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text))
