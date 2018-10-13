@@ -112,6 +112,7 @@
       <DependentUpon>FirstPage.cs</DependentUpon>
     </Compile>
     <Compile Include="RegexUtilities.cs" />
+    <Compile Include="SpeakingAI.cs" />
     <Compile Include="UI.cs">
       <SubType>Form</SubType>
     </Compile>

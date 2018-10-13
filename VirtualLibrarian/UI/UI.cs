@@ -13,19 +13,12 @@ namespace VirtualLibrarian
 {
     public partial class UI : Form
     {
-        private bool run = true;
-        private bool show = true;
-        private bool restart = false;
         private string userName;
         private string userSurname;
         private FirstPage firstPage;
-        private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-        private Label lbl;
-        private string text = "";
-        private Thread t;
-
+        private SpeakingAI Speaker = new SpeakingAI();
         private User reader;
-
+        
         public UI(FirstPage firstPage, string userID)
         {
             this.reader = Library.Instance.readers.Find(x => x.ID == int.Parse(userID));
@@ -39,9 +32,6 @@ namespace VirtualLibrarian
             this.userSurname = reader.Surname;
             userInformation1.UserName = userName;
             userInformation1.UserSurname = userSurname;
-
-            synthesizer.Volume = 100;
-            synthesizer.Rate = -2;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -61,19 +51,9 @@ namespace VirtualLibrarian
             }
         }
 
-        private void TellUser(string msg)
-        {
-            ai1.guideLabel.Text = "";
-            this.text = msg;
-            show = true;
-            restart = true;
-            synthesizer.SpeakAsyncCancelAll();
-            synthesizer.SpeakAsync(msg);
-        }
-
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            TellUser("Here you can find a book which you want to take.");
+            Speaker.TellUser("Here you can find a book which you want to take.", ai1);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -87,7 +67,7 @@ namespace VirtualLibrarian
 
         private void PersonalInfoButton_Click(object sender, EventArgs e)
         {
-            TellUser("Here you can see your personal information.");
+            Speaker.TellUser("Here you can see your personal information.", ai1);
             if (!containerPanel.Controls.Contains(PersonalInfo.Instance))
             {
                 containerPanel.Controls.Add(PersonalInfo.Instance);
@@ -100,7 +80,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            TellUser("Here you can return a book.");
+            Speaker.TellUser("Here you can return a book.", ai1);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -120,7 +100,8 @@ namespace VirtualLibrarian
 
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            TellUser("Here you can see your readings history.");
+            
+            Speaker.TellUser("Here you can see your readings history.", ai1);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -139,7 +120,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            TellUser("Here you can change your account settings.");
+            Speaker.TellUser("Here you can change your account settings.", ai1);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -174,62 +155,19 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            lbl = ai1.guideLabel;
-            t = new Thread(new ThreadStart(WriteSlowly));
-            t.Start();
-            TellUser("Welcome, " + userName);
+            Speaker.TellUser("Welcome, " + userName, ai1);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Speaker.run = false;
             firstPage.Show();
         }
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            TellUser("See you soon.");
+            Speaker.TellUser("See you soon.", ai1);
             this.Controls.Clear();
-            run = false;
-        }
-
-        public void WriteSlowly()
-        {
-            while (run)
-            {
-                if (show)
-                {
-                replay:
-                    Random rnd = new Random();
-                    StringBuilder sb = new StringBuilder();
-                    foreach (char c in text)
-                    {
-                        if (restart)
-                        {
-                            restart = false;
-                            goto replay;
-                        }
-                        sb.Append(c);
-                        if (lbl.InvokeRequired)
-                        {
-                            try
-                            {
-                                lbl.Invoke((MethodInvoker)delegate { lbl.Text = sb.ToString(); });
-                            }
-                            catch (Exception e)
-                            {
-                                //throw 
-                            }
-                        }
-                        else
-                        {
-                            lbl.Text = sb.ToString();
-                        }
-                        Thread.Sleep(rnd.Next(50, 80));
-                    }
-                    show = false;
-                }
-
-            }
         }
 
     }
