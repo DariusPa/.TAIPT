@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static VirtualLibrarian.BarcodeCamera;
-using Data;
+using VirtualLibrarian.Model;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian
 {
@@ -16,7 +17,7 @@ namespace VirtualLibrarian
     {
         private static Search _instance;
         public BarcodeCamera BarcodeCamera { get; private set; }
-        public User Reader { get; set; }
+        public IUserModel Reader { get; set; }
         public string DetectedBook;
 
 
@@ -63,8 +64,8 @@ namespace VirtualLibrarian
 
         private void barcodeCamera_BarcodeDetected(object sender, BarcodeDetectedEventArgs e)
         {
-            Book book = Library.Instance.books.Find(x => x.ID == int.Parse(e.DecodedText));
-            if (Reader!= null && book!= null && Library.Instance.IssueBookToReader(Reader, book))
+            var book = LibraryData.Instance.FindBook(e.DecodedText);
+            if (Reader != null && book != null && LibraryData.Instance.IssueBookToReader(Reader, book))
             {
                 MessageBox.Show("OK");
             }

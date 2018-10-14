@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Data;
+using VirtualLibrarian.Data;
+using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
 {
     public partial class ReturnBook : UserControl
     {
         private static ReturnBook _instance;
-        public User reader;
+        public IUserModel reader;
         public DataGridView dataGridView
         {
             get { return dataGridView1; }
@@ -40,8 +41,8 @@ namespace VirtualLibrarian
             foreach (DataGridViewRow item in this.dataGridView1.SelectedRows)
             {
                 var temp = dataGridView.DataSource;
-                var book = Library.Instance.books.Find(x => x.ID == int.Parse(item.Cells[0].Value.ToString()));
-                if (Library.Instance.ReturnBook(reader, book))
+                var book = LibraryData.Instance.Books.Find(x => x.ID == int.Parse(item.Cells[0].Value.ToString()));
+                if (LibraryData.Instance.ReturnBook(reader, book))
                 {
                     MessageBox.Show("OK");
                 }

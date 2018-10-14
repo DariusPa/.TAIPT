@@ -7,21 +7,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian
 {
-    class FaceCamera
+    public class FaceCamera
     {
-        private Thread savingThread;
         private Thread captureThread;
 
-        private Form form;
-
         private static string resourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
-        private static string facesPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "\\Data\\Faces";
-
-        private string labelFile = facesPath + "\\TrainedLabels.txt";
+        private string facesPath;
+        private string labelFile;
         private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
         private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
 
@@ -34,22 +32,29 @@ namespace VirtualLibrarian
         private bool isTrained = false;
         private int faceCount;
         private Size camSize;
-        private PictureBox camPicBox;
         private int picturesPerUser = 10;
         private Image<Gray, Byte> detectedFace;
 
         private bool newUser;
         private bool existingUser;
         private bool saved;
-        public bool saveButtonClicked = false;
 
+        public event FrameGrabbedEventHandler FrameGrabbed;
+        public event FaceRecognisedEventHandler ExistingUserRecognised;
+        public event FaceRecognisedEventHandler NewUserRegistered;
 
-        public FaceCamera(int camWidth, int camHeight, PictureBox camPicBox, Form form)
+        public string userLabel;
+        public bool saveButtonClicked;
+
+        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Data\\Faces", string facesDir = "\\Data\\Faces\\TrainedLabels.txt")
         {
+            //TODO: pass this as params
+            facesPath = LibraryData.Instance.directoryPath + "\\Faces";
+            this.labelFile = LibraryData.Instance.directoryPath + "\\Faces\\TrainedLabels.txt";
+
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
-            this.camPicBox = camPicBox;
-            this.form = form;
+            //this.form = form;
             LoadRecognizer();
         }
 
@@ -57,35 +62,36 @@ namespace VirtualLibrarian
         {
             existingUser = true;
             newUser = false;
-            StartStreaming("");
+            StartStreaming();
         }
 
         public void AddNewFace(String userLabel)
         {
+            this.userLabel = userLabel;
             newUser = true;
             existingUser = false;
-            StartStreaming(userLabel);
+            StartStreaming();
         }
        
         public void StopStreaming()
         {
-            camPicBox.Image = null;
+            //camPicBox.Image = null;
             captureThread?.Abort();
-            savingThread?.Abort();
             videoCapture?.Dispose();
         }
 
-        private void StartStreaming(String userLabel)
+        private void StartStreaming()
         {
             TrainRecognizer();
-            captureThread = new Thread(() => DisplayCam(userLabel));
+            captureThread = new Thread(DisplayCam);
             captureThread.Start();
         }
 
 
-        private void DisplayCam(String userLabel)
+        private void DisplayCam()
         {
-            while (videoCapture.IsOpened)
+            while (videoCapture.IsOpened && !saved )
+            //while (videoCapture.IsOpened)
             {
                 var frame = videoCapture.QueryFrame();
                 var gray = new Mat();
@@ -95,7 +101,7 @@ namespace VirtualLibrarian
                 CvInvoke.EqualizeHist(gray, gray);
 
                 var square = FrameSquarePicture(frame.Bitmap, camSize.Width, camSize.Height);
-                camPicBox.Image = square;
+                FrameGrabbed?.Invoke(this, new FrameGrabbedEventArgs { Frame = square });
 
                 frame.Dispose();
 
@@ -113,44 +119,27 @@ namespace VirtualLibrarian
                         var label = Recognize(detectedFace);
                         if (label != "")
                         {
-                            if (existingUser)
-                            {
-                                ((ExistingUserForm)form).userID = label;
-                                form.BeginInvoke(new Action(() => form.Close()));
-                                return;
-                            }
-                            else if (newUser)
-                            {
-                                MessageBox.Show("USER IS ALREADY KNOWN TO THE SYSTEM");
-                                form.BeginInvoke(new Action(() => form.Close()));
-                                return;
-                            }
-                            detectedFace.Dispose();
-
+                            ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
                             return;
                         }
                     }
-
-                    if (newUser)
+                    
+                    if (saved)
                     {
-                        if (saveButtonClicked)
-                        {
-                            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
-                            savingThread = saveFace;
-                            saveFace.Start();
-                        }
-                        else if (saved)
-                        {
-                            MessageBox.Show("NEW USER HAS BEEN ADDED TO THE SYSTEM!");
-                            form.BeginInvoke(new Action(() => form.Close()));
-                            return;
-                        }
+                        NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
+                        return;
                     }
-
+                    
                     break;
                 }
 
             }
+        }
+
+        public void StartSaving()
+        {
+            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
+            saveFace.Start();
         }
 
         private void SaveNewFace(String label)
@@ -182,8 +171,11 @@ namespace VirtualLibrarian
                 trainedFaces.Add(trainedFacesTemp[i]);
                 faceLabels.Add(faceLabelsTemp[i]);
                 faceID.Add(++faceCount);
+
             }
+            //NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
             saved = true;
+            return;
         }
 
         /*Loads the recognizer with faces and their labels*/
@@ -265,5 +257,18 @@ namespace VirtualLibrarian
             return framedPhoto;
         }
 
+
+        public class FrameGrabbedEventArgs : EventArgs
+        {
+            public Bitmap Frame { get; set; }
+        }
+
+        public class FaceRecognisedEventArgs : EventArgs
+        {
+            public string Label { get; set; }
+        }
+
+        public delegate void FaceRecognisedEventHandler(object sender, FaceRecognisedEventArgs e);
+        public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);
     }
 }

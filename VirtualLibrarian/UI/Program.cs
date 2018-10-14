@@ -1,9 +1,10 @@
-﻿using Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualLibrarian.Data;
+using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
 {
@@ -16,15 +17,17 @@ namespace VirtualLibrarian
         static void Main()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-            Library.Instance.LoadData();
+            LibraryData.Instance.Init("\\JSON\\books.json", "\\JSON\\users.json","\\JSON\\authors.json");
+            LibraryData.Instance.LoadData();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FirstPage());
+            //Application.Run(new UI(new User { Name = "a", Surname = "s", Email = "a" }));
         }
 
         static void OnProcessExit(object sender, EventArgs e)
         {
-            Library.Instance.SerializeData();
+            LibraryData.Instance.SerializeData();
         }
     }
 }

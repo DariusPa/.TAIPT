@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Data
+namespace VirtualLibrarian.Model
 {
-    public class User
+    class User : IUserModel
     {
         private static int count = 0;
         public int ID { get; }
@@ -12,7 +14,7 @@ namespace Data
         public string Surname { get; set; }
         public string Email { get; set; }
         public string PhoneNr { get; set; }
-        public List<int> Readings { get; set; } = new List<int>();
+        public List<int> ReadingsID { get; set; } = new List<int>();
 
         public User()
         {
@@ -26,16 +28,14 @@ namespace Data
             Email = email;
         }
 
-        public void TakeBook(Book book)
+        public void TakeBook(IBookModel book)
         {
-            Readings.Add(book.ID);
+            ReadingsID.Add(book.ID);
         }
 
-        public void ReturnBook(Book book)
+        public void ReturnBook(IBookModel book)
         {
-            Readings.Remove(book.ID);
+            ReadingsID.Remove(book.ID);
         }
-
-
     }
 }

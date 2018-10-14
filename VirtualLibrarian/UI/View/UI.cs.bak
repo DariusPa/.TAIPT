@@ -4,41 +4,36 @@ using System.Text;
 using System.Windows.Forms;
 using System.Speech.Synthesis;
 using System.Threading;
-using Data;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
+using VirtualLibrarian.Model;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian
 {
     public partial class UI : Form
     {
+        public IUserModel User { get; set; }
         private bool run = true;
         private bool show = true;
         private bool restart = false;
-        private string userName;
-        private string userSurname;
-        private FirstPage firstPage;
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private Label lbl;
         private string text = "";
         private Thread t;
 
-        private User reader;
 
-        public UI(FirstPage firstPage, string userID)
+        public UI(IUserModel User) 
         {
-            this.reader = Library.Instance.readers.Find(x => x.ID == int.Parse(userID));
+            this.User = User;
 
             WindowState = FormWindowState.Maximized;
             StartPosition = FormStartPosition.Manual;
             Location = new Point(0, 0);
             InitializeComponent();
-            this.firstPage = firstPage;
-            this.userName = reader.Name;
-            this.userSurname = reader.Surname;
-            userInformation1.UserName = userName;
-            userInformation1.UserSurname = userSurname;
+            userInformation1.UserName = User.Name;
+            userInformation1.UserSurname = User.Surname;
 
             synthesizer.Volume = 100;
             synthesizer.Rate = -2;
@@ -78,7 +73,7 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
-                Search.Instance.Reader = reader;
+                Search.Instance.Reader = User;
                 Search.Instance.BringToFront();
             }
             else
@@ -104,15 +99,15 @@ namespace VirtualLibrarian
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
-                ReturnBook.Instance.reader = reader;
+                ReturnBook.Instance.reader = User;
                 ReturnBook.Instance.Dock = DockStyle.Fill;
                 ReturnBook.Instance.BringToFront();
             }
             else
                 ReturnBook.Instance.BringToFront();
 
-            var query = from s in Library.Instance.books
-                        where s.Reader == reader.ID
+            var query = from s in LibraryData.Instance.Books
+                        where s.ReaderID == User.ID
                         select new { s.ID, s.Author, s.Title };
 
             ReturnBook.Instance.dataGridView.DataSource = query.ToList();
@@ -130,8 +125,8 @@ namespace VirtualLibrarian
             else
                 History.Instance.BringToFront();
 
-            var query = from s in Library.Instance.books
-                         where s.Reader == reader.ID
+            var query = from s in LibraryData.Instance.Books
+                         where s.ReaderID == User.ID
                          select new { s.Author, s.Title };
 
             History.Instance.dataGridView.DataSource = query.ToList();
@@ -177,12 +172,11 @@ namespace VirtualLibrarian
             lbl = ai1.guideLabel;
             t = new Thread(new ThreadStart(WriteSlowly));
             t.Start();
-            TellUser("Welcome, " + userName);
+            TellUser("Welcome, " + User.Name);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
         {
-            firstPage.Show();
         }
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
