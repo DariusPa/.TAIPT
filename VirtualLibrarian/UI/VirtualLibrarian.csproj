@@ -87,6 +87,7 @@
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
+    <Compile Include="RegexUtilities.cs" />
     <Compile Include="View\AdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
