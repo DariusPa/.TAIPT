@@ -28,163 +28,164 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.titleLabel = new System.Windows.Forms.Label();
+            this.authorLabel = new System.Windows.Forms.Label();
+            this.publisherLabel = new System.Windows.Forms.Label();
+            this.genreLabel = new System.Windows.Forms.Label();
+            this.isbnLabel = new System.Windows.Forms.Label();
             this.titleBox = new System.Windows.Forms.TextBox();
             this.isbnBox = new System.Windows.Forms.TextBox();
             this.authorBox = new System.Windows.Forms.ComboBox();
             this.publisherBox = new System.Windows.Forms.TextBox();
-            this.genreBox = new System.Windows.Forms.ComboBox();
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.descriptionLabel = new System.Windows.Forms.Label();
+            this.saveButton = new System.Windows.Forms.Button();
             this.barcodeBox = new System.Windows.Forms.PictureBox();
+            this.genreBox = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.barcodeBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // titleLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 66);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Title";
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.Location = new System.Drawing.Point(27, 24);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(35, 17);
+            this.titleLabel.TabIndex = 0;
+            this.titleLabel.Text = "Title";
             // 
-            // label2
+            // authorLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 112);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(50, 17);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Author";
+            this.authorLabel.AutoSize = true;
+            this.authorLabel.Location = new System.Drawing.Point(27, 70);
+            this.authorLabel.Name = "authorLabel";
+            this.authorLabel.Size = new System.Drawing.Size(50, 17);
+            this.authorLabel.TabIndex = 1;
+            this.authorLabel.Text = "Author";
             // 
-            // label3
+            // publisherLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(43, 156);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 17);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Publisher";
+            this.publisherLabel.AutoSize = true;
+            this.publisherLabel.Location = new System.Drawing.Point(27, 114);
+            this.publisherLabel.Name = "publisherLabel";
+            this.publisherLabel.Size = new System.Drawing.Size(67, 17);
+            this.publisherLabel.TabIndex = 2;
+            this.publisherLabel.Text = "Publisher";
             // 
-            // label4
+            // genreLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(43, 200);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 17);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Genre";
+            this.genreLabel.AutoSize = true;
+            this.genreLabel.Location = new System.Drawing.Point(27, 158);
+            this.genreLabel.Name = "genreLabel";
+            this.genreLabel.Size = new System.Drawing.Size(48, 17);
+            this.genreLabel.TabIndex = 3;
+            this.genreLabel.Text = "Genre";
             // 
-            // label5
+            // isbnLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(43, 244);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(39, 17);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "ISBN";
+            this.isbnLabel.AutoSize = true;
+            this.isbnLabel.Location = new System.Drawing.Point(27, 293);
+            this.isbnLabel.Name = "isbnLabel";
+            this.isbnLabel.Size = new System.Drawing.Size(39, 17);
+            this.isbnLabel.TabIndex = 4;
+            this.isbnLabel.Text = "ISBN";
             // 
             // titleBox
             // 
-            this.titleBox.Location = new System.Drawing.Point(134, 66);
+            this.titleBox.Location = new System.Drawing.Point(118, 24);
             this.titleBox.Name = "titleBox";
             this.titleBox.Size = new System.Drawing.Size(363, 22);
             this.titleBox.TabIndex = 5;
             // 
             // isbnBox
             // 
-            this.isbnBox.Location = new System.Drawing.Point(134, 244);
+            this.isbnBox.Location = new System.Drawing.Point(118, 288);
             this.isbnBox.Name = "isbnBox";
             this.isbnBox.Size = new System.Drawing.Size(363, 22);
-            this.isbnBox.TabIndex = 6;
+            this.isbnBox.TabIndex = 9;
             // 
             // authorBox
             // 
             this.authorBox.FormattingEnabled = true;
-            this.authorBox.Location = new System.Drawing.Point(134, 112);
+            this.authorBox.Location = new System.Drawing.Point(118, 70);
             this.authorBox.Name = "authorBox";
             this.authorBox.Size = new System.Drawing.Size(363, 24);
-            this.authorBox.TabIndex = 7;
+            this.authorBox.TabIndex = 6;
             this.authorBox.Tag = " ";
             this.authorBox.Enter += new System.EventHandler(this.authorBox_Enter);
             // 
             // publisherBox
             // 
-            this.publisherBox.Location = new System.Drawing.Point(134, 156);
+            this.publisherBox.Location = new System.Drawing.Point(118, 114);
             this.publisherBox.Name = "publisherBox";
             this.publisherBox.Size = new System.Drawing.Size(363, 22);
-            this.publisherBox.TabIndex = 8;
-            // 
-            // genreBox
-            // 
-            this.genreBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.genreBox.FormattingEnabled = true;
-            this.genreBox.Location = new System.Drawing.Point(134, 200);
-            this.genreBox.Name = "genreBox";
-            this.genreBox.Size = new System.Drawing.Size(363, 24);
-            this.genreBox.TabIndex = 9;
+            this.publisherBox.TabIndex = 7;
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Location = new System.Drawing.Point(134, 288);
+            this.descriptionBox.Location = new System.Drawing.Point(118, 328);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(363, 153);
-            this.descriptionBox.TabIndex = 10;
+            this.descriptionBox.Size = new System.Drawing.Size(363, 111);
+            this.descriptionBox.TabIndex = 11;
             this.descriptionBox.Text = "";
             // 
-            // label6
+            // descriptionLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(43, 288);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(79, 17);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Description";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.descriptionLabel.AutoSize = true;
+            this.descriptionLabel.Location = new System.Drawing.Point(27, 331);
+            this.descriptionLabel.Name = "descriptionLabel";
+            this.descriptionLabel.Size = new System.Drawing.Size(79, 17);
+            this.descriptionLabel.TabIndex = 11;
+            this.descriptionLabel.Text = "Description";
+            this.descriptionLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // button2
+            // saveButton
             // 
-            this.button2.Location = new System.Drawing.Point(354, 591);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(143, 58);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "Save";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.saveButton.Location = new System.Drawing.Point(338, 510);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(143, 58);
+            this.saveButton.TabIndex = 12;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.OnSaveBook);
             // 
             // barcodeBox
             // 
-            this.barcodeBox.Location = new System.Drawing.Point(134, 454);
+            this.barcodeBox.Location = new System.Drawing.Point(118, 455);
             this.barcodeBox.Name = "barcodeBox";
-            this.barcodeBox.Size = new System.Drawing.Size(363, 118);
+            this.barcodeBox.Size = new System.Drawing.Size(155, 123);
             this.barcodeBox.TabIndex = 14;
             this.barcodeBox.TabStop = false;
+            // 
+            // genreBox
+            // 
+            this.genreBox.CheckOnClick = true;
+            this.genreBox.FormattingEnabled = true;
+            this.genreBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
+            this.genreBox.Location = new System.Drawing.Point(118, 158);
+            this.genreBox.Name = "genreBox";
+            this.genreBox.Size = new System.Drawing.Size(363, 106);
+            this.genreBox.TabIndex = 8;
             // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(548, 692);
-            this.Controls.Add(this.barcodeBox);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.descriptionBox);
+            this.ClientSize = new System.Drawing.Size(510, 590);
             this.Controls.Add(this.genreBox);
+            this.Controls.Add(this.barcodeBox);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.descriptionLabel);
+            this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.publisherBox);
             this.Controls.Add(this.authorBox);
             this.Controls.Add(this.isbnBox);
             this.Controls.Add(this.titleBox);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.isbnLabel);
+            this.Controls.Add(this.genreLabel);
+            this.Controls.Add(this.publisherLabel);
+            this.Controls.Add(this.authorLabel);
+            this.Controls.Add(this.titleLabel);
             this.Name = "AdminForm";
             this.Text = "AdminForm";
             this.Load += new System.EventHandler(this.AdminForm_Load);
@@ -196,19 +197,19 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label titleLabel;
+        private System.Windows.Forms.Label authorLabel;
+        private System.Windows.Forms.Label publisherLabel;
+        private System.Windows.Forms.Label genreLabel;
+        private System.Windows.Forms.Label isbnLabel;
         private System.Windows.Forms.TextBox titleBox;
         private System.Windows.Forms.TextBox isbnBox;
         private System.Windows.Forms.ComboBox authorBox;
         private System.Windows.Forms.TextBox publisherBox;
-        private System.Windows.Forms.ComboBox genreBox;
         private System.Windows.Forms.RichTextBox descriptionBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label descriptionLabel;
+        private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.PictureBox barcodeBox;
+        private System.Windows.Forms.CheckedListBox genreBox;
     }
 }

@@ -92,7 +92,7 @@ namespace VirtualLibrarian
         {
             var query = from s in LibraryData.Instance.Books
                         where s.ReaderID == User.ID
-                        select new { s.ID, s.Author, s.Title };
+                        select new { s.ID, s.Author, s.Title, s.Genre };
 
             ReturnBook.Instance.dataGridView.DataSource = query.ToList();
         }

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Presenter;
-using ZXing;
 using static VirtualLibrarian.Presenter.AdministratorPresenter;
 
 namespace VirtualLibrarian
@@ -25,18 +23,28 @@ namespace VirtualLibrarian
             presenter.BarcodeGenerated += ShowBarcode;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void OnSaveBook(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(titleBox.Text) && !string.IsNullOrWhiteSpace(isbnBox.Text)
                 && !string.IsNullOrWhiteSpace(publisherBox.Text) && !string.IsNullOrWhiteSpace(authorBox.Text)
                 && !string.IsNullOrWhiteSpace(genreBox.Text))
             {
+                BookGenre genres = new BookGenre();
+                foreach (var genre in genreBox.CheckedItems)
+                {
+                    genres = genres | (BookGenre)Enum.Parse(typeof(BookGenre), genre.ToString());
+                }
+
                 Book = new Book{ Title = titleBox.Text, ISBN = isbnBox.Text,
                                  Publisher = publisherBox.Text, Author = authorBox.Text,
-                                 Genre = (BookGenre)Enum.Parse(typeof(BookGenre), genreBox.Text), Description = descriptionBox.Text };
+                                 Genre = genres, Description = descriptionBox.Text };
 
-                NewBook?.Invoke(this, new NewBookEventArgs { PendingBook = Book });
+                NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
 
+            }
+            else
+            {
+                MessageBox.Show("Information missing.");
             }
         }
 
@@ -49,8 +57,8 @@ namespace VirtualLibrarian
 
         private void AdminForm_Load(object sender, EventArgs e)
         {
-            genreBox.DataSource = Enum.GetValues(typeof (BookGenre));
-            
+            genreBox.DataSource = Enum.GetValues(typeof(BookGenre)); 
+
         }
 
         private void authorBox_Enter(object sender, EventArgs e)
@@ -58,11 +66,6 @@ namespace VirtualLibrarian
             authorBox.DataSource = LibraryData.Instance.Authors.ToArray();
         }
 
-        public class NewBookEventArgs : EventArgs
-        {
-            public IBookModel PendingBook { get; set; }
-        }
-
-        public delegate void NewBookEventHandler(object sender, NewBookEventArgs e);
+        public delegate void NewBookEventHandler(object sender, BookRelatedEventArgs e);
     }
 }
