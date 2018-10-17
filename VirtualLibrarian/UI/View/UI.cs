@@ -53,7 +53,6 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
-                Search.Instance.Reader = User;
                 Search.Instance.BringToFront();
             }
             else
@@ -79,13 +78,18 @@ namespace VirtualLibrarian
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
-                ReturnBook.Instance.reader = User;
                 ReturnBook.Instance.Dock = DockStyle.Fill;
                 ReturnBook.Instance.BringToFront();
             }
             else
                 ReturnBook.Instance.BringToFront();
 
+            RefreshDataGrid();
+        }
+
+        //TODO: write interfaces to use this method for different controls
+        public void RefreshDataGrid()
+        {
             var query = from s in LibraryData.Instance.Books
                         where s.ReaderID == User.ID
                         select new { s.ID, s.Author, s.Title };
@@ -105,12 +109,6 @@ namespace VirtualLibrarian
             }
             else
                 History.Instance.BringToFront();
-
-            var query = from s in LibraryData.Instance.Books
-                         where s.ReaderID == User.ID
-                         select new { s.Author, s.Title };
-
-            History.Instance.dataGridView.DataSource = query.ToList();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)

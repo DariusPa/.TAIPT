@@ -16,7 +16,6 @@ namespace VirtualLibrarian.Presenter
     {
         private FirstPage firstPage;
         private AdminForm adminForm;
-        private UI UI;
         private BarcodeGenerator barcodeGenerator;
         public IBookModel Book;
 

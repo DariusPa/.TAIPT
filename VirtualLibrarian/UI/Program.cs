@@ -22,7 +22,6 @@ namespace VirtualLibrarian
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FirstPage());
-            //Application.Run(new UI(new User { Name = "a", Surname = "s", Email = "a" }));
         }
 
         static void OnProcessExit(object sender, EventArgs e)
