@@ -15,10 +15,11 @@ namespace VirtualLibrarian
         public IUserModel User { get; set; }
         private FirstPagePresenter firstPagePresenter;
         private AdministratorPresenter adminPresenter;
-
+        
         public event RegisterEventHandler Register;
         public event EventHandler LogIn;
         public event EventHandler Administrate;
+        private RegexUtilities Verifier = new RegexUtilities();
 
         public FirstPage()
         {
@@ -34,7 +35,7 @@ namespace VirtualLibrarian
 
         private void ContinueButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text))
+            if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text) && Verifier.IsValidEmail(emailInput.Text))
             {
                 User = new User { Name = nameInput.Text, Surname = surnameInput.Text, Email = emailInput.Text };
                 Register?.Invoke(this,new RegisterEventArgs { PendingUser = User });
@@ -48,7 +49,7 @@ namespace VirtualLibrarian
                 {
                     label5.Text = "Surname (required)";
                 }
-                if (string.IsNullOrWhiteSpace(emailInput.Text))
+                if (string.IsNullOrWhiteSpace(emailInput.Text) || Verifier.IsValidEmail(emailInput.Text) == false)
                 {
                     label6.Text = "E-mail (required)";
                 }
