@@ -18,10 +18,12 @@ namespace VirtualLibrarian
         private Thread captureThread;
 
         private static string resourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
+        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
         private string facesPath;
         private string labelFile;
 
         private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
+        int eigenThresh;
         private VideoCapture videoCapture;
         private FaceRecognizer faceRecognizer;
         private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
@@ -41,10 +43,11 @@ namespace VirtualLibrarian
 
         public string userLabel;
 
-        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces")
+        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
         {
             facesPath = LibraryData.Instance.directoryPath + facesDir;
             this.labelFile = LibraryData.Instance.directoryPath + labelFile;
+            this.eigenThresh = eigenThresh;
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
@@ -208,7 +211,7 @@ namespace VirtualLibrarian
         /*Returns the person's name if recognized.*/
         private string Recognize(Image<Gray, Byte> detectedFace)
         {
-            var eigenThresh = 2000;
+            
             var result = faceRecognizer.Predict(detectedFace);
             if (result.Label != -1 && result.Distance < eigenThresh)
             {
@@ -218,9 +221,8 @@ namespace VirtualLibrarian
         }
 
         /*Resizes the snapshot from camera and puts the frame picture on it*/
-        private Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height, string frameImgPath = "\\FaceFrame.png")
+        private Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)
         {
-            var faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + frameImgPath);
             cameraFrame.RotateFlip(RotateFlipType.RotateNoneFlipX);
             var framedPhoto = new Bitmap(width, height);
             var camWidth = (double)cameraFrame.Width;

@@ -40,15 +40,6 @@ namespace VirtualLibrarian
             scanBox.Image = e.Frame;
         }
 
-        //private void scanBox_VisibleChanged(object sender, EventArgs e)
-        //{
-        //    if (!scanBox.Visible)
-        //    {
-        //        BeginInvoke(new Action(()=>barcodeCamera.StopStreaming()));
-        //        scanButton.Show();
-        //    }
-        //}
-
         private void Search_Leave(object sender, EventArgs e)
         {
             barcodeCamera.StopStreaming();
