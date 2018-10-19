@@ -56,7 +56,6 @@
             this.scanBox.TabIndex = 1;
             this.scanBox.TabStop = false;
             this.scanBox.Visible = false;
-            this.scanBox.VisibleChanged += new System.EventHandler(this.scanBox_VisibleChanged);
             // 
             // scanButton
             // 

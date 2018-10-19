@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 using ZXing;
 using static VirtualLibrarian.AdminForm;
@@ -16,7 +17,6 @@ namespace VirtualLibrarian.Presenter
     {
         private FirstPage firstPage;
         private AdminForm adminForm;
-        private UI UI;
         private BarcodeGenerator barcodeGenerator;
         public IBookModel Book;
 
@@ -38,9 +38,9 @@ namespace VirtualLibrarian.Presenter
             adminForm.Show();
         }
 
-        private void AddNewBook(object sender, NewBookEventArgs e)
+        private void AddNewBook(object sender, BookRelatedEventArgs e)
         {
-            Book = e.PendingBook;
+            Book = e.Book;
 
             if (!LibraryData.Instance.Authors.Contains(Book.Author))
             {

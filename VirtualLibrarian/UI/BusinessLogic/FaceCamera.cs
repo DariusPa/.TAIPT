@@ -18,14 +18,14 @@ namespace VirtualLibrarian
         private Thread captureThread;
 
         private static string resourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
+        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
         private string facesPath;
         private string labelFile;
-        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
-        private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
 
+        private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
+        int eigenThresh;
         private VideoCapture videoCapture;
-        private int eigenThresh = 2000;     //The bigger, the less accurate
-        private FaceRecognizer faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
+        private FaceRecognizer faceRecognizer;
         private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
         private List<String> faceLabels = new List<String>();
         private List<int> faceID = new List<int>();
@@ -35,8 +35,6 @@ namespace VirtualLibrarian
         private int picturesPerUser = 10;
         private Image<Gray, Byte> detectedFace;
 
-        private bool newUser;
-        private bool existingUser;
         private bool saved;
 
         public event FrameGrabbedEventHandler FrameGrabbed;
@@ -44,43 +42,36 @@ namespace VirtualLibrarian
         public event FaceRecognisedEventHandler NewUserRegistered;
 
         public string userLabel;
-        public bool saveButtonClicked;
 
-        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Data\\Faces", string facesDir = "\\Data\\Faces\\TrainedLabels.txt")
+        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
         {
-            //TODO: pass this as params
-            facesPath = LibraryData.Instance.directoryPath + "\\Faces";
-            this.labelFile = LibraryData.Instance.directoryPath + "\\Faces\\TrainedLabels.txt";
-
+            facesPath = LibraryData.Instance.directoryPath + facesDir;
+            this.labelFile = LibraryData.Instance.directoryPath + labelFile;
+            this.eigenThresh = eigenThresh;
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
-            //this.form = form;
+            faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
             LoadRecognizer();
         }
 
         public void RecognizeExistingFace()
         {
-            existingUser = true;
-            newUser = false;
             StartStreaming();
         }
 
         public void AddNewFace(String userLabel)
         {
             this.userLabel = userLabel;
-            newUser = true;
-            existingUser = false;
             StartStreaming();
         }
        
         public void StopStreaming()
         {
-            //camPicBox.Image = null;
             captureThread?.Abort();
             videoCapture?.Dispose();
         }
 
-        private void StartStreaming()
+        public void StartStreaming()
         {
             TrainRecognizer();
             captureThread = new Thread(DisplayCam);
@@ -90,8 +81,7 @@ namespace VirtualLibrarian
 
         private void DisplayCam()
         {
-            while (videoCapture.IsOpened && !saved )
-            //while (videoCapture.IsOpened)
+            while (videoCapture.IsOpened)
             {
                 var frame = videoCapture.QueryFrame();
                 var gray = new Mat();
@@ -107,7 +97,6 @@ namespace VirtualLibrarian
 
                 Rectangle[] facesDetected = face.DetectMultiScale(gray, 1.4, 4, new Size(20, 20));
                
-
                 foreach (Rectangle f in facesDetected)
                 {
                     detectedFace = (new Mat(gray, f)).ToImage<Gray, byte>();
@@ -148,8 +137,6 @@ namespace VirtualLibrarian
             List<String> faceLabelsTemp = new List<String>();
             List<int> faceIDTemp = new List<int>();
             int faceCountTemp = faceCount;
-
-            saveButtonClicked = false;
 
             for (int picturesSaved = 0; picturesSaved < picturesPerUser;)
             {
@@ -224,6 +211,7 @@ namespace VirtualLibrarian
         /*Returns the person's name if recognized.*/
         private string Recognize(Image<Gray, Byte> detectedFace)
         {
+            
             var result = faceRecognizer.Predict(detectedFace);
             if (result.Label != -1 && result.Distance < eigenThresh)
             {

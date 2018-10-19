@@ -21,6 +21,8 @@ namespace VirtualLibrarian.Presenter
         private UI UI;
         public IUserModel User { get; set; }
         public IUserModel PendingUser { get; set; }
+
+        private UIPresenter UIpresenter;
         
         
 
@@ -69,6 +71,7 @@ namespace VirtualLibrarian.Presenter
         private void ShowUI()
         {
             UI = new UI(User);
+            UIpresenter = new UIPresenter(UI, User);
             UI.FormClosing += ShowFirstPage;
             UI.Show();
         }

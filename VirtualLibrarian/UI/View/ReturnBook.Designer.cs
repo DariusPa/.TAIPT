@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.bookListDataGrid = new System.Windows.Forms.DataGridView();
             this.returnButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookListDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -48,16 +48,19 @@
             this.label1.Text = "Return a book";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // dataGridView1
+            // bookListDataGrid
             // 
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(42, 86);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(592, 337);
-            this.dataGridView1.TabIndex = 4;
+            this.bookListDataGrid.AllowUserToAddRows = false;
+            this.bookListDataGrid.AllowUserToDeleteRows = false;
+            this.bookListDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.bookListDataGrid.BackgroundColor = System.Drawing.Color.White;
+            this.bookListDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.bookListDataGrid.Location = new System.Drawing.Point(42, 86);
+            this.bookListDataGrid.Name = "bookListDataGrid";
+            this.bookListDataGrid.RowTemplate.Height = 24;
+            this.bookListDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.bookListDataGrid.Size = new System.Drawing.Size(592, 337);
+            this.bookListDataGrid.TabIndex = 4;
             // 
             // returnButton
             // 
@@ -79,12 +82,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.returnButton);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.bookListDataGrid);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ReturnBook";
             this.Size = new System.Drawing.Size(678, 509);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bookListDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,7 +96,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView bookListDataGrid;
         private System.Windows.Forms.Button returnButton;
     }
 }

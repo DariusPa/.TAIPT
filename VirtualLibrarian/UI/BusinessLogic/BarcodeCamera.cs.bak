@@ -1,7 +1,7 @@
 ﻿using Emgu.CV;
 using System;
-using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 using ZXing;
 
 namespace VirtualLibrarian
@@ -9,10 +9,17 @@ namespace VirtualLibrarian
     public class BarcodeCamera
     {
         private Thread captureThread;
+
         private VideoCapture videoCapture;
+        private PictureBox camPicBox;
 
         public event EventHandler BarcodeDetected;
-        public event FrameGrabbedEventHandler FrameGrabbed;
+
+
+        public BarcodeCamera(PictureBox camPicBox)
+        {
+            this.camPicBox = camPicBox;
+        }
 
         public void ScanBarcode()
         {
@@ -23,6 +30,7 @@ namespace VirtualLibrarian
 
         public void StopStreaming()
         {
+            camPicBox.Image = null;
             captureThread?.Abort();
             videoCapture?.Dispose();
         }
@@ -32,16 +40,23 @@ namespace VirtualLibrarian
             while (videoCapture.IsOpened)
             {
                 var frame = videoCapture.QueryFrame();
-                FrameGrabbed?.Invoke(this, new FrameGrabbedEventArgs { Frame = frame.Bitmap });
+                camPicBox.Image = frame.Bitmap;
                 var barcodeReader = new BarcodeReader();
                 
                 var barcodeDetected = barcodeReader.Decode(frame.Bitmap);
                 if (barcodeDetected != null)
                 {
-                    BarcodeDetected?.Invoke(this, new BarcodeDetectedEventArgs { DecodedText = barcodeDetected.Text });
+                    OnBarcodeDetected(new BarcodeDetectedEventArgs{ DecodedText = barcodeDetected.Text });
+                    camPicBox.BeginInvoke(new Action(() => camPicBox.Hide()));
                     return;
                 }
+                
             }
+        }
+
+        protected virtual void OnBarcodeDetected(BarcodeDetectedEventArgs e)
+        {
+            BarcodeDetected?.Invoke(this, e);
         }
 
         public class BarcodeDetectedEventArgs: EventArgs
@@ -49,14 +64,7 @@ namespace VirtualLibrarian
             public string DecodedText { get; set; }
         }
 
-        public class FrameGrabbedEventArgs : EventArgs
-        {
-            public Bitmap Frame { get; set; }
-        }
-
         public delegate void EventHandler(object sender, BarcodeDetectedEventArgs e);
-        public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);
-        
 
     }
 }
