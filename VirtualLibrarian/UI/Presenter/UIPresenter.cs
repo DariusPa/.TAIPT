@@ -33,7 +33,7 @@ namespace VirtualLibrarian.Presenter
 
         private void OnBookReturn(object sender, BookRelatedEventArgs e)
         {
-            if (!LibraryDataIO.Instance.ReturnBook(reader:ActiveUser, book:e.Book))
+            if (!LibraryDataIO.Instance.ReturnBook(ActiveUser, e.Book))
                 MessageBox.Show("Error occured");
             ui.RefreshDataGrid();
         }

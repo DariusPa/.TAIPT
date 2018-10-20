@@ -60,7 +60,7 @@ namespace VirtualLibrarian.BusinessLogic
             StartStreaming();
         }
 
-        public void AddNewFace(string userLabel)
+        public void AddNewFace(String userLabel)
         {
             this.userLabel = userLabel;
             StartStreaming();
