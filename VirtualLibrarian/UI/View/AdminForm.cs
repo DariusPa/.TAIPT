@@ -49,10 +49,8 @@ namespace VirtualLibrarian
                 {
                     authors.Add((Author)author);
                 }
-
-                Book = new Book{ Title = titleBox.Text, ISBN = isbnBox.Text,
-                                 Publisher = publisherBox.Text, Authors = authors,
-                                 Genre = genres, Description = descriptionBox.Text };
+                Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authors: authors, 
+                                    publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
 
                 NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
 
