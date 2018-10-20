@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Speech.Synthesis;
-using System.Threading;
 using System.Linq;
-using System.Collections.Generic;
-using System.ComponentModel;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.BusinessLogic;
 
 namespace VirtualLibrarian
 {
@@ -90,9 +86,9 @@ namespace VirtualLibrarian
         //TODO: write interfaces to use this method for different controls
         public void RefreshDataGrid()
         {
-            var query = from s in LibraryData.Instance.Books
+            var query = from s in LibraryDataIO.Instance.Books
                         where s.ReaderID == User.ID
-                        select new { s.ID, s.Author, s.Title, s.Genre };
+                        select new { s.ID, s.Title };
 
             ReturnBook.Instance.dataGridView.DataSource = query.ToList();
         }

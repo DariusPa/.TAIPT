@@ -10,8 +10,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 
-namespace VirtualLibrarian
+namespace VirtualLibrarian.BusinessLogic
 {
     public class FaceCamera
     {
@@ -45,8 +46,8 @@ namespace VirtualLibrarian
 
         public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
         {
-            facesPath = LibraryData.Instance.directoryPath + facesDir;
-            this.labelFile = LibraryData.Instance.directoryPath + labelFile;
+            facesPath = LibraryDataIO.Instance.DirectoryPath + facesDir;
+            this.labelFile = LibraryDataIO.Instance.DirectoryPath + labelFile;
             this.eigenThresh = eigenThresh;
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
@@ -246,15 +247,7 @@ namespace VirtualLibrarian
         }
 
 
-        public class FrameGrabbedEventArgs : EventArgs
-        {
-            public Bitmap Frame { get; set; }
-        }
 
-        public class FaceRecognisedEventArgs : EventArgs
-        {
-            public string Label { get; set; }
-        }
 
         public delegate void FaceRecognisedEventHandler(object sender, FaceRecognisedEventArgs e);
         public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);

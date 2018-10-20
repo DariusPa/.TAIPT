@@ -1,10 +1,9 @@
 ﻿using Emgu.CV;
-using System;
-using System.Drawing;
 using System.Threading;
+using VirtualLibrarian.Helpers;
 using ZXing;
 
-namespace VirtualLibrarian
+namespace VirtualLibrarian.BusinessLogic
 {
     public class BarcodeCamera
     {
@@ -42,16 +41,6 @@ namespace VirtualLibrarian
                     return;
                 }
             }
-        }
-
-        public class BarcodeDetectedEventArgs: EventArgs
-        {
-            public string DecodedText { get; set; }
-        }
-
-        public class FrameGrabbedEventArgs : EventArgs
-        {
-            public Bitmap Frame { get; set; }
         }
 
         public delegate void EventHandler(object sender, BarcodeDetectedEventArgs e);

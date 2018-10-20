@@ -9,17 +9,18 @@ namespace VirtualLibrarian.Model
     public interface IBookModel
     {
         string Title { get; set; }
-        string Author { get; set; }
+        List<Author> Authors { get; set; }
         string Publisher { get; set; }
         string ISBN { get; set; }
         string Description { get; set; }
-        int ID { get; set; }
+        int ID { get; }
         BookGenre Genre { get; set; }
-        Status Status { get; set; }
-        int ReaderID { get; set; }
+        Status Status { get; }
+        int ReaderID { get; }
 
         void Issue(IUserModel reader);
         void Return();
 
     }
+
 }

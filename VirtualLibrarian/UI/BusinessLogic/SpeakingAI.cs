@@ -8,7 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace VirtualLibrarian
+namespace VirtualLibrarian.BusinessLogic
 {
     class SpeakingAI
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,15 @@ namespace VirtualLibrarian.Model
 {
     class User : IUserModel
     {
-        private static int count = 0;
+        private static int count;
+        [JsonProperty]
         public int ID { get; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public string PhoneNr { get; set; }
-        public List<int> ReadingsID { get; set; } = new List<int>();
+        [JsonProperty]
+        public List<int> ReadingsID { get; private set; } = new List<int>();
 
         public User()
         {

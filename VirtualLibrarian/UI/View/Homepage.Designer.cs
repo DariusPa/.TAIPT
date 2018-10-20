@@ -54,7 +54,6 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "Homepage";
             this.Size = new System.Drawing.Size(1017, 796);
-            this.Load += new System.EventHandler(this.Homepage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 

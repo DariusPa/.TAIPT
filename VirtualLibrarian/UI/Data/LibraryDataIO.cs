@@ -4,25 +4,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian.Data
 {
-    class LibraryData: ILibraryData
+    public sealed class LibraryDataIO: ILibraryData
     {
-        public string directoryPath { get; set; } = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Data";
+        public string DirectoryPath { get; set; } = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Data";
         private string bookPath;
         private string usersPath;
         private string authorsPath;
 
-        private static Lazy<LibraryData> library = new Lazy<LibraryData>(() => new LibraryData());
+        private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
         public List<IBookModel> Books { get; set; } = new List<IBookModel>();
         public List<IUserModel> Users { get; set; } = new List<IUserModel>();
-        public List<string> Authors { get; set; } = new List<string>();
-        public static LibraryData Instance { get { return library.Value; } }
+        public List<Author> Authors { get; set; } = new List<Author>();
+        public static LibraryDataIO Instance { get { return library.Value; } }
 
-        private LibraryData() { }
+        private LibraryDataIO() { }
 
         public void Init(string bookPath, string usersPath, string authorsPath)
         {
@@ -33,29 +34,53 @@ namespace VirtualLibrarian.Data
 
         public void SerializeData()
         {
-            File.WriteAllText(directoryPath + authorsPath, JsonConvert.SerializeObject(Authors));
-            File.WriteAllText(directoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
+            File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors));
+            File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
             }));
-            File.WriteAllText(directoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
+            File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
             }));
+
+            //SerializeAuthors();
+            //SerializeBooks();
+            //SerializeUsers();
         }
+
+        public void SerializeAuthors()
+        {
+            new Thread(() => File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors))).Start();
+        }
+
+        public void SerializeBooks()
+        {
+            new Thread(()=>File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All,
+            }))).Start();
+        }
+
+        public void SerializeUsers()
+        {
+            new Thread(()=>File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All,
+            }))).Start();
+        }
+
 
         public void LoadData()
         {
-
-
             try
             {
-                Authors = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(directoryPath + authorsPath));
-                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(directoryPath + bookPath), new JsonSerializerSettings
+                Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(DirectoryPath + authorsPath));
+                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(DirectoryPath + bookPath), new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 });
-                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(directoryPath + usersPath), new JsonSerializerSettings
+                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(DirectoryPath + usersPath), new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Auto
                 }); 
@@ -70,27 +95,38 @@ namespace VirtualLibrarian.Data
         public void AddBook(IBookModel book)
         {
             Books.Add(book);
+            SerializeBooks();
         }
 
         public void RemoveBook(IBookModel book)
         {
             //TODO logic for taken books here or in the book class
             Books.Remove(book);
+            SerializeBooks();
         }
 
         public void AddUser(IUserModel user)
         {
             Users.Add(user);
+            SerializeUsers();
         }
 
         public void RemoveUser(IUserModel user)
         {
             Users.Remove(user);
+            SerializeUsers();
         }
 
-        public void AddAuthor(string author)
+        public void AddAuthor(Author author)
         {
             Authors.Add(author);
+            SerializeAuthors();
+        }
+
+        public void RemoveAuthor(Author author)
+        {
+            Authors.Remove(author);
+            SerializeAuthors();
         }
 
         public List<IBookModel> GetBooks()
@@ -121,6 +157,7 @@ namespace VirtualLibrarian.Data
             {
                 book.Issue(reader);
                 reader.TakeBook(book);
+                SerializeData();
                 return true;
             }
             else return false;
@@ -132,6 +169,7 @@ namespace VirtualLibrarian.Data
             {
                 book.Return();
                 reader.ReturnBook(book);
+                SerializeData();
                 return true;
             }
             else return false;

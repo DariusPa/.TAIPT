@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
-using VirtualLibrarian.View;
-using static VirtualLibrarian.FaceCamera;
 
 namespace VirtualLibrarian
 {
@@ -54,7 +54,7 @@ namespace VirtualLibrarian
 
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
         {
-            User = LibraryData.Instance.FindUser(e.Label);
+            User = LibraryDataIO.Instance.FindUser(e.Label);
             MessageBox.Show(string.Format("User is already registered as {0} {1} !", User.Name, User.Surname));
             BeginInvoke(new Action(() => Close()));
         }

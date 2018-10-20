@@ -89,6 +89,7 @@
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
+    <Compile Include="Model\Author.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="BusinessLogic\BarcodeCamera.cs" />
     <Compile Include="DAL.cs" />
     <Compile Include="Data\ILibraryData.cs" />
-    <Compile Include="Data\LibraryData.cs" />
+    <Compile Include="Data\LibraryDataIO.cs" />
     <Compile Include="View\ExistingUserForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +127,12 @@
     </Compile>
     <Compile Include="View\FirstPage.Designer.cs">
       <DependentUpon>FirstPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewAuthorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NewAuthorForm.Designer.cs">
+      <DependentUpon>NewAuthorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UI.cs">
       <SubType>Form</SubType>
@@ -183,7 +190,6 @@
     <Compile Include="View\UserInformation.Designer.cs">
       <DependentUpon>UserInformation.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\IRegisterFormView.cs" />
     <EmbeddedResource Include="View\AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\FirstPage.resx">
       <DependentUpon>FirstPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\NewAuthorForm.resx">
+      <DependentUpon>NewAuthorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\UI.resx">
       <DependentUpon>UI.cs</DependentUpon>

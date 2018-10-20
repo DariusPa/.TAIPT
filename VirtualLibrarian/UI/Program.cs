@@ -17,8 +17,8 @@ namespace VirtualLibrarian
         static void Main()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-            LibraryData.Instance.Init("\\JSON\\books.json", "\\JSON\\users.json","\\JSON\\authors.json");
-            LibraryData.Instance.LoadData();
+            LibraryDataIO.Instance.Init("\\JSON\\books.json", "\\JSON\\users.json","\\JSON\\authors.json");
+            LibraryDataIO.Instance.LoadData();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FirstPage());
@@ -26,7 +26,7 @@ namespace VirtualLibrarian
 
         static void OnProcessExit(object sender, EventArgs e)
         {
-            LibraryData.Instance.SerializeData();
+            LibraryDataIO.Instance.SerializeData();
         }
     }
 }
