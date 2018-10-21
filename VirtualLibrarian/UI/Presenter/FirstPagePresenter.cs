@@ -10,17 +10,17 @@ namespace VirtualLibrarian.Presenter
         private FirstPage FirstPage;
         private RegisterForm RegisterForm;
         private ExistingUserForm ExistingUserForm;
-        private UI UI;
+        private UIPresenter uiPresenter;
         public IUserModel User { get; set; }
         public IUserModel PendingUser { get; set; }
-
-        private UIPresenter UIpresenter;
         
         public FirstPagePresenter(FirstPage firstPage)
         {
             FirstPage = firstPage;
             FirstPage.LogIn += LogInUser;
             FirstPage.Register += RegisterNewUser;
+            uiPresenter = new UIPresenter();
+            uiPresenter.UIClosed += ShowFirstPage;
         }
 
         private void RegisterNewUser(object sender, UserRelatedEventArgs e)
@@ -60,10 +60,7 @@ namespace VirtualLibrarian.Presenter
 
         private void ShowUI()
         {
-            UI = new UI(User);
-            UIpresenter = new UIPresenter(UI, User);
-            UI.FormClosing += ShowFirstPage;
-            UI.Show();
+            uiPresenter.PrepareUI(User);
         }
 
         private void SelectFormToShow(object sender, EventArgs e)
