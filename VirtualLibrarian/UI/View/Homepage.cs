@@ -27,9 +27,5 @@ namespace VirtualLibrarian
         {
             InitializeComponent();
         }
-
-        private void Homepage_Load(object sender, EventArgs e)
-        {
-        }
     }
 }

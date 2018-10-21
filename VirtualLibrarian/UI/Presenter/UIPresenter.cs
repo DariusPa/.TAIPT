@@ -2,7 +2,6 @@
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
-using static VirtualLibrarian.BarcodeCamera;
 
 namespace VirtualLibrarian.Presenter
 {
@@ -23,8 +22,8 @@ namespace VirtualLibrarian.Presenter
 
         private void OnBookDetected(object sender, BarcodeDetectedEventArgs e)
         {
-            var book = LibraryData.Instance.FindBook(e.DecodedText);
-            if (ActiveUser != null && book != null && LibraryData.Instance.IssueBookToReader(ActiveUser, book))
+            var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
+            if (ActiveUser != null && book != null && LibraryDataIO.Instance.IssueBookToReader(ActiveUser, book))
             {
                 MessageBox.Show("OK");
             }
@@ -34,14 +33,8 @@ namespace VirtualLibrarian.Presenter
 
         private void OnBookReturn(object sender, BookRelatedEventArgs e)
         {
-            if (LibraryData.Instance.ReturnBook(ActiveUser, e.Book))
-            {
-                MessageBox.Show("OK");
-            }
-            else
-            {
+            if (!LibraryDataIO.Instance.ReturnBook(ActiveUser, e.Book))
                 MessageBox.Show("Error occured");
-            }
             ui.RefreshDataGrid();
         }
 

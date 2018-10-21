@@ -44,7 +44,7 @@ namespace VirtualLibrarian
             foreach (DataGridViewRow item in bookListDataGrid.SelectedRows)
             {
                 var temp = dataGridView.DataSource;
-                var book = LibraryData.Instance.Books.Find(x => x.ID == int.Parse(item.Cells[0].Value.ToString()));
+                var book = LibraryDataIO.Instance.Books.Find(x => x.ID == int.Parse(item.Cells[0].Value.ToString()));
                 BookReturn?.Invoke(this, new BookRelatedEventArgs { Book = book });
             }
         }

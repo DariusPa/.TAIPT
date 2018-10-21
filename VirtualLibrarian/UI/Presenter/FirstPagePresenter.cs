@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
-using VirtualLibrarian.View;
-using static VirtualLibrarian.ExistingUserForm;
-using static VirtualLibrarian.FaceCamera;
-using static VirtualLibrarian.FirstPage;
 
 namespace VirtualLibrarian.Presenter
 {
@@ -24,8 +16,6 @@ namespace VirtualLibrarian.Presenter
 
         private UIPresenter UIpresenter;
         
-        
-
         public FirstPagePresenter(FirstPage firstPage)
         {
             FirstPage = firstPage;
@@ -33,7 +23,7 @@ namespace VirtualLibrarian.Presenter
             FirstPage.Register += RegisterNewUser;
         }
 
-        private void RegisterNewUser(object sender, RegisterEventArgs e)
+        private void RegisterNewUser(object sender, UserRelatedEventArgs e)
         {
             PendingUser = e.PendingUser;
             User = null;
@@ -57,15 +47,15 @@ namespace VirtualLibrarian.Presenter
             FirstPage.Show();
         }
 
-        private void LogUserIn(object sender, LoggedInEventArgs e)
+        private void LogUserIn(object sender, UserRelatedEventArgs e)
         {
-            User = LibraryData.Instance.FindUser(e.UserID);
+            User = LibraryDataIO.Instance.FindUser(e.UserID);
         }
 
         private void RegisterUser(object sender, FaceRecognisedEventArgs e)
         {
             User = PendingUser;
-            LibraryData.Instance.AddUser(User);
+            LibraryDataIO.Instance.AddUser(User);
         }
 
         private void ShowUI()

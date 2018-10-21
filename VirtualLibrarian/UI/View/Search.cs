@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using static VirtualLibrarian.BarcodeCamera;
-using VirtualLibrarian.Model;
+using VirtualLibrarian.Helpers;
+using VirtualLibrarian.BusinessLogic;
 
 namespace VirtualLibrarian
 {

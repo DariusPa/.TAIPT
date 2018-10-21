@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static VirtualLibrarian.FaceCamera;
+using VirtualLibrarian.BusinessLogic;
+using VirtualLibrarian.Helpers;
 
 namespace VirtualLibrarian
 {
@@ -24,7 +25,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ExistingUserForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -44,16 +45,12 @@ namespace VirtualLibrarian
 
         private void OnExistingUserRecognised (object sender, FaceRecognisedEventArgs e)
         {
-            LoggedIn?.Invoke(this, new LoggedInEventArgs { UserID = e.Label });
-            BeginInvoke(new Action(() => Close()));
+            LoggedIn?.Invoke(this, new UserRelatedEventArgs { UserID = e.Label });
+            //BeginInvoke(new Action(() => Close()));
+            Invoke(new Action(()=>Close()));
         }
 
-        public class LoggedInEventArgs : EventArgs
-        {
-            public string UserID { get; set; }
-        }
-
-        public delegate void LoggedInEventHandler(object sender, LoggedInEventArgs e);
+        public delegate void LoggedInEventHandler(object sender, UserRelatedEventArgs e);
 
 
 

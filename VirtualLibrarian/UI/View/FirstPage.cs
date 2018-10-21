@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Presenter;
 
@@ -38,7 +36,7 @@ namespace VirtualLibrarian
             if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text) && Verifier.IsValidEmail(emailInput.Text))
             {
                 User = new User { Name = nameInput.Text, Surname = surnameInput.Text, Email = emailInput.Text };
-                Register?.Invoke(this,new RegisterEventArgs { PendingUser = User });
+                Register?.Invoke(this,new UserRelatedEventArgs { PendingUser = User });
                 Hide();
             } else {
                 if (string.IsNullOrWhiteSpace(nameInput.Text))
@@ -79,25 +77,17 @@ namespace VirtualLibrarian
 
         private void FirstPage_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
             Application.Exit();
-            //Environment.Exit(Environment.ExitCode);
         }
 
 
-        //TEMP FUNCTION
+        //TEMP
         private void adminButton_Click(object sender, EventArgs e)
         {
             Administrate?.Invoke(this, e);
             Hide();
         }
 
-
-        public class RegisterEventArgs : EventArgs
-        {
-            public IUserModel PendingUser { get; set; }
-        }
-
-        public delegate void RegisterEventHandler(object sender, RegisterEventArgs e);
+        public delegate void RegisterEventHandler(object sender, UserRelatedEventArgs e);
     }
 }

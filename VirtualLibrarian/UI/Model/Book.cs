@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,19 @@ namespace VirtualLibrarian.Model
 {
     class Book: IBookModel
     {
-        public static int count;
+        private static int count;
         public string Title { get; set; }
-        public string Author { get; set; }
+        public List<Author> Authors { get; set; } = new List<Author>();
         public string Publisher { get; set; }
         public string ISBN { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
         public BookGenre Genre { get; set; }
-        public Status Status { get; set; }
-        public int ReaderID { get; set; }
+        [JsonProperty]
+        public int ID { get; }
+        [JsonProperty]
+        public Status Status { get; private set; }
+        [JsonProperty]
+        public int ReaderID { get; private set; }
 
 
         public Book()
@@ -26,10 +30,10 @@ namespace VirtualLibrarian.Model
             Status = Status.Available;
         }
 
-        public Book(string title, string author, string publisher, BookGenre genre, string isbn, string description = "") : this()
+        public Book(string title, List<Author> authors, string publisher, BookGenre genre, string isbn, string description = "") : this()
         {
             Title = title;
-            Author = author;
+            Authors = authors;
             Publisher = publisher;
             ISBN = isbn;
             Description = description;
@@ -55,4 +59,6 @@ namespace VirtualLibrarian.Model
         Reserved,
         Taken
     }
+
+    
 }
