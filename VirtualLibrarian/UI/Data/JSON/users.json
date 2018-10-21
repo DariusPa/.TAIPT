@@ -1,17 +1,4 @@
 {
   "$type": "System.Collections.Generic.List`1[[VirtualLibrarian.Model.IUserModel, VirtualLibrarian]], mscorlib",
-  "$values": [
-    {
-      "$type": "VirtualLibrarian.Model.User, VirtualLibrarian",
-      "ID": 1,
-      "Name": "efwaef",
-      "Surname": "wef",
-      "Email": "we@fa.com",
-      "PhoneNr": null,
-      "ReadingsID": {
-        "$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
-        "$values": []
-      }
-    }
-  ]
+  "$values": []
 }
