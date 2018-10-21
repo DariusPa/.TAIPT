@@ -105,7 +105,7 @@
             this.nameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameInput.ForeColor = System.Drawing.Color.Black;
             this.nameInput.Location = new System.Drawing.Point(34, 221);
-            this.nameInput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nameInput.Margin = new System.Windows.Forms.Padding(2);
             this.nameInput.Multiline = false;
             this.nameInput.Name = "nameInput";
             this.nameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
@@ -120,7 +120,7 @@
             this.surnameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.surnameInput.ForeColor = System.Drawing.Color.Black;
             this.surnameInput.Location = new System.Drawing.Point(34, 297);
-            this.surnameInput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.surnameInput.Margin = new System.Windows.Forms.Padding(2);
             this.surnameInput.Multiline = false;
             this.surnameInput.Name = "surnameInput";
             this.surnameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
@@ -135,7 +135,7 @@
             this.emailInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailInput.ForeColor = System.Drawing.Color.Black;
             this.emailInput.Location = new System.Drawing.Point(34, 374);
-            this.emailInput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.emailInput.Margin = new System.Windows.Forms.Padding(2);
             this.emailInput.Multiline = false;
             this.emailInput.Name = "emailInput";
             this.emailInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
@@ -180,7 +180,7 @@
             this.continueButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.continueButton.ForeColor = System.Drawing.Color.White;
             this.continueButton.Location = new System.Drawing.Point(26, 420);
-            this.continueButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.continueButton.Margin = new System.Windows.Forms.Padding(2);
             this.continueButton.Name = "continueButton";
             this.continueButton.Size = new System.Drawing.Size(117, 35);
             this.continueButton.TabIndex = 14;
@@ -193,7 +193,7 @@
             this.pictureBox4.Image = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox4.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox4.Location = new System.Drawing.Point(26, 366);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(195, 42);
             this.pictureBox4.TabIndex = 10;
@@ -204,7 +204,7 @@
             this.pictureBox3.Image = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox3.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox3.Location = new System.Drawing.Point(26, 289);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(195, 42);
             this.pictureBox3.TabIndex = 8;
@@ -215,7 +215,7 @@
             this.pictureBox2.Image = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox2.InitialImage = global::VirtualLibrarian.Properties.Resources.input;
             this.pictureBox2.Location = new System.Drawing.Point(26, 213);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(195, 42);
             this.pictureBox2.TabIndex = 6;
@@ -231,7 +231,7 @@
             this.loginButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.loginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.loginButton.Location = new System.Drawing.Point(436, 301);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(2);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(124, 111);
             this.loginButton.TabIndex = 15;
@@ -247,7 +247,7 @@
             this.adminButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.adminButton.ForeColor = System.Drawing.Color.White;
             this.adminButton.Location = new System.Drawing.Point(9, 471);
-            this.adminButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.adminButton.Margin = new System.Windows.Forms.Padding(2);
             this.adminButton.Name = "adminButton";
             this.adminButton.Size = new System.Drawing.Size(29, 28);
             this.adminButton.TabIndex = 17;
@@ -279,12 +279,13 @@
             this.Controls.Add(this.welcomeLabel);
             this.DoubleBuffered = true;
             this.Location = new System.Drawing.Point(873, 578);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(636, 554);
             this.MinimumSize = new System.Drawing.Size(636, 554);
             this.Name = "FirstPage";
             this.Text = ".TAIPT Library";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FirstPage_FormClosing);
+            this.Load += new System.EventHandler(this.FirstPage_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

@@ -124,7 +124,7 @@
             // 
             this.aiOutput.BackColor = System.Drawing.Color.White;
             this.aiOutput.Location = new System.Drawing.Point(339, 0);
-            this.aiOutput.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.aiOutput.Margin = new System.Windows.Forms.Padding(2);
             this.aiOutput.Name = "aiOutput";
             this.aiOutput.Size = new System.Drawing.Size(500, 78);
             this.aiOutput.TabIndex = 8;
@@ -133,7 +133,7 @@
             // 
             this.userInformation1.BackColor = System.Drawing.Color.White;
             this.userInformation1.Location = new System.Drawing.Point(21, 29);
-            this.userInformation1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.userInformation1.Margin = new System.Windows.Forms.Padding(2);
             this.userInformation1.Name = "userInformation1";
             this.userInformation1.Size = new System.Drawing.Size(297, 129);
             this.userInformation1.TabIndex = 3;
@@ -162,7 +162,7 @@
             this.Text = ".TAIPT Library | Logged in";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UI_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UI_FormClosed);
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.UI_Load);
             this.Shown += new System.EventHandler(this.UI_Shown);
             this.ResumeLayout(false);
 

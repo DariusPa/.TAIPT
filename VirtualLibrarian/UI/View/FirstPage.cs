@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Presenter;
+using VirtualLibrarian.Properties;
 
 namespace VirtualLibrarian
 {
@@ -21,10 +22,7 @@ namespace VirtualLibrarian
 
         public FirstPage()
         {
-            WindowState = FormWindowState.Maximized;
-            StartPosition = FormStartPosition.Manual;
-            Location = new Point(0, 0);
-            InitializeComponent();
+                InitializeComponent();
             loginButton.FlatAppearance.BorderSize = 0;
             firstPagePresenter = new FirstPagePresenter(this);
             adminPresenter = new AdministratorPresenter(this);
@@ -35,6 +33,7 @@ namespace VirtualLibrarian
         {
             if (!string.IsNullOrWhiteSpace(nameInput.Text) && !string.IsNullOrWhiteSpace(surnameInput.Text) && !string.IsNullOrWhiteSpace(emailInput.Text) && Verifier.IsValidEmail(emailInput.Text))
             {
+
                 User = new User { Name = nameInput.Text, Surname = surnameInput.Text, Email = emailInput.Text };
                 Register?.Invoke(this,new UserRelatedEventArgs { PendingUser = User });
                 Hide();
@@ -71,19 +70,64 @@ namespace VirtualLibrarian
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+            Properties.Settings.Default.Save();
             LogIn?.Invoke(this, e);
             Hide();
         }
 
         private void FirstPage_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.WindowLocation = Properties.Settings.Default.StartingWindowLocation;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            Properties.Settings.Default.Save();
             Application.Exit();
+        }
+        
+        private void FirstPage_Load(object sender, EventArgs e)
+        {
+            this.WindowState = Properties.Settings.Default.WindowState;
+            this.Location = Properties.Settings.Default.WindowLocation;
+            this.Size = Properties.Settings.Default.WindowSize;
         }
 
 
         //TEMP
         private void adminButton_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            Properties.Settings.Default.Save();
             Administrate?.Invoke(this, e);
             Hide();
         }

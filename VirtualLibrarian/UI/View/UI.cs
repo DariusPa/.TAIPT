@@ -6,6 +6,7 @@ using VirtualLibrarian.Model;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.BusinessLogic;
 
+
 namespace VirtualLibrarian
 {
     public partial class UI : Form
@@ -17,16 +18,20 @@ namespace VirtualLibrarian
         {
             this.User = User;
 
-            WindowState = FormWindowState.Maximized;
-            StartPosition = FormStartPosition.Manual;
-            Location = new Point(0, 0);
+            //WindowState = FormWindowState.Maximized;
+            //StartPosition = FormStartPosition.Manual;
+            //Location = new Point(0, 0);
             InitializeComponent();
             userInformation1.UserName = User.Name;
             userInformation1.UserSurname = User.Surname;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void UI_Load(object sender, EventArgs e)
         {
+            this.WindowState = Properties.Settings.Default.WindowState;
+            this.Location = Properties.Settings.Default.WindowLocation;
+            this.Size = Properties.Settings.Default.UIWindowSize;
+
             // On load show homepage user control 
             containerPanel.Controls.Add(Homepage.Instance);
             Search.Instance.Dock = DockStyle.Fill;
@@ -122,6 +127,22 @@ namespace VirtualLibrarian
 
         private void LogoutButton_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // save location and size if the state is normal
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                // save the RestoreBounds if the form is minimized or maximized!
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // don't forget to save the settings
+            Properties.Settings.Default.Save();
             this.Close();
         }
 
@@ -155,6 +176,22 @@ namespace VirtualLibrarian
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // save location and size if the state is normal
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                // save the RestoreBounds if the form is minimized or maximized!
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // don't forget to save the settings
+            Properties.Settings.Default.Save();
             Speaker.TellUser("See you soon.", aiOutput);
             this.Controls.Clear();
         }
