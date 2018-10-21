@@ -29,38 +29,40 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Homepage));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.homepagePicture = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.homepagePicture)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // homepagePicture
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.ImageLocation = "";
-            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1017, 796);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.homepagePicture.BackColor = System.Drawing.Color.White;
+            this.homepagePicture.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.homepagePicture.Image = ((System.Drawing.Image)(resources.GetObject("homepagePicture.Image")));
+            this.homepagePicture.ImageLocation = "";
+            this.homepagePicture.InitialImage = ((System.Drawing.Image)(resources.GetObject("homepagePicture.InitialImage")));
+            this.homepagePicture.Location = new System.Drawing.Point(0, 0);
+            this.homepagePicture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.homepagePicture.Name = "homepagePicture";
+            this.homepagePicture.Size = new System.Drawing.Size(508, 414);
+            this.homepagePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.homepagePicture.TabIndex = 0;
+            this.homepagePicture.TabStop = false;
             // 
             // Homepage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.homepagePicture);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Homepage";
-            this.Size = new System.Drawing.Size(1017, 796);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Size = new System.Drawing.Size(508, 414);
+            ((System.ComponentModel.ISupportInitialize)(this.homepagePicture)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox homepagePicture;
     }
 }

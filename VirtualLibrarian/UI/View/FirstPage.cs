@@ -41,15 +41,15 @@ namespace VirtualLibrarian
             } else {
                 if (string.IsNullOrWhiteSpace(nameInput.Text))
                 {
-                    label4.Text = "Name (required)";
+                    nameLabel.Text = "Name (required)";
                 }
                 if (string.IsNullOrWhiteSpace(surnameInput.Text))
                 {
-                    label5.Text = "Surname (required)";
+                    surnameLabel.Text = "Surname (required)";
                 }
                 if (string.IsNullOrWhiteSpace(emailInput.Text) || Verifier.IsValidEmail(emailInput.Text) == false)
                 {
-                    label6.Text = "E-mail (required)";
+                    emailLabel.Text = "E-mail (required)";
                 }
             }
         }
@@ -59,13 +59,13 @@ namespace VirtualLibrarian
             RichTextBox textBox = (RichTextBox)sender;
             if (textBox.Name == "nameInput")
             {
-                label4.Text = "Name";
+                nameLabel.Text = "Name";
             } else if (textBox.Name == "surnameInput")
             {
-                label5.Text = "Surname";
+                surnameLabel.Text = "Surname";
             } else if (textBox.Name == "emailInput")
             {
-                label6.Text = "E-mail address";
+                emailLabel.Text = "E-mail address";
             }
         }
 

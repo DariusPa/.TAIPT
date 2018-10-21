@@ -44,7 +44,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can find a book which you want to take.", ai1);
+            Speaker.TellUser("Here you can find a book which you want to take.", aiOutput);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -57,7 +57,7 @@ namespace VirtualLibrarian
 
         private void PersonalInfoButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your personal information.", ai1);
+            Speaker.TellUser("Here you can see your personal information.", aiOutput);
             if (!containerPanel.Controls.Contains(PersonalInfo.Instance))
             {
                 containerPanel.Controls.Add(PersonalInfo.Instance);
@@ -70,7 +70,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can return a book.", ai1);
+            Speaker.TellUser("Here you can return a book.", aiOutput);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -96,7 +96,7 @@ namespace VirtualLibrarian
         private void HistoryButton_Click(object sender, EventArgs e)
         {
             
-            Speaker.TellUser("Here you can see your readings history.", ai1);
+            Speaker.TellUser("Here you can see your readings history.", aiOutput);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -109,7 +109,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can change your account settings.", ai1);
+            Speaker.TellUser("Here you can change your account settings.", aiOutput);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -144,7 +144,7 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser("Welcome, " + User.Name, ai1);
+            Speaker.TellUser("Welcome, " + User.Name, aiOutput);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -155,7 +155,7 @@ namespace VirtualLibrarian
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Speaker.TellUser("See you soon.", ai1);
+            Speaker.TellUser("See you soon.", aiOutput);
             this.Controls.Clear();
         }
 
