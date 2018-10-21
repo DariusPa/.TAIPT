@@ -28,25 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.loggedInLabel = new System.Windows.Forms.Label();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.profilePicture = new System.Windows.Forms.PictureBox();
             this.surnameLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.profilePicture)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // loggedInLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Arial", 16.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(143)))), ((int)(((byte)(143)))), ((int)(((byte)(143)))));
-            this.label1.Location = new System.Drawing.Point(4, 45);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(426, 61);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "LOGGED IN AS:";
+            this.loggedInLabel.AutoSize = true;
+            this.loggedInLabel.BackColor = System.Drawing.Color.Transparent;
+            this.loggedInLabel.Font = new System.Drawing.Font("Arial", 16.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loggedInLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(143)))), ((int)(((byte)(143)))), ((int)(((byte)(143)))));
+            this.loggedInLabel.Location = new System.Drawing.Point(2, 19);
+            this.loggedInLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.loggedInLabel.Name = "loggedInLabel";
+            this.loggedInLabel.Size = new System.Drawing.Size(175, 25);
+            this.loggedInLabel.TabIndex = 0;
+            this.loggedInLabel.Text = "LOGGED IN AS:";
             // 
             // nameLabel
             // 
@@ -54,24 +54,24 @@
             this.nameLabel.BackColor = System.Drawing.Color.Transparent;
             this.nameLabel.Font = new System.Drawing.Font("Arial", 22.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(135)))));
-            this.nameLabel.Location = new System.Drawing.Point(0, 102);
-            this.nameLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.nameLabel.Location = new System.Drawing.Point(0, 43);
+            this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(253, 87);
+            this.nameLabel.Size = new System.Drawing.Size(103, 35);
             this.nameLabel.TabIndex = 1;
             this.nameLabel.Text = "NAME";
             // 
-            // pictureBox1
+            // profilePicture
             // 
-            this.pictureBox1.ErrorImage = null;
-            this.pictureBox1.Image = global::VirtualLibrarian.Properties.Resources.userImage;
-            this.pictureBox1.Location = new System.Drawing.Point(527, 45);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(220, 208);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.profilePicture.ErrorImage = null;
+            this.profilePicture.Image = global::VirtualLibrarian.Properties.Resources.userImage;
+            this.profilePicture.Location = new System.Drawing.Point(198, 19);
+            this.profilePicture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.profilePicture.Name = "profilePicture";
+            this.profilePicture.Size = new System.Drawing.Size(82, 87);
+            this.profilePicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.profilePicture.TabIndex = 2;
+            this.profilePicture.TabStop = false;
             // 
             // surnameLabel
             // 
@@ -79,26 +79,26 @@
             this.surnameLabel.BackColor = System.Drawing.Color.Transparent;
             this.surnameLabel.Font = new System.Drawing.Font("Arial", 22.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.surnameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(135)))));
-            this.surnameLabel.Location = new System.Drawing.Point(0, 177);
+            this.surnameLabel.Location = new System.Drawing.Point(0, 74);
             this.surnameLabel.Margin = new System.Windows.Forms.Padding(0);
             this.surnameLabel.Name = "surnameLabel";
-            this.surnameLabel.Size = new System.Drawing.Size(408, 87);
+            this.surnameLabel.Size = new System.Drawing.Size(167, 35);
             this.surnameLabel.TabIndex = 3;
             this.surnameLabel.Text = "SURNAME";
             // 
             // UserInformation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.surnameLabel);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.profilePicture);
             this.Controls.Add(this.nameLabel);
-            this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Controls.Add(this.loggedInLabel);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "UserInformation";
-            this.Size = new System.Drawing.Size(792, 308);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Size = new System.Drawing.Size(297, 129);
+            ((System.ComponentModel.ISupportInitialize)(this.profilePicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -106,9 +106,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label loggedInLabel;
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox profilePicture;
         private System.Windows.Forms.Label surnameLabel;
     }
 }

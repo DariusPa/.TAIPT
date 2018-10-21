@@ -29,44 +29,46 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AI));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.AIBox = new System.Windows.Forms.PictureBox();
             this.guideText = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AIBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // AIBox
             // 
-            this.pictureBox1.Image = global::VirtualLibrarian.Properties.Resources.ai;
-            this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(36, 14);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(924, 114);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.AIBox.Image = global::VirtualLibrarian.Properties.Resources.ai;
+            this.AIBox.InitialImage = ((System.Drawing.Image)(resources.GetObject("AIBox.InitialImage")));
+            this.AIBox.Location = new System.Drawing.Point(18, 7);
+            this.AIBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.AIBox.Name = "AIBox";
+            this.AIBox.Size = new System.Drawing.Size(462, 59);
+            this.AIBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.AIBox.TabIndex = 0;
+            this.AIBox.TabStop = false;
             // 
             // guideText
             // 
             this.guideText.AutoSize = true;
             this.guideText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(202)))), ((int)(((byte)(236)))));
             this.guideText.ForeColor = System.Drawing.Color.Black;
-            this.guideText.Location = new System.Drawing.Point(172, 40);
-            this.guideText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.guideText.MaximumSize = new System.Drawing.Size(750, 81);
+            this.guideText.Location = new System.Drawing.Point(86, 21);
+            this.guideText.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.guideText.MaximumSize = new System.Drawing.Size(375, 42);
             this.guideText.Name = "guideText";
-            this.guideText.Size = new System.Drawing.Size(0, 25);
+            this.guideText.Size = new System.Drawing.Size(0, 13);
             this.guideText.TabIndex = 1;
             // 
             // AI
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.guideText);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.AIBox);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AI";
-            this.Size = new System.Drawing.Size(1000, 150);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Size = new System.Drawing.Size(500, 78);
+            ((System.ComponentModel.ISupportInitialize)(this.AIBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -74,7 +76,7 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox AIBox;
         private System.Windows.Forms.Label guideText;
     }
 }

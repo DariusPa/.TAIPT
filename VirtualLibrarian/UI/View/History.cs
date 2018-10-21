@@ -15,8 +15,8 @@ namespace VirtualLibrarian
         private static History _instance;
         public DataGridView dataGridView
         {
-            get { return dataGridView1; }
-            set { dataGridView1 = value; }
+            get { return historyDataGrid; }
+            set { historyDataGrid = value; }
         }
 
         public static History Instance
