@@ -126,9 +126,10 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public void StartSaving()
+        public void StartSaving(ProgressBar progressBar)
         {
-            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
+            progressBar.Maximum = picturesPerUser;
+            Thread saveFace = new Thread(() => SaveNewFace(userLabel, progressBar));
             saveFace.Start();
         }
 
@@ -154,6 +155,12 @@ namespace VirtualLibrarian.BusinessLogic
             process terminates after recognising that the 'new' person already exists in the database*/
             for(int i = 0; i < picturesPerUser; i++)
             {
+                progressBar.BeginInvoke(
+                     new Action(() =>
+                     {
+                         progressBar.Value += 1;
+                     }
+                 ));
                 trainedFacesTemp[i].Save(String.Format("{0}\\{1}.bmp", facesPath,faceCount));
                 File.AppendAllText(labelFile, label + "%");
                 trainedFaces.Add(trainedFacesTemp[i]);
