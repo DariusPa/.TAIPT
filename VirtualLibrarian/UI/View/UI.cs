@@ -88,20 +88,17 @@ namespace VirtualLibrarian
         //TODO: write interfaces to use this method for different controls
         public void RefreshDataGrid()
         {
-            // Query syntax
-            //var query = from s in LibraryDataIO.Instance.Books
-            //            where s.ReaderID == User.ID
-            //            select new { s.ID, s.Title };
-
-            // Method syntax
-            var query = LibraryDataIO.Instance.Books.Where(s => s.ReaderID == User.ID).Select(s => new { s.ID, s.Title });
+            var query = from s in LibraryDataIO.Instance.Books
+                        where s.ReaderID == User.ID
+                        select new { s.ID, s.Title };
 
             ReturnBook.Instance.dataGridView.DataSource = query.ToList();
         }
 
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your readings history.", ai1);
+            
+            Speaker.TellUser("Here you can see your readings history.", aiOutput);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -110,23 +107,6 @@ namespace VirtualLibrarian
             }
             else
                 History.Instance.BringToFront();
-
-
-            var booksByAuthor = Temp.Author.GetAllAuthors()
-                                     .GroupJoin(Temp.Book.GetAllBooks(),
-                                               a => a.ID,
-                                               b => b.AuthorID,
-                                               (a, b) => new
-                                               {
-                                                   Author = a.Name,
-                                                   Books = b.Last().Title
-                                               });
-            //var booksByAuthor = from a in Temp.Author.GetAllAuthors()
-            //                    join b in Temp.Book.GetAllBooks()
-            //                    on a.ID equals b.AuthorID
-            //                    select new { Author = a.Name, Book = b.Title };
-
-            History.Instance.dataGridView.DataSource = booksByAuthor.ToList();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
