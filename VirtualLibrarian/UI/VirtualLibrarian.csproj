@@ -294,7 +294,6 @@
     <Folder Include="Data\Barcodes\" />
     <Folder Include="Data\Faces\" />
     <Folder Include="Data\JSON\" />
-    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets" Condition="Exists('..\packages\EMGU.CV.3.4.3.3016\build\EMGU.CV.targets')" />
