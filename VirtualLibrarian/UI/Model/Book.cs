@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
 {
-    class Book: IBookModel
+    public class Book: IBookModel , ICloneable
     {
         public static int count;
         public string Title { get; set; }
@@ -35,6 +35,12 @@ namespace VirtualLibrarian.Model
             Description = description;
             Genre = genre;
         }
+        public Book(string title, string author, string publisher)
+        {
+            Title = title;
+            Author = author;
+            Publisher = publisher;
+        }
 
         public void Issue(IUserModel reader)
         {
@@ -46,6 +52,19 @@ namespace VirtualLibrarian.Model
         {
             Status = Status.Available;
             ReaderID = -1;
+        }
+
+        public object Clone(string newISBN)
+        {
+            Book book = new Book();
+            book.Title = Title;
+            book.Author = Author;
+            book.Publisher = Publisher;
+            book.ISBN = newISBN;
+            book.Description = Description;
+            book.Genre = Genre;
+            book.Status = Status.Available;
+            return book;
         }
     }
 
