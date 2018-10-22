@@ -60,7 +60,10 @@ namespace VirtualLibrarian.Presenter
 
         private void ShowUI()
         {
-            uiPresenter.PrepareUI(User);
+            UI = new UI(User); uiPresenter.PrepareUI(User);
+            UIpresenter = new UIPresenter(UI, User);
+            UI.FormClosing += ShowFirstPage;
+            UI.Show();
         }
 
         private void SelectFormToShow(object sender, EventArgs e)

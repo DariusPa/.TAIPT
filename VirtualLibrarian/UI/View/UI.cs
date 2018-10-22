@@ -18,7 +18,9 @@ namespace VirtualLibrarian
         {
             this.User = User;
 
-            StartPosition = FormStartPosition.CenterScreen;
+            //WindowState = FormWindowState.Maximized;                  
+            //StartPosition = FormStartPosition.Manual;     
+            //Location = new Point(0, 0);
             InitializeComponent();
             userInformation1.UserName = User.Name;
             userInformation1.UserSurname = User.Surname;
@@ -26,6 +28,10 @@ namespace VirtualLibrarian
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.WindowState = Properties.Settings.Default.WindowState;
+            this.Location = Properties.Settings.Default.WindowLocation;
+            this.Size = Properties.Settings.Default.UIWindowSize;
+
             // On load show homepage user control 
             containerPanel.Controls.Add(Homepage.Instance);
             Search.Instance.Dock = DockStyle.Fill;
