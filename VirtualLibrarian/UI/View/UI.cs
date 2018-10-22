@@ -101,7 +101,7 @@ namespace VirtualLibrarian
 
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your readings history.", ai1);
+            Speaker.TellUser("Here you can see your readings history.", aiOutput);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
