@@ -88,15 +88,12 @@
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
-    <Compile Include="View\AdminForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Sorter.cs" />
+    <Compile Include="View\AdminForm.cs" />
     <Compile Include="View\AdminForm.Designer.cs">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\AI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\AI.cs" />
     <Compile Include="View\AI.Designer.cs">
       <DependentUpon>AI.cs</DependentUpon>
     </Compile>
@@ -104,9 +101,7 @@
     <Compile Include="DAL.cs" />
     <Compile Include="Data\ILibraryData.cs" />
     <Compile Include="Data\LibraryData.cs" />
-    <Compile Include="View\ExistingUserForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\ExistingUserForm.cs" />
     <Compile Include="View\ExistingUserForm.Designer.cs">
       <DependentUpon>ExistingUserForm.cs</DependentUpon>
     </Compile>
@@ -117,65 +112,45 @@
     <Compile Include="Model\IUserModel.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Presenter\FirstPagePresenter.cs" />
-    <Compile Include="View\FirstPage.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\FirstPage.cs" />
     <Compile Include="View\FirstPage.Designer.cs">
       <DependentUpon>FirstPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\UI.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\UI.cs" />
     <Compile Include="View\UI.designer.cs">
       <DependentUpon>UI.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\RegisterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="View\RegisterForm.cs" />
     <Compile Include="View\RegisterForm.Designer.cs">
       <DependentUpon>RegisterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Search.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\Search.cs" />
     <Compile Include="View\Search.Designer.cs">
       <DependentUpon>Search.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Settings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\Settings.cs" />
     <Compile Include="View\Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\History.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\History.cs" />
     <Compile Include="View\History.Designer.cs">
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Homepage.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\Homepage.cs" />
     <Compile Include="View\Homepage.Designer.cs">
       <DependentUpon>Homepage.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\PersonalInfo.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\PersonalInfo.cs" />
     <Compile Include="View\PersonalInfo.Designer.cs">
       <DependentUpon>PersonalInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="View\ReturnBook.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\ReturnBook.cs" />
     <Compile Include="View\ReturnBook.Designer.cs">
       <DependentUpon>ReturnBook.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\UserInformation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="View\UserInformation.cs" />
     <Compile Include="View\UserInformation.Designer.cs">
       <DependentUpon>UserInformation.cs</DependentUpon>
     </Compile>

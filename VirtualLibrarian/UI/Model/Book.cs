@@ -54,13 +54,13 @@ namespace VirtualLibrarian.Model
             ReaderID = -1;
         }
 
-        public object Clone(string newISBN)
+        public object Clone()
         {
             Book book = new Book();
             book.Title = Title;
             book.Author = Author;
             book.Publisher = Publisher;
-            book.ISBN = newISBN;
+            book.ISBN = ISBN;
             book.Description = Description;
             book.Genre = Genre;
             book.Status = Status.Available;
