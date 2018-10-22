@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
@@ -7,17 +8,23 @@ namespace VirtualLibrarian.Presenter
 {
     public class UIPresenter
     {
-        private FirstPage firstPage;
         private UI ui;
         public IUserModel ActiveUser { get; set; }
+        public event EventHandler UIClosed;
 
 
-        public UIPresenter(UI ui, IUserModel user)
+        public UIPresenter()
         {
-            this.ui = ui;
-            ActiveUser = user;
             Search.Instance.barcodeCamera.BarcodeDetected += OnBookDetected;
             ReturnBook.Instance.BookReturn += OnBookReturn;
+        }
+
+        public void PrepareUI(IUserModel activeUser)
+        {
+            ActiveUser = activeUser;
+            ui = new UI(ActiveUser);
+            ui.FormClosed += OnUiClose;
+            ui.Show();
         }
 
         private void OnBookDetected(object sender, BarcodeDetectedEventArgs e)
@@ -36,6 +43,12 @@ namespace VirtualLibrarian.Presenter
             if (!LibraryDataIO.Instance.ReturnBook(ActiveUser, e.Book))
                 MessageBox.Show("Error occured");
             ui.RefreshDataGrid();
+        }
+
+        private void OnUiClose(object sender, EventArgs e)
+        {
+            ActiveUser = null;
+            UIClosed?.Invoke(this, e);
         }
 
 

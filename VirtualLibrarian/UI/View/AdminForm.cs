@@ -21,6 +21,7 @@ namespace VirtualLibrarian
 
         public AdminForm(AdministratorPresenter presenter)
         {
+
             InitializeComponent();
             this.presenter = presenter;
             presenter.BarcodeGenerated += ShowBarcode;

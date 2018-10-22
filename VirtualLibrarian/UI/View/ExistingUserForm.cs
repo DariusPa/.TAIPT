@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Helpers;
@@ -11,12 +10,9 @@ namespace VirtualLibrarian
         public event LoggedInEventHandler LoggedIn;
 
         private FaceCamera faceCam;
-
+        
         public ExistingUserForm()
         {
-            WindowState = FormWindowState.Maximized;
-            StartPosition = FormStartPosition.Manual;
-            Location = new Point(0, 0);
             InitializeComponent();
             faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height);
             faceCam.FrameGrabbed += OnFrameGrabbed;
