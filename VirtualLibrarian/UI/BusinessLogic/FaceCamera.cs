@@ -133,7 +133,7 @@ namespace VirtualLibrarian.BusinessLogic
             saveFace.Start();
         }
 
-        private void SaveNewFace(String label, ProgressBar progressBar)
+        private void SaveNewFace(String label)
         {
             List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
             List<String> faceLabelsTemp = new List<String>();

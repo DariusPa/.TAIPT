@@ -8,14 +8,13 @@ namespace VirtualLibrarian.Presenter
 {
     public class UIPresenter
     {
-        private FirstPage firstPage;
         private UI ui;
         public IUserModel ActiveUser { get; set; }
+        public event EventHandler UIClosed;
 
-        public UIPresenter(UI ui, IUserModel user)
+
+        public UIPresenter()
         {
-            this.ui = ui;
-            ActiveUser = user;
             Search.Instance.barcodeCamera.BarcodeDetected += OnBookDetected;
             ReturnBook.Instance.BookReturn += OnBookReturn;
         }

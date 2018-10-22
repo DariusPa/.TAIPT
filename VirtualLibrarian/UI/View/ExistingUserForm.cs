@@ -11,9 +11,12 @@ namespace VirtualLibrarian
         public event LoggedInEventHandler LoggedIn;
 
         private FaceCamera faceCam;
-        
+
         public ExistingUserForm()
         {
+            //WindowState = FormWindowState.Maximized;
+            //StartPosition = FormStartPosition.Manual;
+            //Location = new Point(0, 0);
             InitializeComponent();
             faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height);
             faceCam.FrameGrabbed += OnFrameGrabbed;
@@ -25,17 +28,18 @@ namespace VirtualLibrarian
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)
             {
-                // save location and size if the state is normal        
+                // save location and size if the state is normal
                 Properties.Settings.Default.WindowLocation = this.Location;
                 Properties.Settings.Default.WindowSize = this.Size;
             }
             else
             {
-                // save the RestoreBounds if the form is minimized or maximized!        
+                // save the RestoreBounds if the form is minimized or maximized!
                 Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
                 Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
             }
-            // don't forget to save the settings        
+
+            // don't forget to save the settings
             Properties.Settings.Default.Save();
             Close();
         }
@@ -60,17 +64,18 @@ namespace VirtualLibrarian
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)
             {
-                // save location and size if the state is normal        
+                // save location and size if the state is normal
                 Properties.Settings.Default.WindowLocation = this.Location;
                 Properties.Settings.Default.WindowSize = this.Size;
             }
             else
             {
-                // save the RestoreBounds if the form is minimized or maximized!        
+                // save the RestoreBounds if the form is minimized or maximized!
                 Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
                 Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
             }
-            // don't forget to save the settings        
+
+            // don't forget to save the settings
             Properties.Settings.Default.Save();
             LoggedIn?.Invoke(this, new UserRelatedEventArgs { UserID = e.Label });
             //BeginInvoke(new Action(() => Close()));
@@ -86,7 +91,6 @@ namespace VirtualLibrarian
 
 
         private void ExistingUserForm_FormClosing(object sender, FormClosingEventArgs e)
-
         {
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)

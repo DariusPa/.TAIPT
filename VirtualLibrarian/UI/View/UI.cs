@@ -5,7 +5,7 @@ using System.Linq;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.BusinessLogic;
-using VirtualLibrarian.Temp;
+
 
 namespace VirtualLibrarian
 {
@@ -17,17 +17,14 @@ namespace VirtualLibrarian
         public UI(IUserModel User) 
         {
             this.User = User;
-
-            //WindowState = FormWindowState.Maximized;                  
-            //StartPosition = FormStartPosition.Manual;     
-            //Location = new Point(0, 0);
             InitializeComponent();
             userInformation1.UserName = User.Name;
             userInformation1.UserSurname = User.Surname;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void UI_Load(object sender, EventArgs e)
         {
+            // Automatic window position tracking
             this.WindowState = Properties.Settings.Default.WindowState;
             this.Location = Properties.Settings.Default.WindowLocation;
             this.Size = Properties.Settings.Default.UIWindowSize;
@@ -49,7 +46,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can find a book which you want to take.", ai1);
+            Speaker.TellUser("Here you can find a book which you want to take.", aiOutput);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -62,7 +59,7 @@ namespace VirtualLibrarian
 
         private void PersonalInfoButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your personal information.", ai1);
+            Speaker.TellUser("Here you can see your personal information.", aiOutput);
             if (!containerPanel.Controls.Contains(PersonalInfo.Instance))
             {
                 containerPanel.Controls.Add(PersonalInfo.Instance);
@@ -75,7 +72,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can return a book.", ai1);
+            Speaker.TellUser("Here you can return a book.", aiOutput);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -97,7 +94,7 @@ namespace VirtualLibrarian
             //            select new { s.ID, s.Title };
 
             // Method syntax
-            var query = LibraryDataIO.Instance.Books.Where(s => s.ReaderID == User.ID).Select( s => new { s.ID, s.Title } );
+            var query = LibraryDataIO.Instance.Books.Where(s => s.ReaderID == User.ID).Select(s => new { s.ID, s.Title });
 
             ReturnBook.Instance.dataGridView.DataSource = query.ToList();
         }
@@ -134,7 +131,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can change your account settings.", ai1);
+            Speaker.TellUser("Here you can change your account settings.", aiOutput);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -150,20 +147,15 @@ namespace VirtualLibrarian
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)
             {
-                // save location and size if the state is normal 
-
                 Properties.Settings.Default.WindowLocation = this.Location;
                 Properties.Settings.Default.WindowSize = this.Size;
             }
             else
             {
-                // save the RestoreBounds if the form is minimized or maximized!    
-
                 Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
                 Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
             }
 
-            // don't forget to save the settings        
             Properties.Settings.Default.Save();
             this.Close();
         }
@@ -187,7 +179,7 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser("Welcome, " + User.Name, ai1);
+            Speaker.TellUser("Welcome, " + User.Name, aiOutput);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -201,20 +193,20 @@ namespace VirtualLibrarian
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)
             {
-                // save location and size if the state is normal        
+                // save location and size if the state is normal
                 Properties.Settings.Default.WindowLocation = this.Location;
                 Properties.Settings.Default.WindowSize = this.Size;
             }
             else
             {
-                // save the RestoreBounds if the form is minimized or maximized!        
+                // save the RestoreBounds if the form is minimized or maximized!
                 Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
                 Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
             }
 
-            // don't forget to save the settings        
+            // don't forget to save the settings
             Properties.Settings.Default.Save();
-            Speaker.TellUser("See you soon.", ai1);
+            Speaker.TellUser("See you soon.", aiOutput);
             this.Controls.Clear();
         }
 

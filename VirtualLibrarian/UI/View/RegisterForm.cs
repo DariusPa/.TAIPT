@@ -18,6 +18,9 @@ namespace VirtualLibrarian
         public RegisterForm(IUserModel user)
         {
             User = user;
+            WindowState = FormWindowState.Maximized;
+            StartPosition = FormStartPosition.Manual;
+            Location = new Point(0, 0);
             InitializeComponent();
             faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
@@ -37,7 +40,7 @@ namespace VirtualLibrarian
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.StartSaving();
+            faceCam.StartSaving(progressBar);
             cancelButton.Hide();
             saveFaceButton.Hide();
         }
@@ -70,28 +73,5 @@ namespace VirtualLibrarian
 
         public delegate void RegistrationEventHandler(object sender, FaceRecognisedEventArgs e);
 
-        private void RegisterForm_Load(object sender, EventArgs e)
-        {
-            this.WindowState = Properties.Settings.Default.WindowState;
-            this.Location = Properties.Settings.Default.WindowLocation;
-            this.Size = Properties.Settings.Default.WindowSize;
-        }
-
-        private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Properties.Settings.Default.WindowState = this.WindowState;
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                Properties.Settings.Default.WindowLocation = this.Location;
-                Properties.Settings.Default.WindowSize = this.Size;
-            }
-            else
-            {
-                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
-                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
-            }
-
-            Properties.Settings.Default.Save();
-        }
     }
 }
