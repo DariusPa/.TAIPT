@@ -17,10 +17,6 @@ namespace VirtualLibrarian
         public UI(IUserModel User) 
         {
             this.User = User;
-
-            //WindowState = FormWindowState.Maximized;
-            //StartPosition = FormStartPosition.Manual;
-            //Location = new Point(0, 0);
             InitializeComponent();
             userInformation1.UserName = User.Name;
             userInformation1.UserSurname = User.Surname;
@@ -28,6 +24,7 @@ namespace VirtualLibrarian
 
         private void UI_Load(object sender, EventArgs e)
         {
+            // Automatic window position tracking
             this.WindowState = Properties.Settings.Default.WindowState;
             this.Location = Properties.Settings.Default.WindowLocation;
             this.Size = Properties.Settings.Default.UIWindowSize;
@@ -130,18 +127,15 @@ namespace VirtualLibrarian
             Properties.Settings.Default.WindowState = this.WindowState;
             if (this.WindowState == FormWindowState.Normal)
             {
-                // save location and size if the state is normal
                 Properties.Settings.Default.WindowLocation = this.Location;
                 Properties.Settings.Default.WindowSize = this.Size;
             }
             else
             {
-                // save the RestoreBounds if the form is minimized or maximized!
                 Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
                 Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
             }
 
-            // don't forget to save the settings
             Properties.Settings.Default.Save();
             this.Close();
         }
