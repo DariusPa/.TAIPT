@@ -17,9 +17,9 @@ namespace Library.Tests
         {
             var sut = new Sorter();
             Book[] books = new Book[4];
-            Book knygaA = new Book("A", "Autorius", "haha");
-            Book knygaB = new Book("B", "Autorius", "haha");
-            Book knygaC = new Book("C", "Autorius", "haha");
+            Book knygaA = new Book("A", "Butorius", "haha");
+            Book knygaB = new Book("B", "Cutorius", "haha");
+            Book knygaC = new Book("C", "Dutorius", "haha");
             Book knygaD = new Book("D", "Autorius", "haha");
             books[0] = knygaA;
             books[1] = knygaD;
@@ -30,6 +30,11 @@ namespace Library.Tests
             Assert.AreEqual("B", books[1].Title);
             Assert.AreEqual("C", books[2].Title);
             Assert.AreEqual("D", books[3].Title);
+            sut.SortBooks(books, "Author");
+            Assert.AreEqual("Autorius", books[0].Author);
+            Assert.AreEqual("Butorius", books[1].Author);
+            Assert.AreEqual("Cutorius", books[2].Author);
+            Assert.AreEqual("Dutorius", books[3].Author);
         }
     }
 }
