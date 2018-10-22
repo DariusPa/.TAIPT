@@ -147,6 +147,24 @@ namespace VirtualLibrarian
 
         private void LogoutButton_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // save location and size if the state is normal 
+
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                // save the RestoreBounds if the form is minimized or maximized!    
+
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // don't forget to save the settings        
+            Properties.Settings.Default.Save();
             this.Close();
         }
 
@@ -180,6 +198,22 @@ namespace VirtualLibrarian
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Properties.Settings.Default.WindowState = this.WindowState;
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                // save location and size if the state is normal        
+                Properties.Settings.Default.WindowLocation = this.Location;
+                Properties.Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                // save the RestoreBounds if the form is minimized or maximized!        
+                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
+                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // don't forget to save the settings        
+            Properties.Settings.Default.Save();
             Speaker.TellUser("See you soon.", ai1);
             this.Controls.Clear();
         }
