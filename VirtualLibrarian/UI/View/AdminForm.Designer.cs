@@ -49,103 +49,92 @@
             // titleLabel
             // 
             this.titleLabel.AutoSize = true;
-            this.titleLabel.Location = new System.Drawing.Point(20, 20);
-            this.titleLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.titleLabel.Location = new System.Drawing.Point(27, 24);
             this.titleLabel.Name = "titleLabel";
-            this.titleLabel.Size = new System.Drawing.Size(27, 13);
+            this.titleLabel.Size = new System.Drawing.Size(35, 17);
             this.titleLabel.TabIndex = 0;
             this.titleLabel.Text = "Title";
             // 
             // authorLabel
             // 
             this.authorLabel.AutoSize = true;
-            this.authorLabel.Location = new System.Drawing.Point(20, 42);
-            this.authorLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.authorLabel.Location = new System.Drawing.Point(27, 52);
             this.authorLabel.Name = "authorLabel";
-            this.authorLabel.Size = new System.Drawing.Size(38, 13);
+            this.authorLabel.Size = new System.Drawing.Size(50, 17);
             this.authorLabel.TabIndex = 1;
             this.authorLabel.Text = "Author";
             // 
             // publisherLabel
             // 
             this.publisherLabel.AutoSize = true;
-            this.publisherLabel.Location = new System.Drawing.Point(20, 130);
-            this.publisherLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.publisherLabel.Location = new System.Drawing.Point(27, 160);
             this.publisherLabel.Name = "publisherLabel";
-            this.publisherLabel.Size = new System.Drawing.Size(50, 13);
+            this.publisherLabel.Size = new System.Drawing.Size(67, 17);
             this.publisherLabel.TabIndex = 2;
             this.publisherLabel.Text = "Publisher";
             // 
             // genreLabel
             // 
             this.genreLabel.AutoSize = true;
-            this.genreLabel.Location = new System.Drawing.Point(20, 153);
-            this.genreLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.genreLabel.Location = new System.Drawing.Point(27, 188);
             this.genreLabel.Name = "genreLabel";
-            this.genreLabel.Size = new System.Drawing.Size(36, 13);
+            this.genreLabel.Size = new System.Drawing.Size(48, 17);
             this.genreLabel.TabIndex = 3;
             this.genreLabel.Text = "Genre";
             // 
             // isbnLabel
             // 
             this.isbnLabel.AutoSize = true;
-            this.isbnLabel.Location = new System.Drawing.Point(22, 234);
-            this.isbnLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.isbnLabel.Location = new System.Drawing.Point(29, 288);
             this.isbnLabel.Name = "isbnLabel";
-            this.isbnLabel.Size = new System.Drawing.Size(32, 13);
+            this.isbnLabel.Size = new System.Drawing.Size(39, 17);
             this.isbnLabel.TabIndex = 4;
             this.isbnLabel.Text = "ISBN";
             // 
             // titleBox
             // 
-            this.titleBox.Location = new System.Drawing.Point(88, 20);
-            this.titleBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.titleBox.Location = new System.Drawing.Point(118, 24);
             this.titleBox.Name = "titleBox";
-            this.titleBox.Size = new System.Drawing.Size(273, 20);
+            this.titleBox.Size = new System.Drawing.Size(363, 22);
             this.titleBox.TabIndex = 5;
             // 
             // isbnBox
             // 
-            this.isbnBox.Location = new System.Drawing.Point(88, 244);
-            this.isbnBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.isbnBox.Location = new System.Drawing.Point(118, 300);
             this.isbnBox.Name = "isbnBox";
-            this.isbnBox.Size = new System.Drawing.Size(273, 20);
+            this.isbnBox.Size = new System.Drawing.Size(363, 22);
             this.isbnBox.TabIndex = 9;
             // 
             // publisherBox
             // 
-            this.publisherBox.Location = new System.Drawing.Point(88, 130);
-            this.publisherBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.publisherBox.Location = new System.Drawing.Point(117, 160);
             this.publisherBox.Name = "publisherBox";
-            this.publisherBox.Size = new System.Drawing.Size(273, 20);
+            this.publisherBox.Size = new System.Drawing.Size(363, 22);
             this.publisherBox.TabIndex = 7;
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Location = new System.Drawing.Point(88, 266);
-            this.descriptionBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.descriptionBox.Location = new System.Drawing.Point(118, 328);
             this.descriptionBox.Name = "descriptionBox";
-            this.descriptionBox.Size = new System.Drawing.Size(273, 91);
+            this.descriptionBox.Size = new System.Drawing.Size(363, 111);
             this.descriptionBox.TabIndex = 11;
             this.descriptionBox.Text = "";
             // 
             // descriptionLabel
             // 
             this.descriptionLabel.AutoSize = true;
-            this.descriptionLabel.Location = new System.Drawing.Point(20, 266);
-            this.descriptionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.descriptionLabel.Location = new System.Drawing.Point(27, 328);
             this.descriptionLabel.Name = "descriptionLabel";
-            this.descriptionLabel.Size = new System.Drawing.Size(60, 13);
+            this.descriptionLabel.Size = new System.Drawing.Size(79, 17);
             this.descriptionLabel.TabIndex = 11;
             this.descriptionLabel.Text = "Description";
             this.descriptionLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(254, 414);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.saveButton.Location = new System.Drawing.Point(338, 510);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(107, 47);
+            this.saveButton.Size = new System.Drawing.Size(143, 58);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -153,10 +142,9 @@
             // 
             // barcodeBox
             // 
-            this.barcodeBox.Location = new System.Drawing.Point(88, 370);
-            this.barcodeBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barcodeBox.Location = new System.Drawing.Point(118, 455);
             this.barcodeBox.Name = "barcodeBox";
-            this.barcodeBox.Size = new System.Drawing.Size(116, 100);
+            this.barcodeBox.Size = new System.Drawing.Size(155, 123);
             this.barcodeBox.TabIndex = 14;
             this.barcodeBox.TabStop = false;
             // 
@@ -165,18 +153,16 @@
             this.genreBox.CheckOnClick = true;
             this.genreBox.FormattingEnabled = true;
             this.genreBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
-            this.genreBox.Location = new System.Drawing.Point(88, 153);
-            this.genreBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.genreBox.Location = new System.Drawing.Point(117, 188);
             this.genreBox.Name = "genreBox";
-            this.genreBox.Size = new System.Drawing.Size(273, 79);
+            this.genreBox.Size = new System.Drawing.Size(363, 106);
             this.genreBox.TabIndex = 8;
             // 
             // newAuthor
             // 
-            this.newAuthor.Location = new System.Drawing.Point(364, 65);
-            this.newAuthor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.newAuthor.Location = new System.Drawing.Point(486, 80);
             this.newAuthor.Name = "newAuthor";
-            this.newAuthor.Size = new System.Drawing.Size(26, 34);
+            this.newAuthor.Size = new System.Drawing.Size(34, 42);
             this.newAuthor.TabIndex = 15;
             this.newAuthor.Text = "+";
             this.newAuthor.UseVisualStyleBackColor = true;
@@ -185,18 +171,18 @@
             // authorListBox
             // 
             this.authorListBox.FormattingEnabled = true;
-            this.authorListBox.Location = new System.Drawing.Point(87, 42);
-            this.authorListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.authorListBox.ItemHeight = 16;
+            this.authorListBox.Location = new System.Drawing.Point(116, 52);
             this.authorListBox.Name = "authorListBox";
             this.authorListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.authorListBox.Size = new System.Drawing.Size(274, 82);
+            this.authorListBox.Size = new System.Drawing.Size(364, 100);
             this.authorListBox.TabIndex = 6;
             // 
             // AdminForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 479);
+            this.ClientSize = new System.Drawing.Size(535, 590);
             this.Controls.Add(this.authorListBox);
             this.Controls.Add(this.newAuthor);
             this.Controls.Add(this.genreBox);
@@ -212,7 +198,6 @@
             this.Controls.Add(this.publisherLabel);
             this.Controls.Add(this.authorLabel);
             this.Controls.Add(this.titleLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AdminForm";
             this.Text = "AdminForm";
             this.Load += new System.EventHandler(this.AdminForm_Load);

@@ -28,33 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.personalInfoLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // personalInfoLabel
+            // label1
             // 
-            this.personalInfoLabel.AutoEllipsis = true;
-            this.personalInfoLabel.AutoSize = true;
-            this.personalInfoLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.personalInfoLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.personalInfoLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.personalInfoLabel.Location = new System.Drawing.Point(98, 8);
-            this.personalInfoLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.personalInfoLabel.Name = "personalInfoLabel";
-            this.personalInfoLabel.Size = new System.Drawing.Size(306, 36);
-            this.personalInfoLabel.TabIndex = 2;
-            this.personalInfoLabel.Text = "Personal information";
-            this.personalInfoLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label1.AutoEllipsis = true;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Location = new System.Drawing.Point(197, 15);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(622, 72);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Personal information";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // PersonalInfo
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.personalInfoLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Controls.Add(this.label1);
             this.Name = "PersonalInfo";
-            this.Size = new System.Drawing.Size(508, 414);
+            this.Size = new System.Drawing.Size(1017, 796);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -62,6 +61,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label personalInfoLabel;
+        private System.Windows.Forms.Label label1;
     }
 }

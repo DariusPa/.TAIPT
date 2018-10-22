@@ -28,32 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.searchLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.scanBox = new System.Windows.Forms.PictureBox();
             this.scanButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.scanBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // searchLabel
+            // label1
             // 
-            this.searchLabel.AutoSize = true;
-            this.searchLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.searchLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.searchLabel.Location = new System.Drawing.Point(196, 8);
-            this.searchLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.searchLabel.Name = "searchLabel";
-            this.searchLabel.Size = new System.Drawing.Size(115, 36);
-            this.searchLabel.TabIndex = 0;
-            this.searchLabel.Text = "Search";
-            this.searchLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Location = new System.Drawing.Point(261, 10);
+            this.label1.Margin = new System.Windows.Forms.Padding(0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(145, 45);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Search";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // scanBox
             // 
-            this.scanBox.Location = new System.Drawing.Point(37, 93);
-            this.scanBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.scanBox.Location = new System.Drawing.Point(49, 115);
             this.scanBox.Name = "scanBox";
-            this.scanBox.Size = new System.Drawing.Size(425, 294);
+            this.scanBox.Size = new System.Drawing.Size(567, 362);
             this.scanBox.TabIndex = 1;
             this.scanBox.TabStop = false;
             this.scanBox.Visible = false;
@@ -70,25 +69,25 @@
             this.scanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.scanButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.scanButton.ForeColor = System.Drawing.Color.White;
-            this.scanButton.Location = new System.Drawing.Point(202, 184);
+            this.scanButton.Location = new System.Drawing.Point(269, 227);
             this.scanButton.Margin = new System.Windows.Forms.Padding(1);
             this.scanButton.Name = "scanButton";
-            this.scanButton.Size = new System.Drawing.Size(103, 102);
+            this.scanButton.Size = new System.Drawing.Size(137, 126);
             this.scanButton.TabIndex = 6;
             this.scanButton.UseVisualStyleBackColor = false;
             this.scanButton.Click += new System.EventHandler(this.scanButton_Click);
             // 
             // Search
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.scanButton);
             this.Controls.Add(this.scanBox);
-            this.Controls.Add(this.searchLabel);
+            this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Search";
-            this.Size = new System.Drawing.Size(508, 414);
+            this.Size = new System.Drawing.Size(678, 509);
             this.Leave += new System.EventHandler(this.Search_Leave);
             ((System.ComponentModel.ISupportInitialize)(this.scanBox)).EndInit();
             this.ResumeLayout(false);
@@ -98,7 +97,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label searchLabel;
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox scanBox;
         private System.Windows.Forms.Button scanButton;
     }
