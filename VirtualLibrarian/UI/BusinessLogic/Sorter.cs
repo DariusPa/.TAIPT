@@ -8,13 +8,12 @@ using VirtualLibrarian.Model;
 namespace VirtualLibrarian
 {
 
-    class SmartBookComparer : IComparer<Book>
+    class BookComparer : IComparer<Book>
     {
         // The field to compare.
         public enum CompareField
         {
             Title,
-            Author,
             Publisher,
         }
         public CompareField SortBy = CompareField.Title;
@@ -23,12 +22,12 @@ namespace VirtualLibrarian
         {
             switch (SortBy)
             {
-                case CompareField.Title:
-                    return x.Title.CompareTo(y.Title);
                 case CompareField.Publisher:
                     return x.Publisher.CompareTo(y.Publisher);
+                default:
+                    return x.Title.CompareTo(y.Title);
+
             }
-            return x.Title.CompareTo(y.Title);
         }
     }
 
@@ -41,17 +40,14 @@ namespace VirtualLibrarian
             if (books == null) return;
 
             // Make the appropriate comparer.
-            SmartBookComparer sbc = new SmartBookComparer();
+            BookComparer sbc = new BookComparer();
             switch (sortBy.ToLower())
             {
                 case "title":
-                    sbc.SortBy = SmartBookComparer.CompareField.Title;
-                    break;
-                case "author":
-                    sbc.SortBy = SmartBookComparer.CompareField.Author;
+                    sbc.SortBy = BookComparer.CompareField.Title;
                     break;
                 case "publisher":
-                    sbc.SortBy = SmartBookComparer.CompareField.Publisher;
+                    sbc.SortBy = BookComparer.CompareField.Publisher;
                     break;
                 default:
                     throw new ArgumentException("Unknown sortBy argument", "sortBy");

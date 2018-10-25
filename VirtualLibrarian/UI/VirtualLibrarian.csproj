@@ -97,6 +97,7 @@
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
+    <Compile Include="BusinessLogic\Sorter.cs" />
     <Compile Include="Temp\Author.cs" />
     <Compile Include="Temp\Book.cs" />
     <Compile Include="View\AdminForm.cs">
