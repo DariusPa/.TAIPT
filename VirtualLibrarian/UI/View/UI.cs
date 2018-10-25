@@ -5,6 +5,7 @@ using System.Linq;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.BusinessLogic;
+using VirtualLibrarian.Helpers;
 
 
 namespace VirtualLibrarian
@@ -24,10 +25,8 @@ namespace VirtualLibrarian
 
         private void UI_Load(object sender, EventArgs e)
         {
-            // Automatic window position tracking
-            this.WindowState = Properties.Settings.Default.WindowState;
-            this.Location = Properties.Settings.Default.WindowLocation;
-            this.Size = Properties.Settings.Default.UIWindowSize;
+            //loading UI form window parameters
+            AutomaticFormPosition.loadUIFormDelegate(this);
 
             // On load show homepage user control 
             containerPanel.Controls.Add(Homepage.Instance);
@@ -124,19 +123,7 @@ namespace VirtualLibrarian
 
         private void LogoutButton_Click(object sender, EventArgs e)
         {
-            Properties.Settings.Default.WindowState = this.WindowState;
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                Properties.Settings.Default.WindowLocation = this.Location;
-                Properties.Settings.Default.WindowSize = this.Size;
-            }
-            else
-            {
-                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
-                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
-            }
-
-            Properties.Settings.Default.Save();
+            AutomaticFormPosition.SaveFormStatus(this);
             this.Close();
         }
 
@@ -170,22 +157,7 @@ namespace VirtualLibrarian
 
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.WindowState = this.WindowState;
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                // save location and size if the state is normal
-                Properties.Settings.Default.WindowLocation = this.Location;
-                Properties.Settings.Default.WindowSize = this.Size;
-            }
-            else
-            {
-                // save the RestoreBounds if the form is minimized or maximized!
-                Properties.Settings.Default.WindowLocation = this.RestoreBounds.Location;
-                Properties.Settings.Default.WindowSize = this.RestoreBounds.Size;
-            }
-
-            // don't forget to save the settings
-            Properties.Settings.Default.Save();
+            AutomaticFormPosition.SaveFormStatus(this);
             Speaker.TellUser("See you soon.", aiOutput);
             this.Controls.Clear();
         }

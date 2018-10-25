@@ -82,5 +82,29 @@ namespace VirtualLibrarian.Properties {
                 this["StartingWindowLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("636, 554")]
+        public global::System.Drawing.Size StartingWindowSize {
+            get {
+                return ((global::System.Drawing.Size)(this["StartingWindowSize"]));
+            }
+            set {
+                this["StartingWindowSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Normal")]
+        public global::System.Windows.Forms.FormWindowState StartingWindowState {
+            get {
+                return ((global::System.Windows.Forms.FormWindowState)(this["StartingWindowState"]));
+            }
+            set {
+                this["StartingWindowState"] = value;
+            }
+        }
     }
 }

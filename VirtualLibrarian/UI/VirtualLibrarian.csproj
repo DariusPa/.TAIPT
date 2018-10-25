@@ -88,6 +88,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
+    <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
     <Compile Include="Model\Author.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />

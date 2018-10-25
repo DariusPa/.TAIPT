@@ -99,7 +99,7 @@
             // titleBox
             // 
             this.titleBox.Location = new System.Drawing.Point(88, 20);
-            this.titleBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.titleBox.Margin = new System.Windows.Forms.Padding(2);
             this.titleBox.Name = "titleBox";
             this.titleBox.Size = new System.Drawing.Size(273, 20);
             this.titleBox.TabIndex = 5;
@@ -107,7 +107,7 @@
             // isbnBox
             // 
             this.isbnBox.Location = new System.Drawing.Point(88, 244);
-            this.isbnBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.isbnBox.Margin = new System.Windows.Forms.Padding(2);
             this.isbnBox.Name = "isbnBox";
             this.isbnBox.Size = new System.Drawing.Size(273, 20);
             this.isbnBox.TabIndex = 9;
@@ -115,7 +115,7 @@
             // publisherBox
             // 
             this.publisherBox.Location = new System.Drawing.Point(88, 130);
-            this.publisherBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.publisherBox.Margin = new System.Windows.Forms.Padding(2);
             this.publisherBox.Name = "publisherBox";
             this.publisherBox.Size = new System.Drawing.Size(273, 20);
             this.publisherBox.TabIndex = 7;
@@ -123,7 +123,7 @@
             // descriptionBox
             // 
             this.descriptionBox.Location = new System.Drawing.Point(88, 266);
-            this.descriptionBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.descriptionBox.Margin = new System.Windows.Forms.Padding(2);
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(273, 91);
             this.descriptionBox.TabIndex = 11;
@@ -143,7 +143,7 @@
             // saveButton
             // 
             this.saveButton.Location = new System.Drawing.Point(254, 414);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(2);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(107, 47);
             this.saveButton.TabIndex = 12;
@@ -154,7 +154,7 @@
             // barcodeBox
             // 
             this.barcodeBox.Location = new System.Drawing.Point(88, 370);
-            this.barcodeBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barcodeBox.Margin = new System.Windows.Forms.Padding(2);
             this.barcodeBox.Name = "barcodeBox";
             this.barcodeBox.Size = new System.Drawing.Size(116, 100);
             this.barcodeBox.TabIndex = 14;
@@ -166,7 +166,7 @@
             this.genreBox.FormattingEnabled = true;
             this.genreBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.genreBox.Location = new System.Drawing.Point(88, 153);
-            this.genreBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.genreBox.Margin = new System.Windows.Forms.Padding(2);
             this.genreBox.Name = "genreBox";
             this.genreBox.Size = new System.Drawing.Size(273, 79);
             this.genreBox.TabIndex = 8;
@@ -174,7 +174,7 @@
             // newAuthor
             // 
             this.newAuthor.Location = new System.Drawing.Point(364, 65);
-            this.newAuthor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.newAuthor.Margin = new System.Windows.Forms.Padding(2);
             this.newAuthor.Name = "newAuthor";
             this.newAuthor.Size = new System.Drawing.Size(26, 34);
             this.newAuthor.TabIndex = 15;
@@ -186,7 +186,7 @@
             // 
             this.authorListBox.FormattingEnabled = true;
             this.authorListBox.Location = new System.Drawing.Point(87, 42);
-            this.authorListBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.authorListBox.Margin = new System.Windows.Forms.Padding(2);
             this.authorListBox.Name = "authorListBox";
             this.authorListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.authorListBox.Size = new System.Drawing.Size(274, 82);
@@ -212,7 +212,7 @@
             this.Controls.Add(this.publisherLabel);
             this.Controls.Add(this.authorLabel);
             this.Controls.Add(this.titleLabel);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AdminForm";
             this.Text = "AdminForm";
             this.Load += new System.EventHandler(this.AdminForm_Load);
