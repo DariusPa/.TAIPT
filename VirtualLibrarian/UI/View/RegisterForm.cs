@@ -18,9 +18,6 @@ namespace VirtualLibrarian
         public RegisterForm(IUserModel user)
         {
             User = user;
-            //WindowState = FormWindowState.Maximized;
-            //StartPosition = FormStartPosition.Manual;
-            //Location = new Point(0, 0);
             InitializeComponent();
             faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
@@ -75,12 +72,12 @@ namespace VirtualLibrarian
 
         private void RegisterForm_Load(object sender, EventArgs e)
         {
-            AutomaticFormPosition.loadAutoFormSizeDelegate(this);
+            AutomaticFormPosition.loadingFormDelegate(this);
         }
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AutomaticFormPosition.SaveFormStatus(this);
+            //AutomaticFormPosition.SaveFormStatus(this);
         }
     }
 }

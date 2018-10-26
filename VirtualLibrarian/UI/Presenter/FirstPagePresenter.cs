@@ -44,6 +44,7 @@ namespace VirtualLibrarian.Presenter
 
         private void ShowFirstPage(object sender, EventArgs e)
         {
+            AutomaticFormPosition.loadingFormDelegate(FirstPage);
             FirstPage.Show();
         }
 

@@ -96,6 +96,7 @@ namespace VirtualLibrarian
             Hide();
         }
 
+
         public delegate void RegisterEventHandler(object sender, UserRelatedEventArgs e);
     }
 }
