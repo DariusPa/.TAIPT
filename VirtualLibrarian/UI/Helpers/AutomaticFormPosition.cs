@@ -78,7 +78,7 @@ namespace VirtualLibrarian.Helpers
 
         public static void SaveFormStatus(Form form)
         {
-            Properties.Settings.Default.WindowState = form. WindowState;
+            Properties.Settings.Default.WindowState = form.WindowState;
             Properties.Settings.Default.WindowLocation = form.Location;
             if (form.WindowState == FormWindowState.Normal)
             {
