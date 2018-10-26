@@ -18,6 +18,9 @@ namespace VirtualLibrarian
         public RegisterForm(IUserModel user)
         {
             User = user;
+            //WindowState = FormWindowState.Maximized;
+            //StartPosition = FormStartPosition.Manual;
+            //Location = new Point(0, 0);
             InitializeComponent();
             faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
@@ -37,7 +40,7 @@ namespace VirtualLibrarian
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.StartSaving();
+            faceCam.StartSaving(progressBar);
             cancelButton.Hide();
             saveFaceButton.Hide();
         }
