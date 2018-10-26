@@ -60,6 +60,7 @@ namespace VirtualLibrarian
             {
                 MessageBox.Show("Information missing.");
             }
+            AutomaticFormPosition.SaveFormStatus(this);
         }
 
         private void ShowBarcode(object sender, BarcodeGeneratedEventArgs e)
@@ -71,6 +72,7 @@ namespace VirtualLibrarian
 
         private void AdminForm_Load(object sender, EventArgs e)
         {
+            AutomaticFormPosition.LoadAutoPosition(this);
             authorListBox.ClearSelected();
             genreBox.ClearSelected();
             
