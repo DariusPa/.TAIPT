@@ -1,6 +1,6 @@
 ﻿namespace VirtualLibrarian
 {
-    partial class ReturnBook
+    partial class TakeBook
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,25 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.returnBookLabel = new System.Windows.Forms.Label();
+            this.personalInfoLabel = new System.Windows.Forms.Label();
             this.scanButton = new System.Windows.Forms.Button();
             this.scanBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.scanBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // returnBookLabel
+            // personalInfoLabel
             // 
-            this.returnBookLabel.AutoSize = true;
-            this.returnBookLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.returnBookLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.returnBookLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.returnBookLabel.Location = new System.Drawing.Point(387, 19);
-            this.returnBookLabel.Margin = new System.Windows.Forms.Padding(0);
-            this.returnBookLabel.Name = "returnBookLabel";
-            this.returnBookLabel.Size = new System.Drawing.Size(537, 89);
-            this.returnBookLabel.TabIndex = 1;
-            this.returnBookLabel.Text = "Return a book";
-            this.returnBookLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.personalInfoLabel.AutoEllipsis = true;
+            this.personalInfoLabel.AutoSize = true;
+            this.personalInfoLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.personalInfoLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
+            this.personalInfoLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.personalInfoLabel.Location = new System.Drawing.Point(454, 16);
+            this.personalInfoLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.personalInfoLabel.Name = "personalInfoLabel";
+            this.personalInfoLabel.Size = new System.Drawing.Size(467, 89);
+            this.personalInfoLabel.TabIndex = 2;
+            this.personalInfoLabel.Text = "Take a book";
+            this.personalInfoLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // scanButton
             // 
@@ -60,45 +61,46 @@
             this.scanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.scanButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
             this.scanButton.ForeColor = System.Drawing.Color.White;
-            this.scanButton.Location = new System.Drawing.Point(543, 406);
+            this.scanButton.Location = new System.Drawing.Point(551, 405);
             this.scanButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.scanButton.Name = "scanButton";
             this.scanButton.Size = new System.Drawing.Size(275, 243);
-            this.scanButton.TabIndex = 10;
+            this.scanButton.TabIndex = 8;
             this.scanButton.UseVisualStyleBackColor = false;
             this.scanButton.Click += new System.EventHandler(this.ScanButton_Click);
+
             // 
             // scanBox
             // 
-            this.scanBox.Location = new System.Drawing.Point(103, 189);
+            this.scanBox.Location = new System.Drawing.Point(111, 188);
             this.scanBox.Margin = new System.Windows.Forms.Padding(5);
             this.scanBox.Name = "scanBox";
             this.scanBox.Size = new System.Drawing.Size(1133, 701);
-            this.scanBox.TabIndex = 9;
+            this.scanBox.TabIndex = 7;
             this.scanBox.TabStop = false;
             this.scanBox.Visible = false;
             // 
-            // ReturnBook
+            // TakeBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.scanButton);
             this.Controls.Add(this.scanBox);
-            this.Controls.Add(this.returnBookLabel);
+            this.Controls.Add(this.personalInfoLabel);
             this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.Name = "ReturnBook";
+            this.Name = "TakeBook";
             this.Size = new System.Drawing.Size(1355, 987);
             ((System.ComponentModel.ISupportInitialize)(this.scanBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.Leave += new System.EventHandler(this.ReturnBook_Leave);
+            this.Leave += new System.EventHandler(this.TakeBook_Leave);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label returnBookLabel;
+        private System.Windows.Forms.Label personalInfoLabel;
         private System.Windows.Forms.Button scanButton;
         private System.Windows.Forms.PictureBox scanBox;
     }

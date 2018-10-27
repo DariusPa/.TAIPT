@@ -39,16 +39,16 @@ namespace VirtualLibrarian
                 && !string.IsNullOrWhiteSpace(genreBox.Text))
             {
                 BookGenre genres = new BookGenre();
-                List<Author> authors = new List<Author>();
+                List<int> authors = new List<int>();
 
                 foreach (var genre in genreBox.CheckedItems)
                 {
                     genres = genres | (BookGenre)Enum.Parse(typeof(BookGenre), genre.ToString());
                 }
 
-                foreach (var author in authorListBox.SelectedItems)
+                foreach (Author author in authorListBox.SelectedItems)
                 {
-                    authors.Add((Author)author);
+                    authors.Add(author.ID);
                 }
                 Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authors: authors, 
                                     publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
@@ -83,7 +83,7 @@ namespace VirtualLibrarian
             
             foreach(var control in Controls)
             {
-                if (control is TextBox) ((TextBox)control).Clear();
+                if (control is TextBox || control is RichTextBox) ((TextBoxBase)control).Clear();
                 if (control is ListBox) ((ListBox)control).ClearSelected();
                 if (control is CheckedListBox)
                 {

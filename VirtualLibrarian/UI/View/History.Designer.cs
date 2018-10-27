@@ -41,36 +41,44 @@
             this.label1.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.AppWorkspace;
             this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label1.Location = new System.Drawing.Point(197, 8);
+            this.label1.Location = new System.Drawing.Point(525, 19);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 36);
+            this.label1.Size = new System.Drawing.Size(286, 89);
             this.label1.TabIndex = 2;
             this.label1.Text = "History";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // historyDataGrid
             // 
+            this.historyDataGrid.AllowUserToAddRows = false;
+            this.historyDataGrid.AllowUserToDeleteRows = false;
+            this.historyDataGrid.AllowUserToResizeRows = false;
             this.historyDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.historyDataGrid.BackgroundColor = System.Drawing.Color.White;
             this.historyDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.historyDataGrid.Location = new System.Drawing.Point(22, 62);
-            this.historyDataGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.historyDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.historyDataGrid.Location = new System.Drawing.Point(59, 148);
+            this.historyDataGrid.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.historyDataGrid.MultiSelect = false;
             this.historyDataGrid.Name = "historyDataGrid";
+            this.historyDataGrid.ReadOnly = true;
             this.historyDataGrid.RowTemplate.Height = 24;
-            this.historyDataGrid.Size = new System.Drawing.Size(445, 312);
+            this.historyDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.historyDataGrid.ShowEditingIcon = false;
+            this.historyDataGrid.Size = new System.Drawing.Size(1187, 744);
             this.historyDataGrid.TabIndex = 3;
             // 
             // History
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.historyDataGrid);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "History";
-            this.Size = new System.Drawing.Size(508, 414);
+            this.Size = new System.Drawing.Size(1355, 987);
             ((System.ComponentModel.ISupportInitialize)(this.historyDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

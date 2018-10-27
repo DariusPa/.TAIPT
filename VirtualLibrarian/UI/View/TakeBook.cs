@@ -7,30 +7,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using VirtualLibrarian.Data;
-using VirtualLibrarian.Model;
-using VirtualLibrarian.Helpers;
 using VirtualLibrarian.BusinessLogic;
+using VirtualLibrarian.Helpers;
 
 namespace VirtualLibrarian
 {
-    public partial class ReturnBook : UserControl
+    public partial class TakeBook : UserControl
     {
-        private static ReturnBook _instance;
+        private static TakeBook _instance;
+
         public BarcodeCamera barcodeCamera;
         public string DetectedBook;
 
-        public static ReturnBook Instance
+        public static TakeBook Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new ReturnBook();
+                    _instance = new TakeBook();
                 return _instance;
             }
         }
 
-        public ReturnBook()
+        public TakeBook()
         {
             InitializeComponent();
             barcodeCamera = new BarcodeCamera();
@@ -49,7 +48,7 @@ namespace VirtualLibrarian
             scanBox.Image = e.Frame;
         }
 
-        private void ReturnBook_Leave(object sender, EventArgs e)
+        private void TakeBook_Leave(object sender, EventArgs e)
         {
             barcodeCamera.StopStreaming();
             scanBox.Hide();
@@ -60,6 +59,5 @@ namespace VirtualLibrarian
         {
             BeginInvoke(new Action(() => { scanBox.Hide(); scanButton.Show(); }));
         }
-
     }
 }

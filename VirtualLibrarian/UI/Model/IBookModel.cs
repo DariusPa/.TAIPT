@@ -9,7 +9,7 @@ namespace VirtualLibrarian.Model
     public interface IBookModel
     {
         string Title { get; set; }
-        List<Author> Authors { get; set; }
+        List<int> Authors { get; set; }
         string Publisher { get; set; }
         string ISBN { get; set; }
         string Description { get; set; }
@@ -17,6 +17,9 @@ namespace VirtualLibrarian.Model
         BookGenre Genre { get; set; }
         Status Status { get; }
         int ReaderID { get; }
+        DateTime IssueDate { get; set; }
+        DateTime ReturnDate { get; set; }
+        int LendingMonths { get; set; }
 
         void Issue(IUserModel reader);
         void Return();

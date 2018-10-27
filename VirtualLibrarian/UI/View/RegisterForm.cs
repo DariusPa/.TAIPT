@@ -84,7 +84,11 @@ namespace VirtualLibrarian
 
         private void UpdateProgressBar(object sender, EventArgs e)
         {
-            BeginInvoke(new Action(()=>progressBar.Value += 1));
+            BeginInvoke(new Action(()=>
+            {
+                if (progressBar != null)
+                    progressBar.Value += 1;
+            }));
         }
     }
 }
