@@ -30,7 +30,7 @@ namespace VirtualLibrarian.Presenter
         private void OnBookDetected(object sender, BarcodeDetectedEventArgs e)
         {
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
-            if (ActiveUser != null && book != null && LibraryDataIO.Instance.IssueBookToReader(ActiveUser, book))
+            if (ActiveUser != null && book != null && LibraryManager.IssueBookToReader(ActiveUser, book))
             {
                 ui.Speaker.TellUser("Book has been successfully issued to you.",ui.AI);
             }
@@ -41,7 +41,7 @@ namespace VirtualLibrarian.Presenter
         private void OnBookReturn(object sender, BarcodeDetectedEventArgs e)
         {
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
-            if (LibraryDataIO.Instance.ReturnBook(ActiveUser, book))
+            if (LibraryManager.ReturnBook(ActiveUser, book))
                 ui.Speaker.TellUser("You successfully returned the book.", ui.AI);
             else ui.Speaker.TellUser("Returning failed! You might have returned this book earlier or it had been taken by another user.",ui.AI);
             ReturnBook.Instance.HideScanner();

@@ -8,6 +8,11 @@ namespace VirtualLibrarian
     public partial class Search : UserControl
     {
         private static Search _instance;
+        public DataGridView libraryGrid
+        {
+            get { return libraryBooksGrid; }
+        }
+        public TextBox searchText { get { return searchBox; } }
 
         public static Search Instance
         {
