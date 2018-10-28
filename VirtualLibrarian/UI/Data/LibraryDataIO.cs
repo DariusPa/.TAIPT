@@ -165,7 +165,7 @@ namespace VirtualLibrarian.Data
 
         public bool ReturnBook(IUserModel reader, IBookModel book)
         {
-            if (reader.ReadingsID.Contains(book.ID) && book.ReaderID == reader.ID)
+            if (reader.TakenBooks.Contains(book.ID) && book.ReaderID == reader.ID)
             {
                 book.Return();
                 reader.ReturnBook(book);

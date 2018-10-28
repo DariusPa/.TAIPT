@@ -6,14 +6,16 @@ using VirtualLibrarian.Model;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Helpers;
-
+using System.Collections.Generic;
 
 namespace VirtualLibrarian
 {
     public partial class UI : Form
     {
         public IUserModel User { get; set; }
-		private SpeakingAI Speaker = new SpeakingAI();
+		public SpeakingAI Speaker { get; set; } = new SpeakingAI();
+        public AI AI { get { return aiOutput; } }
+
 
         public UI(IUserModel User) 
         {
@@ -45,7 +47,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can find a book which you want to take.", aiOutput);
+            Speaker.TellUser("Here you can search for books in the library and see if they are available for lending.", aiOutput);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -56,22 +58,22 @@ namespace VirtualLibrarian
                 Search.Instance.BringToFront();
         }
 
-        private void PersonalInfoButton_Click(object sender, EventArgs e)
+        private void TakeBookButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your personal information.", aiOutput);
-            if (!containerPanel.Controls.Contains(PersonalInfo.Instance))
+            Speaker.TellUser("Scan the QR code of the book you want to take.", aiOutput);
+            if (!containerPanel.Controls.Contains(TakeBook.Instance))
             {
-                containerPanel.Controls.Add(PersonalInfo.Instance);
-                PersonalInfo.Instance.Dock = DockStyle.Fill;
-                PersonalInfo.Instance.BringToFront();
+                containerPanel.Controls.Add(TakeBook.Instance);
+                TakeBook.Instance.Dock = DockStyle.Fill;
+                TakeBook.Instance.BringToFront();
             }
             else
-                PersonalInfo.Instance.BringToFront();
+                TakeBook.Instance.BringToFront();
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can return a book.", aiOutput);
+            Speaker.TellUser("Here you can return a book. Scan the QR code of the book you have previously taken.", aiOutput);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -81,23 +83,9 @@ namespace VirtualLibrarian
             else
                 ReturnBook.Instance.BringToFront();
 
-            RefreshDataGrid();
         }
 
-        //TODO: write interfaces to use this method for different controls
-        public void RefreshDataGrid()
-        {
-            // Query syntax
-            //var query = from s in LibraryDataIO.Instance.Books
-            //            where s.ReaderID == User.ID
-            //            select new { s.ID, s.Title };
-
-            // Method syntax
-            var query = LibraryDataIO.Instance.Books.Where(s => s.ReaderID == User.ID).Select(s => new { s.ID, s.Title });
-
-            ReturnBook.Instance.dataGridView.DataSource = query.ToList();
-        }
-
+        //TODO: linq union with book history and reserved books
         private void HistoryButton_Click(object sender, EventArgs e)
         {
             Speaker.TellUser("Here you can see your readings history.", aiOutput);
@@ -110,22 +98,36 @@ namespace VirtualLibrarian
             else
                 History.Instance.BringToFront();
 
+            var takenBooks = User.TakenBooks
+                .Join(LibraryDataIO.Instance.Books, 
+                      takenBook => takenBook, 
+                      libraryBook => libraryBook.ID,
+                      (takenBook, libraryBook) => new {
+                       libraryBook.Title,
+                       Author = string.Join(",",libraryBook.Authors
+                       .Join(LibraryDataIO.Instance.Authors,
+                       author => author,
+                       lbAuthor => lbAuthor.ID,
+                       (author, lbAuthor) => lbAuthor.FullName)),
+                       Status = "Currently taken"});
 
-            var booksByAuthor = Temp.Author.GetAllAuthors()
-                                     .GroupJoin(Temp.Book.GetAllBooks(),
-                                               a => a.ID,
-                                               b => b.AuthorID,
-                                               (a, b) => new
-                                               {
-                                                   Author = a.Name,
-                                                   Books = b.Last().Title
-                                               });
-            //var booksByAuthor = from a in Temp.Author.GetAllAuthors()
-            //                    join b in Temp.Book.GetAllBooks()
-            //                    on a.ID equals b.AuthorID
-            //                    select new { Author = a.Name, Book = b.Title };
+            var bookHistory = User.History
+                .Join(LibraryDataIO.Instance.Books,
+                      readBook => readBook.BookID,
+                      libraryBook => libraryBook.ID,
+                      (readBook, libraryBook) => new {
+                          libraryBook.Title,
+                          Author = string.Join(",", libraryBook.Authors
+                       .Join(LibraryDataIO.Instance.Authors,
+                       author => author,
+                       lbAuthor => lbAuthor.ID,
+                       (author, lbAuthor) => lbAuthor.FullName)),
+                          Status = $"Lending period: {readBook.IssueDate:yyyy/MM/dd} - {readBook.ReturnDate:yyyy/MM/dd}"
+                      });
 
-            History.Instance.dataGridView.DataSource = booksByAuthor.ToList();
+            var history = takenBooks.Concat(bookHistory);
+
+            History.Instance.dataGridView.DataSource = history.ToList();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
@@ -155,18 +157,9 @@ namespace VirtualLibrarian
             Btn.FlatAppearance.BorderSize = 0;
         }
 
-        public void SendString(string text)
-        {
-            if (text == "success")
-            {
-                MessageBox.Show("ok");
-                this.Show();
-            }
-        }
-
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser("Welcome, " + User.Name, aiOutput);
+            Speaker.TellUser($"Welcome, {User.Name}!", aiOutput);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)

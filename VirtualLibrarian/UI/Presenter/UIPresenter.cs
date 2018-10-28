@@ -15,8 +15,8 @@ namespace VirtualLibrarian.Presenter
 
         public UIPresenter()
         {
-            Search.Instance.barcodeCamera.BarcodeDetected += OnBookDetected;
-            ReturnBook.Instance.BookReturn += OnBookReturn;
+            TakeBook.Instance.barcodeCamera.BarcodeDetected += OnBookDetected;
+            ReturnBook.Instance.barcodeCamera.BarcodeDetected += OnBookReturn;
         }
 
         public void PrepareUI(IUserModel activeUser)
@@ -32,17 +32,20 @@ namespace VirtualLibrarian.Presenter
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
             if (ActiveUser != null && book != null && LibraryDataIO.Instance.IssueBookToReader(ActiveUser, book))
             {
-                MessageBox.Show("OK");
+                ui.Speaker.TellUser("Book has been successfully issued to you.",ui.AI);
             }
-            else MessageBox.Show("Issuing failed!");
-            Search.Instance.HideScanner();
+            else ui.Speaker.TellUser("Issuing failed!", ui.AI);
+            TakeBook.Instance.HideScanner();
         }
 
-        private void OnBookReturn(object sender, BookRelatedEventArgs e)
+        private void OnBookReturn(object sender, BarcodeDetectedEventArgs e)
         {
-            if (!LibraryDataIO.Instance.ReturnBook(ActiveUser, e.Book))
-                MessageBox.Show("Error occured");
-            ui.RefreshDataGrid();
+            var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
+            if (LibraryDataIO.Instance.ReturnBook(ActiveUser, book))
+                ui.Speaker.TellUser("You successfully returned the book.", ui.AI);
+            else ui.Speaker.TellUser("Returning failed! You might have returned this book earlier or it had been taken by another user.",ui.AI);
+            ReturnBook.Instance.HideScanner();
+            
         }
 
         private void OnUiClose(object sender, EventArgs e)

@@ -95,6 +95,7 @@
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\ReadingHistory.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
@@ -178,11 +179,11 @@
     <Compile Include="View\Homepage.Designer.cs">
       <DependentUpon>Homepage.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\PersonalInfo.cs">
+    <Compile Include="View\TakeBook.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\PersonalInfo.Designer.cs">
-      <DependentUpon>PersonalInfo.cs</DependentUpon>
+    <Compile Include="View\TakeBook.Designer.cs">
+      <DependentUpon>TakeBook.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -233,8 +234,8 @@
     <EmbeddedResource Include="View\Homepage.resx">
       <DependentUpon>Homepage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\PersonalInfo.resx">
-      <DependentUpon>PersonalInfo.cs</DependentUpon>
+    <EmbeddedResource Include="View\TakeBook.resx">
+      <DependentUpon>TakeBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

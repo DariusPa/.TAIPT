@@ -23,6 +23,8 @@ namespace VirtualLibrarian
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
             faceCam.NewUserRegistered += OnNewUserRegistered;
             faceCam.FrameGrabbed += OnFrameGrabbed;
+            faceCam.FacePhotoSaved += UpdateProgressBar;
+            progressBar.Maximum = faceCam.PicturesPerUser;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -37,7 +39,7 @@ namespace VirtualLibrarian
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.StartSaving(progressBar);
+            faceCam.StartSaving();
             cancelButton.Hide();
             saveFaceButton.Hide();
         }
@@ -52,7 +54,7 @@ namespace VirtualLibrarian
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
         {
             User = LibraryDataIO.Instance.FindUser(e.Label);
-            MessageBox.Show(string.Format("User is already registered as {0} {1} !", User.Name, User.Surname));
+            MessageBox.Show($"User is already registered as {User.Name} {User.Surname} !");
             BeginInvoke(new Action(() => Close()));
         }
 
@@ -78,6 +80,15 @@ namespace VirtualLibrarian
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //AutomaticFormPosition.SaveFormStatus(this);
+        }
+
+        private void UpdateProgressBar(object sender, EventArgs e)
+        {
+            BeginInvoke(new Action(()=>
+            {
+                if (progressBar != null)
+                    progressBar.Value += 1;
+            }));
         }
     }
 }

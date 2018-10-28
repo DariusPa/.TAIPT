@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace VirtualLibrarian.BusinessLogic
 {
-    class SpeakingAI
+    public class SpeakingAI
     {
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private string text = "";
@@ -27,7 +27,7 @@ namespace VirtualLibrarian.BusinessLogic
             lbl = ai1.guideLabel;
             t = new Thread(new ThreadStart(WriteSlowly));
             t.Start();
-            ai1.guideLabel.Text = "";
+            //ai1.guideLabel.Text = "";
             this.text = msg;
             show = true;
             restart = true;

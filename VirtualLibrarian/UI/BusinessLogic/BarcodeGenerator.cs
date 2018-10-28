@@ -21,7 +21,7 @@ namespace VirtualLibrarian.BusinessLogic
 
         public Image GenerateBarcode(int value)
         {
-            var filePath = string.Format("{0}\\{1}.bmp", barcodeDir, value);
+            var filePath = $"{barcodeDir}\\{value}.bmp";
             barcodeWriter.Write((value).ToString()).Save(filePath);
             return Image.FromFile(filePath);
         }

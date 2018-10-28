@@ -33,7 +33,7 @@ namespace VirtualLibrarian.BusinessLogic
         private bool isTrained = false;
         private int faceCount;
         private Size camSize;
-        private int picturesPerUser = 10;
+        public int PicturesPerUser { get; private set; }
         private Image<Gray, Byte> detectedFace;
 
         private bool saved;
@@ -41,11 +41,13 @@ namespace VirtualLibrarian.BusinessLogic
         public event FrameGrabbedEventHandler FrameGrabbed;
         public event FaceRecognisedEventHandler ExistingUserRecognised;
         public event FaceRecognisedEventHandler NewUserRegistered;
+        public event EventHandler FacePhotoSaved;
 
         public string userLabel;
 
-        public FaceCamera(int camWidth, int camHeight, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
+        public FaceCamera(int camWidth, int camHeight, int picturesPerUser=10, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
         {
+            PicturesPerUser = picturesPerUser;
             facesPath = LibraryDataIO.Instance.DirectoryPath + facesDir;
             this.labelFile = LibraryDataIO.Instance.DirectoryPath + labelFile;
             this.eigenThresh = eigenThresh;
@@ -126,21 +128,21 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public void StartSaving(ProgressBar progressBar)
+        public void StartSaving()
         {
-            progressBar.Maximum = picturesPerUser;
-            Thread saveFace = new Thread(() => SaveNewFace(userLabel, progressBar));
+            
+            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
             saveFace.Start();
         }
 
-        private void SaveNewFace(String label, ProgressBar progressBar)
+        private void SaveNewFace(string label)
         {
             List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
             List<String> faceLabelsTemp = new List<String>();
             List<int> faceIDTemp = new List<int>();
             int faceCountTemp = faceCount;
 
-            for (int picturesSaved = 0; picturesSaved < picturesPerUser;)
+            for (int picturesSaved = 0; picturesSaved < PicturesPerUser;)
             {
                 if (detectedFace != null)
                 {
@@ -148,25 +150,19 @@ namespace VirtualLibrarian.BusinessLogic
                     faceLabelsTemp.Add(label);
                     faceIDTemp.Add(++faceCountTemp);
                     picturesSaved++;
+                    FacePhotoSaved?.Invoke(this, EventArgs.Empty);
                     Thread.Sleep(500);
                 }
             }
             /*New faces are added in one transaction to avoid the bug of saving empty images when
             process terminates after recognising that the 'new' person already exists in the database*/
-            for(int i = 0; i < picturesPerUser; i++)
+            for(int i = 0; i < PicturesPerUser; i++)
             {
-                progressBar.BeginInvoke(
-                     new Action(() =>
-                     {
-                         progressBar.Value += 1;
-                     }
-                 ));
-                trainedFacesTemp[i].Save(String.Format("{0}\\{1}.bmp", facesPath,faceCount));
+                trainedFacesTemp[i].Save($"{facesPath}\\{faceCount}.bmp");
                 File.AppendAllText(labelFile, label + "%");
                 trainedFaces.Add(trainedFacesTemp[i]);
                 faceLabels.Add(faceLabelsTemp[i]);
                 faceID.Add(++faceCount);
-
             }
             //NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
             saved = true;
@@ -252,7 +248,6 @@ namespace VirtualLibrarian.BusinessLogic
 
             return framedPhoto;
         }
-
 
 
 
