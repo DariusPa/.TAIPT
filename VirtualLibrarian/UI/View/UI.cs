@@ -7,6 +7,8 @@ using VirtualLibrarian.Data;
 using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Helpers;
 using System.Collections.Generic;
+using System.Data;
+using System.Text;
 
 namespace VirtualLibrarian
 {
@@ -15,6 +17,7 @@ namespace VirtualLibrarian
         public IUserModel User { get; set; }
 		public SpeakingAI Speaker { get; set; } = new SpeakingAI();
         public AI AI { get { return aiOutput; } }
+        private DataTable dtLibraryBook;
 
 
         public UI(IUserModel User) 
@@ -45,6 +48,7 @@ namespace VirtualLibrarian
             }
         }
 
+        //TODO: hide columns that should not be shown to user & add author column
         private void SearchButton_Click(object sender, EventArgs e)
         {
             Speaker.TellUser("Here you can search for books in the library and see if they are available for lending.", aiOutput);
@@ -53,9 +57,30 @@ namespace VirtualLibrarian
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
                 Search.Instance.BringToFront();
+                Search.Instance.searchText.TextChanged += FilterLibraryBooks;
+                dtLibraryBook = ListConverter.ToDataTable(LibraryDataIO.Instance.Books);
+                DataColumn dcRowString = dtLibraryBook.Columns.Add("_RowString", typeof(string));
+                foreach (DataRow dataRow in dtLibraryBook.Rows)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < dtLibraryBook.Columns.Count - 1; i++)
+                    {
+                        sb.Append(dataRow[i].ToString());
+                        sb.Append("\t");
+                    }
+                    dataRow[dcRowString] = sb.ToString();
+                }
+                Search.Instance.libraryGrid.DataSource = dtLibraryBook;
+                Search.Instance.libraryGrid.Columns["_RowString"].Visible = false;
+
             }
             else
                 Search.Instance.BringToFront();
+        }
+
+        private void FilterLibraryBooks(object sender, EventArgs e)
+        {
+            dtLibraryBook.DefaultView.RowFilter = $"[_RowString] LIKE '%{Search.Instance.searchText.Text}%'";
         }
 
         private void TakeBookButton_Click(object sender, EventArgs e)
@@ -109,7 +134,8 @@ namespace VirtualLibrarian
                        author => author,
                        lbAuthor => lbAuthor.ID,
                        (author, lbAuthor) => lbAuthor.FullName)),
-                       Status = "Currently taken"});
+                       Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
+                       Returned = "Currently taken"});
 
             var bookHistory = User.History
                 .Join(LibraryDataIO.Instance.Books,
@@ -122,12 +148,13 @@ namespace VirtualLibrarian
                        author => author,
                        lbAuthor => lbAuthor.ID,
                        (author, lbAuthor) => lbAuthor.FullName)),
-                          Status = $"Lending period: {readBook.IssueDate:yyyy/MM/dd} - {readBook.ReturnDate:yyyy/MM/dd}"
+                       Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
+                       Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
                       });
 
             var history = takenBooks.Concat(bookHistory);
 
-            History.Instance.dataGridView.DataSource = history.ToList();
+            History.Instance.historyGrid.DataSource = history.ToList();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)

@@ -43,10 +43,6 @@ namespace VirtualLibrarian.Data
             {
                 TypeNameHandling = TypeNameHandling.All,
             }));
-
-            //SerializeAuthors();
-            //SerializeBooks();
-            //SerializeUsers();
         }
 
         public void SerializeAuthors()
@@ -129,16 +125,6 @@ namespace VirtualLibrarian.Data
             SerializeAuthors();
         }
 
-        public List<IBookModel> GetBooks()
-        {
-            return Books;
-        }
-
-        public List<IUserModel> GetUsers()
-        {
-            return Users;
-        }
-
         public IUserModel FindUser(string label)
         {
             return Instance.Users.Find(x => x.ID == int.Parse(label));
@@ -150,29 +136,7 @@ namespace VirtualLibrarian.Data
         }
 
 
-        //TODO: move to a separate class
-        public bool IssueBookToReader(IUserModel reader, IBookModel book)
-        {
-            if (book.Status == Status.Available)
-            {
-                book.Issue(reader);
-                reader.TakeBook(book);
-                SerializeData();
-                return true;
-            }
-            else return false;
-        }
 
-        public bool ReturnBook(IUserModel reader, IBookModel book)
-        {
-            if (reader.TakenBooks.Contains(book.ID) && book.ReaderID == reader.ID)
-            {
-                book.Return();
-                reader.ReturnBook(book);
-                SerializeData();
-                return true;
-            }
-            else return false;
-        }
+
     }
 }

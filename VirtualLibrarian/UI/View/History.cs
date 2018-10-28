@@ -13,7 +13,7 @@ namespace VirtualLibrarian
     public partial class History : UserControl
     {
         private static History _instance;
-        public DataGridView dataGridView
+        public DataGridView historyGrid
         {
             get { return historyDataGrid; }
             set { historyDataGrid = value; }
