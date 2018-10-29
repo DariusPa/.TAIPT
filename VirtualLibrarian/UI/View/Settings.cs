@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
 {
     public partial class Settings : UserControl
     {
         private static Settings _instance;
+        public IUserModel User { get; set; }
 
         public static Settings Instance
         {
@@ -26,6 +28,17 @@ namespace VirtualLibrarian
         public Settings()
         {
             InitializeComponent();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+           if(checkBox1.Checked)
+            {
+                checkBox1.BackgroundImage = Properties.Resources._checked;
+            } else
+            {
+                checkBox1.BackgroundImage = Properties.Resources._unchecked;
+            }
         }
     }
 }
