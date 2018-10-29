@@ -47,7 +47,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can search for books in the library and see if they are available for lending.", aiOutput);
+            Speaker.TellUser(StringConstants.aiSearchLibraryGreeting, aiOutput);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -60,7 +60,7 @@ namespace VirtualLibrarian
 
         private void TakeBookButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Scan the QR code of the book you want to take.", aiOutput);
+            Speaker.TellUser(StringConstants.aiScanBookQRString, aiOutput);
             if (!containerPanel.Controls.Contains(TakeBook.Instance))
             {
                 containerPanel.Controls.Add(TakeBook.Instance);
@@ -73,7 +73,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can return a book. Scan the QR code of the book you have previously taken.", aiOutput);
+            Speaker.TellUser(StringConstants.aiReturnBookString, aiOutput);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -88,7 +88,7 @@ namespace VirtualLibrarian
         //TODO: linq union with book history and reserved books
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can see your readings history.", aiOutput);
+            Speaker.TellUser(StringConstants.aiReadingHistoryGreeting, aiOutput);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -109,7 +109,7 @@ namespace VirtualLibrarian
                        author => author,
                        lbAuthor => lbAuthor.ID,
                        (author, lbAuthor) => lbAuthor.FullName)),
-                       Status = "Currently taken"});
+                       Status = StringConstants.currentlyTakenString});
 
             var bookHistory = User.History
                 .Join(LibraryDataIO.Instance.Books,
@@ -132,7 +132,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser("Here you can change your account settings.", aiOutput);
+            Speaker.TellUser(StringConstants.aiAccountSettingsGreeting, aiOutput);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -159,7 +159,7 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser($"Welcome, {User.Name}!", aiOutput);
+            Speaker.TellUser(StringConstants.AIGreeting(User.Name), aiOutput);
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -171,7 +171,7 @@ namespace VirtualLibrarian
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
             AutomaticFormPosition.SaveFormStatus(this);
-            Speaker.TellUser("See you soon.", aiOutput);
+            Speaker.TellUser(StringConstants.aiGoodbye, aiOutput);
             this.Controls.Clear();
         }
 

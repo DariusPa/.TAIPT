@@ -94,6 +94,7 @@
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
+    <Compile Include="Helpers\StringConstants.cs" />
     <Compile Include="Model\Author.cs" />
     <Compile Include="Model\ReadingHistory.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />

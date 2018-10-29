@@ -54,13 +54,13 @@ namespace VirtualLibrarian
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
         {
             User = LibraryDataIO.Instance.FindUser(e.Label);
-            MessageBox.Show($"User is already registered as {User.Name} {User.Surname} !");
+            MessageBox.Show(StringConstants.ExistingUserErrorString(User.Name, User.Surname));
             BeginInvoke(new Action(() => Close()));
         }
 
         private void OnNewUserRegistered(object sender, FaceRecognisedEventArgs e)
         {
-            MessageBox.Show("Registration succeeded!");
+            MessageBox.Show(StringConstants.successfulRegistration);
             RegisterCompleted?.Invoke(this, e);
             BeginInvoke(new Action(()=>Close()));
         }

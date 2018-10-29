@@ -28,7 +28,7 @@ namespace VirtualLibrarian
             authorSource = new BindingSource();
             authorSource.DataSource = LibraryDataIO.Instance.Authors;
             authorListBox.DataSource = authorSource;
-            authorListBox.DisplayMember = "FullName";
+            authorListBox.DisplayMember = StringConstants.fullNameString;
             genreBox.DataSource = Enum.GetValues(typeof(BookGenre));
         }
 
@@ -58,7 +58,7 @@ namespace VirtualLibrarian
             }
             else
             {
-                MessageBox.Show("Information missing.");
+                MessageBox.Show(StringConstants.missingInfo);
             }
             AutomaticFormPosition.SaveFormStatus(this);
         }

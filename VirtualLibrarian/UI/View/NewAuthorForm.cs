@@ -29,7 +29,7 @@ namespace VirtualLibrarian.View
             }
             else
             {
-                MessageBox.Show("Information missing!");
+                MessageBox.Show(StringConstants.missingInfo);
             }
 
         }
