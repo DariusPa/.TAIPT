@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.searchLabel = new System.Windows.Forms.Label();
+            this.libraryBooksGrid = new System.Windows.Forms.DataGridView();
+            this.searchBox = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryBooksGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // searchLabel
@@ -45,15 +48,41 @@
             this.searchLabel.Text = "Search";
             this.searchLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // libraryBooksGrid
+            // 
+            this.libraryBooksGrid.AllowUserToAddRows = false;
+            this.libraryBooksGrid.AllowUserToDeleteRows = false;
+            this.libraryBooksGrid.AllowUserToResizeRows = false;
+            this.libraryBooksGrid.BackgroundColor = System.Drawing.Color.White;
+            this.libraryBooksGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.libraryBooksGrid.Location = new System.Drawing.Point(37, 190);
+            this.libraryBooksGrid.MultiSelect = false;
+            this.libraryBooksGrid.Name = "libraryBooksGrid";
+            this.libraryBooksGrid.ReadOnly = true;
+            this.libraryBooksGrid.RowTemplate.Height = 40;
+            this.libraryBooksGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.libraryBooksGrid.Size = new System.Drawing.Size(1276, 761);
+            this.libraryBooksGrid.TabIndex = 1;
+            // 
+            // searchBox
+            // 
+            this.searchBox.Location = new System.Drawing.Point(37, 132);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(1276, 38);
+            this.searchBox.TabIndex = 2;
+            // 
             // Search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.searchBox);
+            this.Controls.Add(this.libraryBooksGrid);
             this.Controls.Add(this.searchLabel);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "Search";
             this.Size = new System.Drawing.Size(1355, 987);
+            ((System.ComponentModel.ISupportInitialize)(this.libraryBooksGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -62,5 +91,7 @@
         #endregion
 
         private System.Windows.Forms.Label searchLabel;
+        private System.Windows.Forms.DataGridView libraryBooksGrid;
+        private System.Windows.Forms.TextBox searchBox;
     }
 }
