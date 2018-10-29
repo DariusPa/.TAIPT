@@ -95,6 +95,7 @@
     <Compile Include="Data\LibraryManager.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
+    <Compile Include="Helpers\StringConstants.cs" />
     <Compile Include="Helpers\ListConverter.cs" />
     <Compile Include="Model\Author.cs" />
     <Compile Include="Model\ReadingHistory.cs" />
