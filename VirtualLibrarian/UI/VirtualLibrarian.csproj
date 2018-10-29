@@ -295,6 +295,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\checked.png" />
+    <None Include="Resources\unchecked.png" />
+    <None Include="Resources\takebook.png" />
     <None Include="Resources\admin.png" />
     <None Include="Resources\QR.png" />
   </ItemGroup>

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VirtualLibrarian
@@ -26,6 +19,42 @@ namespace VirtualLibrarian
         public Settings()
         {
             InitializeComponent();
+        }
+
+        public Settings(string userName, string userSurname, string userEmail) : this()
+        {
+            UserName = userName;
+            UserSurname = userSurname;
+            UserEmail = userEmail;
+        }
+
+        public string UserName
+        {
+            get { return sNameInput.Text; }
+            set { sNameInput.Text = value; }
+        }
+
+        public string UserSurname
+        {
+            get { return sSurnameInput.Text; }
+            set { sSurnameInput.Text = value; }
+        }
+
+        public string UserEmail
+        {
+            get { return sEmailInput.Text; }
+            set { sEmailInput.Text = value; }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (soundsCheckBox.Checked)
+            {
+                soundsCheckBox.BackgroundImage = Properties.Resources._checked;
+            } else
+            {
+                soundsCheckBox.BackgroundImage = Properties.Resources._unchecked;
+            }
         }
     }
 }

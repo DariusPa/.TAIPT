@@ -20,9 +20,9 @@ namespace VirtualLibrarian
         private DataTable dtLibraryBook;
 
 
-        public UI(IUserModel User) 
+        public UI(IUserModel Users) 
         {
-            this.User = User;
+            User = Users;
             InitializeComponent();
             userInformation1.UserName = User.Name;
             userInformation1.UserSurname = User.Surname;
@@ -166,6 +166,9 @@ namespace VirtualLibrarian
                 containerPanel.Controls.Add(Settings.Instance);
                 Settings.Instance.Dock = DockStyle.Fill;
                 Settings.Instance.BringToFront();
+                Settings.Instance.UserName = User.Name;
+                Settings.Instance.UserSurname = User.Surname;
+                Settings.Instance.UserEmail = User.Email;
             }
             else
                 Settings.Instance.BringToFront();

@@ -25,7 +25,6 @@ namespace VirtualLibrarian
         {
             UserName = userName;
             UserSurname = userSurname;
-
         }
 
         public string UserName
