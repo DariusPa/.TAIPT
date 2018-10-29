@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.settingsLabel = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.soundsCheckBox = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.emailLabel = new System.Windows.Forms.Label();
             this.surnameLabel = new System.Windows.Forms.Label();
-            this.emailInput = new System.Windows.Forms.RichTextBox();
+            this.sEmailInput = new System.Windows.Forms.RichTextBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.surnameInput = new System.Windows.Forms.RichTextBox();
+            this.sSurnameInput = new System.Windows.Forms.RichTextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.nameInput = new System.Windows.Forms.RichTextBox();
+            this.sNameInput = new System.Windows.Forms.RichTextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.continueButton = new System.Windows.Forms.Button();
@@ -63,18 +63,18 @@
             this.settingsLabel.Text = "Settings";
             this.settingsLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // checkBox1
+            // soundsCheckBox
             // 
-            this.checkBox1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBox1.BackgroundImage = global::VirtualLibrarian.Properties.Resources._unchecked;
-            this.checkBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.checkBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox1.Location = new System.Drawing.Point(81, 189);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(56, 56);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.soundsCheckBox.Appearance = System.Windows.Forms.Appearance.Button;
+            this.soundsCheckBox.BackgroundImage = global::VirtualLibrarian.Properties.Resources._unchecked;
+            this.soundsCheckBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.soundsCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.soundsCheckBox.Location = new System.Drawing.Point(81, 189);
+            this.soundsCheckBox.Name = "soundsCheckBox";
+            this.soundsCheckBox.Size = new System.Drawing.Size(56, 56);
+            this.soundsCheckBox.TabIndex = 2;
+            this.soundsCheckBox.UseVisualStyleBackColor = true;
+            this.soundsCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label1
             // 
@@ -129,18 +129,19 @@
             this.surnameLabel.TabIndex = 21;
             this.surnameLabel.Text = "Surname";
             // 
-            // emailInput
+            // sEmailInput
             // 
-            this.emailInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.emailInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.emailInput.ForeColor = System.Drawing.Color.Black;
-            this.emailInput.Location = new System.Drawing.Point(589, 533);
-            this.emailInput.Margin = new System.Windows.Forms.Padding(4);
-            this.emailInput.Multiline = false;
-            this.emailInput.Name = "emailInput";
-            this.emailInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.emailInput.Size = new System.Drawing.Size(328, 35);
-            this.emailInput.TabIndex = 20;
+            this.sEmailInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sEmailInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sEmailInput.ForeColor = System.Drawing.Color.Black;
+            this.sEmailInput.Location = new System.Drawing.Point(589, 533);
+            this.sEmailInput.Margin = new System.Windows.Forms.Padding(4);
+            this.sEmailInput.Multiline = false;
+            this.sEmailInput.Name = "sEmailInput";
+            this.sEmailInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.sEmailInput.Size = new System.Drawing.Size(328, 35);
+            this.sEmailInput.TabIndex = 20;
+            this.sEmailInput.Text = "";
             // 
             // pictureBox4
             // 
@@ -153,18 +154,19 @@
             this.pictureBox4.TabIndex = 19;
             this.pictureBox4.TabStop = false;
             // 
-            // surnameInput
+            // sSurnameInput
             // 
-            this.surnameInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.surnameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.surnameInput.ForeColor = System.Drawing.Color.Black;
-            this.surnameInput.Location = new System.Drawing.Point(589, 385);
-            this.surnameInput.Margin = new System.Windows.Forms.Padding(4);
-            this.surnameInput.Multiline = false;
-            this.surnameInput.Name = "surnameInput";
-            this.surnameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.surnameInput.Size = new System.Drawing.Size(328, 35);
-            this.surnameInput.TabIndex = 18;
+            this.sSurnameInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sSurnameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sSurnameInput.ForeColor = System.Drawing.Color.Black;
+            this.sSurnameInput.Location = new System.Drawing.Point(589, 385);
+            this.sSurnameInput.Margin = new System.Windows.Forms.Padding(4);
+            this.sSurnameInput.Multiline = false;
+            this.sSurnameInput.Name = "sSurnameInput";
+            this.sSurnameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.sSurnameInput.Size = new System.Drawing.Size(328, 35);
+            this.sSurnameInput.TabIndex = 18;
+            this.sSurnameInput.Text = "";
             // 
             // pictureBox3
             // 
@@ -177,18 +179,19 @@
             this.pictureBox3.TabIndex = 17;
             this.pictureBox3.TabStop = false;
             // 
-            // nameInput
+            // sNameInput
             // 
-            this.nameInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.nameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameInput.ForeColor = System.Drawing.Color.Black;
-            this.nameInput.Location = new System.Drawing.Point(589, 239);
-            this.nameInput.Margin = new System.Windows.Forms.Padding(4);
-            this.nameInput.Multiline = false;
-            this.nameInput.Name = "nameInput";
-            this.nameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.nameInput.Size = new System.Drawing.Size(328, 35);
-            this.nameInput.TabIndex = 16;
+            this.sNameInput.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sNameInput.Font = new System.Drawing.Font("Arial", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sNameInput.ForeColor = System.Drawing.Color.Black;
+            this.sNameInput.Location = new System.Drawing.Point(589, 239);
+            this.sNameInput.Margin = new System.Windows.Forms.Padding(4);
+            this.sNameInput.Multiline = false;
+            this.sNameInput.Name = "sNameInput";
+            this.sNameInput.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.sNameInput.Size = new System.Drawing.Size(328, 35);
+            this.sNameInput.TabIndex = 16;
+            this.sNameInput.Text = "";
             // 
             // pictureBox2
             // 
@@ -240,17 +243,17 @@
             this.Controls.Add(this.continueButton);
             this.Controls.Add(this.emailLabel);
             this.Controls.Add(this.surnameLabel);
-            this.Controls.Add(this.emailInput);
+            this.Controls.Add(this.sEmailInput);
             this.Controls.Add(this.pictureBox4);
-            this.Controls.Add(this.surnameInput);
+            this.Controls.Add(this.sSurnameInput);
             this.Controls.Add(this.pictureBox3);
-            this.Controls.Add(this.nameInput);
+            this.Controls.Add(this.sNameInput);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.soundsCheckBox);
             this.Controls.Add(this.settingsLabel);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Settings";
@@ -266,17 +269,17 @@
         #endregion
 
         private System.Windows.Forms.Label settingsLabel;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox soundsCheckBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label emailLabel;
         private System.Windows.Forms.Label surnameLabel;
-        private System.Windows.Forms.RichTextBox emailInput;
+        private System.Windows.Forms.RichTextBox sEmailInput;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.RichTextBox surnameInput;
+        private System.Windows.Forms.RichTextBox sSurnameInput;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.RichTextBox nameInput;
+        private System.Windows.Forms.RichTextBox sNameInput;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Button continueButton;

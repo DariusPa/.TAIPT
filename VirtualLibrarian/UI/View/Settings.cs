@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
 {
     public partial class Settings : UserControl
     {
         private static Settings _instance;
-        public IUserModel User { get; set; }
 
         public static Settings Instance
         {
@@ -30,14 +21,39 @@ namespace VirtualLibrarian
             InitializeComponent();
         }
 
+        public Settings(string userName, string userSurname, string userEmail) : this()
+        {
+            UserName = userName;
+            UserSurname = userSurname;
+            UserEmail = userEmail;
+        }
+
+        public string UserName
+        {
+            get { return sNameInput.Text; }
+            set { sNameInput.Text = value; }
+        }
+
+        public string UserSurname
+        {
+            get { return sSurnameInput.Text; }
+            set { sSurnameInput.Text = value; }
+        }
+
+        public string UserEmail
+        {
+            get { return sEmailInput.Text; }
+            set { sEmailInput.Text = value; }
+        }
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-           if(checkBox1.Checked)
+            if (soundsCheckBox.Checked)
             {
-                checkBox1.BackgroundImage = Properties.Resources._checked;
+                soundsCheckBox.BackgroundImage = Properties.Resources._checked;
             } else
             {
-                checkBox1.BackgroundImage = Properties.Resources._unchecked;
+                soundsCheckBox.BackgroundImage = Properties.Resources._unchecked;
             }
         }
     }
