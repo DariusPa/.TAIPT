@@ -54,7 +54,7 @@ namespace VirtualLibrarian.Helpers
         }
 
         //TODO: might need to move somewhere else
-        public static string ReturnAuthorNames(List<int> authorID)
+        public static string GetAuthorNames(List<int> authorID)
         {
             return string.Join(",", authorID
                           .Join(LibraryDataIO.Instance.Authors,

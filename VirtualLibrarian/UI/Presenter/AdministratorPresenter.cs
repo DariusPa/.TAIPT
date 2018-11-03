@@ -70,7 +70,7 @@ namespace VirtualLibrarian.Presenter
 
         private void AddNewAuthor(object sender, BookRelatedEventArgs e)
         {
-            if (!LibraryDataIO.Instance.Authors.Any(author => author.FullName.Equals(e.Author.FullName)))
+            if (!LibraryDataIO.Instance.Authors.Any(author => author.FullName == e.Author.FullName))
             {
                 LibraryDataIO.Instance.AddAuthor(e.Author);
                 authorForm?.Close();

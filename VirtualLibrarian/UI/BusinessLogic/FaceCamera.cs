@@ -18,7 +18,7 @@ namespace VirtualLibrarian.BusinessLogic
     {
         private Thread captureThread;
 
-        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
+        private Bitmap faceFrame;
         private VideoCapture videoCapture;
 
         private bool isTrained = false;
@@ -38,6 +38,7 @@ namespace VirtualLibrarian.BusinessLogic
 
         public FaceCamera(int camWidth, int camHeight)
         {
+            faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
             faceRecognition = new FaceRecognition();
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
@@ -61,7 +62,7 @@ namespace VirtualLibrarian.BusinessLogic
             videoCapture?.Dispose();
         }
 
-        public void StartStreaming()
+        private void StartStreaming()
         {
             isTrained = faceRecognition.TrainRecognizer();
             captureThread = new Thread(DisplayCam);
@@ -87,9 +88,10 @@ namespace VirtualLibrarian.BusinessLogic
 
                 Rectangle[] facesDetected = faceRecognition.DetectFaces(gray);
                
-                foreach (Rectangle f in facesDetected)
+                foreach (Rectangle face in facesDetected)
                 {
-                    detectedFace = (new Mat(gray, f)).ToImage<Gray, byte>();
+                    var grayFace = new Mat(gray, face);
+                    detectedFace = grayFace.ToImage<Gray, byte>();
                     gray.Dispose();
                     CvInvoke.Resize(detectedFace, detectedFace, new Size(100, 100), 0, 0, Inter.Cubic);
 
@@ -102,7 +104,7 @@ namespace VirtualLibrarian.BusinessLogic
                             return;
                         }
                     }
-                    
+
                     if (saved)
                     {
                         NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
