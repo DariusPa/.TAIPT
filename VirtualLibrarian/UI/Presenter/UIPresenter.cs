@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
@@ -24,6 +27,8 @@ namespace VirtualLibrarian.Presenter
             ActiveUser = activeUser;
             ui = new UI(ActiveUser);
             ui.FormClosed += OnUiClose;
+            ui.SearchRequested += OnSearchRequested;
+            ui.HistoryRequested += OnHistoryRequested;
             ui.Show();
         }
 
@@ -32,9 +37,12 @@ namespace VirtualLibrarian.Presenter
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
             if (ActiveUser != null && book != null && LibraryManager.IssueBookToReader(ActiveUser, book))
             {
-                ui.Speaker.TellUser("Book has been successfully issued to you.",ui.AI);
+                ui.Speaker.TellUser(StringConstants.aiIssued, ui.AI);
             }
-            else ui.Speaker.TellUser("Issuing failed!", ui.AI);
+            else
+            {
+                ui.Speaker.TellUser(StringConstants.aiIssuingFailed, ui.AI);
+            }
             TakeBook.Instance.HideScanner();
         }
 
@@ -42,10 +50,75 @@ namespace VirtualLibrarian.Presenter
         {
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
             if (LibraryManager.ReturnBook(ActiveUser, book))
-                ui.Speaker.TellUser("You successfully returned the book.", ui.AI);
-            else ui.Speaker.TellUser("Returning failed! You might have returned this book earlier or it had been taken by another user.",ui.AI);
+            {
+                ui.Speaker.TellUser(StringConstants.aiReturnedBook, ui.AI);
+            }
+            else
+            {
+                ui.Speaker.TellUser(StringConstants.aiReturnFailed, ui.AI);
+            }
             ReturnBook.Instance.HideScanner();
             
+        }
+
+        private void OnSearchRequested(object sender, EventArgs e)
+        {
+            string[] columns = { "Title", "Author", "ISBN", "Genre"};
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+
+            //prepare column with authors' full names
+            dtLibraryBook.Columns.Add("Author");
+            foreach(DataRow row in dtLibraryBook.Rows)
+            {
+                row["Author"] = DataTransformationUtility.ReturnAuthorNames((List<int>)row["AuthorID"]);
+            }
+            DataTransformationUtility.EnableFiltering(dtLibraryBook, columns);
+            Search.Instance.libraryGrid.DataSource = dtLibraryBook;
+            Search.Instance.searchText.TextChanged += (s, a) => 
+                dtLibraryBook.DefaultView.RowFilter = $"[_RowString] LIKE '%{Search.Instance.searchText.Text}%'";
+
+            //hide unnecessary columns and rearange them
+            foreach(DataGridViewColumn col in Search.Instance.libraryGrid.Columns)
+            {
+                if (((IList<string>)columns).Contains(col.Name))
+                {
+                    col.Visible = true;
+                    col.DisplayIndex = Array.IndexOf(columns, col.Name);
+                }
+                else
+                {
+                    col.Visible = false;
+                }
+            }
+
+        }
+
+        private void OnHistoryRequested(object sender, EventArgs e)
+        {
+            var takenBooks = ActiveUser.TakenBooks
+            .Join(LibraryDataIO.Instance.Books,
+                  takenBook => takenBook,
+                  libraryBook => libraryBook.ID,
+                  (takenBook, libraryBook) => new {
+                      libraryBook.Title,
+                      Author = DataTransformationUtility.ReturnAuthorNames(libraryBook.AuthorID),
+                      Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
+                      Returned = StringConstants.currentlyTakenString
+                  });
+
+            var bookHistory = ActiveUser.History
+                .Join(LibraryDataIO.Instance.Books,
+                      readBook => readBook.BookID,
+                      libraryBook => libraryBook.ID,
+                      (readBook, libraryBook) => new {
+                          libraryBook.Title,
+                          Author = DataTransformationUtility.ReturnAuthorNames(libraryBook.AuthorID),
+                          Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
+                          Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
+                      });
+
+            var history = takenBooks.Concat(bookHistory);
+            History.Instance.historyGrid.DataSource = history.ToList();
         }
 
         private void OnUiClose(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
@@ -11,7 +12,7 @@ namespace VirtualLibrarian.Model
     {
         private static int count;
         public string Title { get; set; }
-        public List<int> Authors { get; set; } = new List<int>();
+        public List<int> AuthorID { get; set; } = new List<int>();
         public string Publisher { get; set; }
         public string ISBN { get; set; }
         public string Description { get; set; }
@@ -30,14 +31,14 @@ namespace VirtualLibrarian.Model
 
         public Book()
         {
-            ID = ++count;
+            ID = Interlocked.Increment(ref count);
             Status = Status.Available;
         }
 
-        public Book(string title, List<int> authors, string publisher, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
+        public Book(string title, List<int> authorID, string publisher, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
         {
             Title = title;
-            Authors = authors;
+            AuthorID = authorID;
             Publisher = publisher;
             ISBN = isbn;
             Description = description;
@@ -65,7 +66,7 @@ namespace VirtualLibrarian.Model
         {
             Book book = new Book();
             book.Title = Title;
-            book.Authors = Authors;
+            book.AuthorID = AuthorID;
             book.Publisher = Publisher;
             book.ISBN = ISBN;
             book.Description = Description;

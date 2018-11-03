@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +14,13 @@ namespace VirtualLibrarian.Data
 {
     public sealed class LibraryDataIO: ILibraryData
     {
+        public string ResourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
         public string DirectoryPath { get; set; } = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Data";
         private string bookPath;
         private string usersPath;
         private string authorsPath;
+        public string FacesPath { get; set; }
+        public string FaceLabelsPath { get; set; }
 
         private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
         public List<IBookModel> Books { get; set; } = new List<IBookModel>();
@@ -23,13 +28,18 @@ namespace VirtualLibrarian.Data
         public List<Author> Authors { get; set; } = new List<Author>();
         public static LibraryDataIO Instance { get { return library.Value; } }
 
+        public int PicturesPerUser { get; private set; }
+
         private LibraryDataIO() { }
 
-        public void Init(string bookPath, string usersPath, string authorsPath)
+        public void Init(string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
             this.bookPath = bookPath;
             this.usersPath = usersPath;
             this.authorsPath = authorsPath;
+            FacesPath = DirectoryPath + facesPath;
+            FaceLabelsPath = DirectoryPath + faceLabelsPath;
+            PicturesPerUser = picturesPerUser;
         }
 
         public void SerializeData()
@@ -66,9 +76,18 @@ namespace VirtualLibrarian.Data
             }))).Start();
         }
 
-
         public void LoadData()
         {
+            try
+            {
+                if (!File.Exists(FaceLabelsPath))
+                    File.Create(FaceLabelsPath);
+            }
+            catch
+            {
+                //TODO: handle properly
+                Console.Write("Failed to open/create face labels file");
+            }
             try
             {
                 Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(DirectoryPath + authorsPath));
@@ -86,6 +105,13 @@ namespace VirtualLibrarian.Data
                 //TODO: handle properly
                 Console.Write(e.Message);
             }
+        }
+
+
+        public void AddNewFace(Image<Gray, byte> face,string label, int faceCount)
+        {
+            face.Save($"{FacesPath}\\{faceCount}.bmp");
+            File.AppendAllText(FaceLabelsPath, label + "%");
         }
 
         public void AddBook(IBookModel book)

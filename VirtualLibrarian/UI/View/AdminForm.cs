@@ -50,7 +50,7 @@ namespace VirtualLibrarian
                 {
                     authors.Add(author.ID);
                 }
-                Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authors: authors, 
+                Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors, 
                                     publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
 
                 NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
@@ -80,18 +80,18 @@ namespace VirtualLibrarian
 
         public void RefreshAndClear()
         {
-            
             foreach(var control in Controls)
             {
-                if (control is TextBox || control is RichTextBox) ((TextBoxBase)control).Clear();
-                if (control is ListBox) ((ListBox)control).ClearSelected();
+                if (control.GetType() == typeof(TextBoxBase))
+                    ((TextBoxBase)control).Text = string.Empty;
+                if (control is ListBox)
+                    ((ListBox)control).ClearSelected();
                 if (control is CheckedListBox)
                 {
                     for(int i = 0; i< ((CheckedListBox)control).Items.Count; i++)
                     {
                         ((CheckedListBox)control).SetItemChecked(i, false);
                     }
-                    
                 }
             }
         }

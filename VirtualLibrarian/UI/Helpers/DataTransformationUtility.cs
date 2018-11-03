@@ -5,17 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian.Helpers
 {
-    public static class ListConverter
+    public static class DataTransformationUtility
     {
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
 
             //Get all the properties
-            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance );
             foreach (PropertyInfo prop in Props)
             {
                 //Defining type of data column gives proper data table 
@@ -33,8 +34,34 @@ namespace VirtualLibrarian.Helpers
                 }
                 dataTable.Rows.Add(values);
             }
-            //put a breakpoint here and check datatable
             return dataTable;
         }
+
+        //Adds additional column to DataTable for filtering values
+        public static void EnableFiltering(DataTable dataTable, params string[] filteredColumns)
+        {
+            DataColumn dcRowString = dataTable.Columns.Add("_RowString", typeof(string));
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach(string column in filteredColumns)
+                {
+                    sb.Append(dataRow[column].ToString());
+                    sb.Append("\t");
+                }
+                dataRow[dcRowString] = sb.ToString();
+            }
+        }
+
+        //TODO: might need to move somewhere else
+        public static string ReturnAuthorNames(List<int> authorID)
+        {
+            return string.Join(",", authorID
+                          .Join(LibraryDataIO.Instance.Authors,
+                          author => author,
+                          lbAuthor => lbAuthor.ID,
+                          (author, lbAuthor) => lbAuthor.FullName));
+        }
+
     }
 }

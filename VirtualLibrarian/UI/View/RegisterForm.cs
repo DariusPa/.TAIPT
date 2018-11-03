@@ -24,7 +24,7 @@ namespace VirtualLibrarian
             faceCam.NewUserRegistered += OnNewUserRegistered;
             faceCam.FrameGrabbed += OnFrameGrabbed;
             faceCam.FacePhotoSaved += UpdateProgressBar;
-            progressBar.Maximum = faceCam.PicturesPerUser;
+            progressBar.Maximum = LibraryDataIO.Instance.PicturesPerUser;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace VirtualLibrarian
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.StartSaving();
+            faceCam.SaveFace();
             cancelButton.Hide();
             saveFaceButton.Hide();
         }

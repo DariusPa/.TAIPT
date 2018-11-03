@@ -47,7 +47,7 @@ namespace VirtualLibrarian
                 {
                     surnameLabel.Text = StringConstants.surnameRequirement;
                 }
-                if (string.IsNullOrWhiteSpace(emailInput.Text) || Verifier.IsValidEmail(emailInput.Text) == false)
+                if (string.IsNullOrWhiteSpace(emailInput.Text) || !Verifier.IsValidEmail(emailInput.Text))
                 {
                     emailLabel.Text = StringConstants.emailRequirement;
                 }

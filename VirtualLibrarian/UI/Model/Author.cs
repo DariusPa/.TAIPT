@@ -1,6 +1,5 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Threading;
 
 namespace VirtualLibrarian.Model
 {
@@ -15,7 +14,7 @@ namespace VirtualLibrarian.Model
 
         public Author(string name, string surname)
         {
-            ID = ++count;
+            ID = Interlocked.Increment(ref count);
             Name = name;
             Surname = surname;
         }

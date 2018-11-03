@@ -9,7 +9,7 @@ namespace VirtualLibrarian.Model
     public interface IBookModel
     {
         string Title { get; set; }
-        List<int> Authors { get; set; }
+        List<int> AuthorID { get; set; }
         string Publisher { get; set; }
         string ISBN { get; set; }
         string Description { get; set; }
