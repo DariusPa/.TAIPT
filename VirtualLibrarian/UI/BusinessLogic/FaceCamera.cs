@@ -18,22 +18,11 @@ namespace VirtualLibrarian.BusinessLogic
     {
         private Thread captureThread;
 
-        private static string resourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
-        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(resourcePath + "\\FaceFrame.png");
-        private string facesPath;
-        private string labelFile;
-
-        private CascadeClassifier face = new CascadeClassifier(resourcePath + "\\haarcascade_frontalface_default.xml");
-        int eigenThresh;
+        private Bitmap faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
         private VideoCapture videoCapture;
-        private FaceRecognizer faceRecognizer;
-        private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
-        private List<String> faceLabels = new List<String>();
-        private List<int> faceID = new List<int>();
+
         private bool isTrained = false;
-        private int faceCount;
         private Size camSize;
-        public int PicturesPerUser { get; private set; }
         private Image<Gray, Byte> detectedFace;
 
         private bool saved;
@@ -45,16 +34,14 @@ namespace VirtualLibrarian.BusinessLogic
 
         public string userLabel;
 
-        public FaceCamera(int camWidth, int camHeight, int picturesPerUser=10, string labelFile = "\\Faces\\TrainedLabels.txt", string facesDir = "\\Faces", int eigenThresh=2000)
+        private FaceRecognition faceRecognition;
+
+        public FaceCamera(int camWidth, int camHeight)
         {
-            PicturesPerUser = picturesPerUser;
-            facesPath = LibraryDataIO.Instance.DirectoryPath + facesDir;
-            this.labelFile = LibraryDataIO.Instance.DirectoryPath + labelFile;
-            this.eigenThresh = eigenThresh;
+            faceRecognition = new FaceRecognition();
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
-            faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
-            LoadRecognizer();
+            faceRecognition.LoadRecognizer();
         }
 
         public void RecognizeExistingFace()
@@ -76,7 +63,7 @@ namespace VirtualLibrarian.BusinessLogic
 
         public void StartStreaming()
         {
-            TrainRecognizer();
+            isTrained = faceRecognition.TrainRecognizer();
             captureThread = new Thread(DisplayCam);
             captureThread.Start();
         }
@@ -98,7 +85,7 @@ namespace VirtualLibrarian.BusinessLogic
 
                 frame.Dispose();
 
-                Rectangle[] facesDetected = face.DetectMultiScale(gray, 1.4, 4, new Size(20, 20));
+                Rectangle[] facesDetected = faceRecognition.DetectFaces(gray);
                
                 foreach (Rectangle f in facesDetected)
                 {
@@ -108,7 +95,7 @@ namespace VirtualLibrarian.BusinessLogic
 
                     if (isTrained)
                     {
-                        var label = Recognize(detectedFace);
+                        var label = faceRecognition.Recognize(detectedFace);
                         if (label != "")
                         {
                             ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
@@ -128,21 +115,21 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public void StartSaving()
+        public void SaveFace()
         {
-            
             Thread saveFace = new Thread(() => SaveNewFace(userLabel));
             saveFace.Start();
         }
 
+        //TODO: move to FaceRecognition class
         private void SaveNewFace(string label)
         {
             List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
             List<String> faceLabelsTemp = new List<String>();
             List<int> faceIDTemp = new List<int>();
-            int faceCountTemp = faceCount;
+            int faceCountTemp = faceRecognition.FaceCount;
 
-            for (int picturesSaved = 0; picturesSaved < PicturesPerUser;)
+            for (int picturesSaved = 0; picturesSaved < LibraryDataIO.Instance.PicturesPerUser;)
             {
                 if (detectedFace != null)
                 {
@@ -154,74 +141,10 @@ namespace VirtualLibrarian.BusinessLogic
                     Thread.Sleep(500);
                 }
             }
-            /*New faces are added in one transaction to avoid the bug of saving empty images when
-            process terminates after recognising that the 'new' person already exists in the database*/
-            for(int i = 0; i < PicturesPerUser; i++)
-            {
-                trainedFacesTemp[i].Save($"{facesPath}\\{faceCount}.bmp");
-                File.AppendAllText(labelFile, label + "%");
-                trainedFaces.Add(trainedFacesTemp[i]);
-                faceLabels.Add(faceLabelsTemp[i]);
-                faceID.Add(++faceCount);
-            }
-            //NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
+
+            faceRecognition.StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp,label);
             saved = true;
             return;
-        }
-
-        /*Loads the recognizer with faces and their labels*/
-        private void LoadRecognizer()
-        {
-            if (!File.Exists(labelFile))
-                File.Create(labelFile).Dispose();
-            string[] labels = File.ReadAllText(labelFile).Split('%');
-            faceCount = labels.Length - 1;
-
-            try
-            {
-                for (int j = 0; j < faceCount; j++)
-                {
-                    trainedFaces.Add(new Image<Gray, byte>(facesPath + "\\" + j + ".bmp"));
-                    faceLabels.Add(labels[j]);
-                    faceID.Add(j);
-                }
-            } catch (Exception e)
-            {
-                trainedFaces.Clear();
-                faceLabels.Clear();
-                faceID.Clear();
-                faceCount = 0;
-            }
-
-
-            TrainRecognizer();
-        }
-
-        /*Trains the recognizer to be able to connect faces with their labels.*/
-        /*Must be invoked before calling the 'Recognize' method.*/
-        private void TrainRecognizer()
-        {
-            if (faceCount < 1)
-            {
-                //MessageBox.Show("There are no known faces in the database.");
-                return;
-            }
-
-            faceRecognizer.Train(trainedFaces.ToArray(), faceID.ToArray());
-
-            isTrained = true;
-        }
-
-        /*Returns the person's name if recognized.*/
-        private string Recognize(Image<Gray, Byte> detectedFace)
-        {
-            
-            var result = faceRecognizer.Predict(detectedFace);
-            if (result.Label != -1 && result.Distance < eigenThresh)
-            {
-                return faceLabels[result.Label];
-            }
-            else return "";
         }
 
         /*Resizes the snapshot from camera and puts the frame picture on it*/
@@ -248,8 +171,6 @@ namespace VirtualLibrarian.BusinessLogic
 
             return framedPhoto;
         }
-
-
 
         public delegate void FaceRecognisedEventHandler(object sender, FaceRecognisedEventArgs e);
         public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);

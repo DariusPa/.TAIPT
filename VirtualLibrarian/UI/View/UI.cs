@@ -17,7 +17,9 @@ namespace VirtualLibrarian
         public IUserModel User { get; set; }
 		public SpeakingAI Speaker { get; set; } = new SpeakingAI();
         public AI AI { get { return aiOutput; } }
-        private DataTable dtLibraryBook;
+
+        public event EventHandler SearchRequested;
+        public event EventHandler HistoryRequested;
 
 
         public UI(IUserModel Users) 
@@ -48,7 +50,6 @@ namespace VirtualLibrarian
             }
         }
 
-        //TODO: hide columns that should not be shown to user & add author column
         private void SearchButton_Click(object sender, EventArgs e)
         {
             Speaker.TellUser(StringConstants.aiSearchLibraryGreeting, aiOutput);
@@ -56,31 +57,9 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
-                Search.Instance.BringToFront();
-                Search.Instance.searchText.TextChanged += FilterLibraryBooks;
-                dtLibraryBook = ListConverter.ToDataTable(LibraryDataIO.Instance.Books);
-                DataColumn dcRowString = dtLibraryBook.Columns.Add("_RowString", typeof(string));
-                foreach (DataRow dataRow in dtLibraryBook.Rows)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < dtLibraryBook.Columns.Count - 1; i++)
-                    {
-                        sb.Append(dataRow[i].ToString());
-                        sb.Append("\t");
-                    }
-                    dataRow[dcRowString] = sb.ToString();
-                }
-                Search.Instance.libraryGrid.DataSource = dtLibraryBook;
-                Search.Instance.libraryGrid.Columns["_RowString"].Visible = false;
-
+                SearchRequested?.Invoke(this, EventArgs.Empty);
             }
-            else
-                Search.Instance.BringToFront();
-        }
-
-        private void FilterLibraryBooks(object sender, EventArgs e)
-        {
-            dtLibraryBook.DefaultView.RowFilter = $"[_RowString] LIKE '%{Search.Instance.searchText.Text}%'";
+            Search.Instance.BringToFront();
         }
 
         private void TakeBookButton_Click(object sender, EventArgs e)
@@ -90,10 +69,8 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(TakeBook.Instance);
                 TakeBook.Instance.Dock = DockStyle.Fill;
-                TakeBook.Instance.BringToFront();
             }
-            else
-                TakeBook.Instance.BringToFront();
+            TakeBook.Instance.BringToFront();
         }
 
         private void ReturnButton_Click(object sender, EventArgs e)
@@ -103,14 +80,11 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
                 ReturnBook.Instance.Dock = DockStyle.Fill;
-                ReturnBook.Instance.BringToFront();
             }
-            else
-                ReturnBook.Instance.BringToFront();
+            ReturnBook.Instance.BringToFront();
 
         }
 
-        //TODO: linq union with book history and reserved books
         private void HistoryButton_Click(object sender, EventArgs e)
         {
             Speaker.TellUser(StringConstants.aiReadingHistoryGreeting, aiOutput);
@@ -118,44 +92,9 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(History.Instance);
                 History.Instance.Dock = DockStyle.Fill;
-                History.Instance.BringToFront();
             }
-            else
-                History.Instance.BringToFront();
-
-            var takenBooks = User.TakenBooks
-                .Join(LibraryDataIO.Instance.Books, 
-                      takenBook => takenBook, 
-                      libraryBook => libraryBook.ID,
-                      (takenBook, libraryBook) => new {
-                       libraryBook.Title,
-                       Author = string.Join(",",libraryBook.Authors
-                       .Join(LibraryDataIO.Instance.Authors,
-                       author => author,
-                       lbAuthor => lbAuthor.ID,
-                       (author, lbAuthor) => lbAuthor.FullName)),
-
-                       Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
-                       Returned =  StringConstants.currentlyTakenString});
-
-            var bookHistory = User.History
-                .Join(LibraryDataIO.Instance.Books,
-                      readBook => readBook.BookID,
-                      libraryBook => libraryBook.ID,
-                      (readBook, libraryBook) => new {
-                          libraryBook.Title,
-                          Author = string.Join(",", libraryBook.Authors
-                       .Join(LibraryDataIO.Instance.Authors,
-                       author => author,
-                       lbAuthor => lbAuthor.ID,
-                       (author, lbAuthor) => lbAuthor.FullName)),
-                       Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
-                       Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
-                      });
-
-            var history = takenBooks.Concat(bookHistory);
-
-            History.Instance.historyGrid.DataSource = history.ToList();
+            HistoryRequested?.Invoke(this, EventArgs.Empty);
+            History.Instance.BringToFront();
         }
 
         private void SettingsButton_Click(object sender, EventArgs e)
@@ -177,7 +116,7 @@ namespace VirtualLibrarian
         private void LogoutButton_Click(object sender, EventArgs e)
         {
             AutomaticFormPosition.SaveFormStatus(this);
-            this.Close();
+            Close();
         }
 
 

@@ -53,6 +53,7 @@
             this.libraryBooksGrid.AllowUserToAddRows = false;
             this.libraryBooksGrid.AllowUserToDeleteRows = false;
             this.libraryBooksGrid.AllowUserToResizeRows = false;
+            this.libraryBooksGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.libraryBooksGrid.BackgroundColor = System.Drawing.Color.White;
             this.libraryBooksGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.libraryBooksGrid.Location = new System.Drawing.Point(37, 190);

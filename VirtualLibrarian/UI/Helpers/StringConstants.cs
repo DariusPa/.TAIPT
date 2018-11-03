@@ -30,7 +30,11 @@ namespace VirtualLibrarian.Helpers
         public static string aiReturnBookString = "Here you can return a book. Scan the QR code of the book you have previously taken.";
         public static string aiReadingHistoryGreeting = "Here you can see your readings history.";
         public static string aiAccountSettingsGreeting = "Here you can change your account settings.";
-        public static string aiGoodbye = "See you soon."; 
+        public static string aiGoodbye = "See you soon.";
+        public static string aiIssued = "Book has been successfully issued to you.";
+        public static string aiIssuingFailed = "Issuing failed!";
+        public static string aiReturnedBook = "You successfully returned the book.";
+        public static string aiReturnFailed = "Returning failed! You might have returned this book earlier or it had been taken by another user.";
 
         public static string currentlyTakenString = "Currently taken";
 

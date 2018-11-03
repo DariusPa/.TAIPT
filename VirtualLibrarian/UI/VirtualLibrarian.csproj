@@ -91,12 +91,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
+    <Compile Include="BusinessLogic\FaceRecognition.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Data\LibraryManager.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
     <Compile Include="Helpers\StringConstants.cs" />
-    <Compile Include="Helpers\ListConverter.cs" />
+    <Compile Include="Helpers\DataTransformationUtility.cs" />
     <Compile Include="Model\Author.cs" />
     <Compile Include="Model\ReadingHistory.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />

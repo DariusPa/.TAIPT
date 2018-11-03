@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
@@ -22,7 +23,7 @@ namespace VirtualLibrarian.Model
 
         public User()
         {
-            ID = ++count;
+            ID = Interlocked.Increment(ref count);
         }
 
         public User(string name, string surname, string email) : this()
