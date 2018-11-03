@@ -53,7 +53,7 @@ namespace VirtualLibrarian.Data
 
         public void SerializeAuthors()
         {
-            new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors))).Start();
+            new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings))).Start();
         }
 
         public void SerializeBooks()
