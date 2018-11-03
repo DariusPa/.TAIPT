@@ -21,6 +21,7 @@ namespace VirtualLibrarian.Data
         private string authorsPath;
         public string FacesPath { get; set; }
         public string FaceLabelsPath { get; set; }
+        private JsonSerializerSettings settings;
 
         private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
         public List<IBookModel> Books { get; set; } = new List<IBookModel>();
@@ -34,46 +35,35 @@ namespace VirtualLibrarian.Data
 
         public void Init(string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
-            this.bookPath = bookPath;
-            this.usersPath = usersPath;
-            this.authorsPath = authorsPath;
+            this.bookPath = DirectoryPath + bookPath;
+            this.usersPath = DirectoryPath + usersPath;
+            this.authorsPath = DirectoryPath + authorsPath;
             FacesPath = DirectoryPath + facesPath;
             FaceLabelsPath = DirectoryPath + faceLabelsPath;
             PicturesPerUser = picturesPerUser;
+            settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         }
 
         public void SerializeData()
         {
-            File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors));
-            File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All,
-            }));
-            File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All,
-            }));
+            File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors,Formatting.Indented,settings));
+            File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
+            File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
         }
 
         public void SerializeAuthors()
         {
-            new Thread(() => File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors))).Start();
+            new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings))).Start();
         }
 
         public void SerializeBooks()
         {
-            new Thread(()=>File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All,
-            }))).Start();
+            new Thread(()=>File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings))).Start();
         }
 
         public void SerializeUsers()
         {
-            new Thread(()=>File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All,
-            }))).Start();
+            new Thread(()=>File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings))).Start();
         }
 
         public void LoadData()
@@ -81,7 +71,7 @@ namespace VirtualLibrarian.Data
             try
             {
                 if (!File.Exists(FaceLabelsPath))
-                    File.Create(FaceLabelsPath);
+                    File.Create(FaceLabelsPath).Dispose();
             }
             catch
             {
@@ -90,15 +80,9 @@ namespace VirtualLibrarian.Data
             }
             try
             {
-                Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(DirectoryPath + authorsPath));
-                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(DirectoryPath + bookPath), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                });
-                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(DirectoryPath + usersPath), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                }); 
+                Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(authorsPath),settings);
+                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(bookPath), settings);
+                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(usersPath), settings); 
             }
             catch (Exception e)
             {

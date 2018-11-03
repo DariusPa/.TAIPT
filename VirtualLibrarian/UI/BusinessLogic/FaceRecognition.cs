@@ -14,7 +14,7 @@ namespace VirtualLibrarian.BusinessLogic
 {
     public class FaceRecognition
     {
-        private CascadeClassifier cascadeClassifier = new CascadeClassifier(LibraryDataIO.Instance.ResourcePath + "\\haarcascade_frontalface_default.xml");
+        private CascadeClassifier cascadeClassifier;
         private int eigenThresh;
         public int FaceCount { get; private set; }
         private FaceRecognizer faceRecognizer;
@@ -26,6 +26,7 @@ namespace VirtualLibrarian.BusinessLogic
         public FaceRecognition(int eigenThresh=2000)
         {
             faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
+            cascadeClassifier = new CascadeClassifier(LibraryDataIO.Instance.ResourcePath + "\\haarcascade_frontalface_default.xml");
             this.eigenThresh = eigenThresh;
         }
 

@@ -70,7 +70,7 @@ namespace VirtualLibrarian.Presenter
             dtLibraryBook.Columns.Add("Author");
             foreach(DataRow row in dtLibraryBook.Rows)
             {
-                row["Author"] = DataTransformationUtility.ReturnAuthorNames((List<int>)row["AuthorID"]);
+                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
             }
             DataTransformationUtility.EnableFiltering(dtLibraryBook, columns);
             Search.Instance.libraryGrid.DataSource = dtLibraryBook;
@@ -101,7 +101,7 @@ namespace VirtualLibrarian.Presenter
                   libraryBook => libraryBook.ID,
                   (takenBook, libraryBook) => new {
                       libraryBook.Title,
-                      Author = DataTransformationUtility.ReturnAuthorNames(libraryBook.AuthorID),
+                      Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
                       Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
                       Returned = StringConstants.currentlyTakenString
                   });
@@ -112,7 +112,7 @@ namespace VirtualLibrarian.Presenter
                       libraryBook => libraryBook.ID,
                       (readBook, libraryBook) => new {
                           libraryBook.Title,
-                          Author = DataTransformationUtility.ReturnAuthorNames(libraryBook.AuthorID),
+                          Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
                           Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
                           Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
                       });
