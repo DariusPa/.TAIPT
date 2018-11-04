@@ -145,6 +145,16 @@ namespace VirtualLibrarian.Data
             return Instance.Books.Find(x => x.ID == int.Parse(label));
         }
 
+        //TODO: logic for verifying changes
+        public bool ChangeUserInfo(IUserModel user, string name, string surname, string email)
+        {
+            user.Name = name;
+            user.Surname = surname;
+            user.Email = email;
+            SerializeUsers();
+            return true;
+        }
+
 
 
 

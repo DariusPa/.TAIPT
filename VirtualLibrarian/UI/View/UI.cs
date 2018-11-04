@@ -15,7 +15,7 @@ namespace VirtualLibrarian
     public partial class UI : Form
     {
         public IUserModel User { get; set; }
-		public SpeakingAI Speaker { get; set; } = new SpeakingAI();
+		public SpeakingAI Speaker { get; set; }
         public AI AI { get { return aiOutput; } }
 
         public event EventHandler SearchRequested;
@@ -24,10 +24,11 @@ namespace VirtualLibrarian
 
         public UI(IUserModel Users) 
         {
-            User = Users;
             InitializeComponent();
-            userInformation1.UserName = User.Name;
-            userInformation1.UserSurname = User.Surname;
+            Speaker = new SpeakingAI(AI);
+            User = Users;
+            userInformation.UserName = User.Name;
+            userInformation.UserSurname = User.Surname;
         }
 
         private void UI_Load(object sender, EventArgs e)
@@ -52,7 +53,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiSearchLibraryGreeting, aiOutput);
+            Speaker.TellUser(StringConstants.aiSearchLibraryGreeting);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -64,7 +65,7 @@ namespace VirtualLibrarian
 
         private void TakeBookButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiScanBookQRString, aiOutput);
+            Speaker.TellUser(StringConstants.aiScanBookQRString);
             if (!containerPanel.Controls.Contains(TakeBook.Instance))
             {
                 containerPanel.Controls.Add(TakeBook.Instance);
@@ -75,7 +76,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiReturnBookString, aiOutput);
+            Speaker.TellUser(StringConstants.aiReturnBookString);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -87,7 +88,7 @@ namespace VirtualLibrarian
 
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiReadingHistoryGreeting, aiOutput);
+            Speaker.TellUser(StringConstants.aiReadingHistoryGreeting);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -99,7 +100,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiAccountSettingsGreeting, aiOutput);
+            Speaker.TellUser(StringConstants.aiAccountSettingsGreeting);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -129,7 +130,7 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.AIGreeting(User.Name), aiOutput);
+            Speaker.TellUser(StringConstants.AIGreeting(User.Name));
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -141,8 +142,14 @@ namespace VirtualLibrarian
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
             AutomaticFormPosition.SaveFormStatus(this);
-            Speaker.TellUser(StringConstants.aiGoodbye, aiOutput);
+            Speaker.TellUser(StringConstants.aiGoodbye);
             this.Controls.Clear();
+        }
+
+        public void UpdateUser()
+        {
+            userInformation.UserName = User.Name;
+            userInformation.UserSurname = User.Surname;
         }
 
     }

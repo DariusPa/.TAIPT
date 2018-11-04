@@ -20,6 +20,8 @@ namespace VirtualLibrarian.Presenter
         {
             TakeBook.Instance.barcodeCamera.BarcodeDetected += OnBookDetected;
             ReturnBook.Instance.barcodeCamera.BarcodeDetected += OnBookReturn;
+            Settings.Instance.SaveChanges += OnUserInfoChange;
+            Settings.Instance.SoundSettingsChanged += OnSoundSettingsChanged;
         }
 
         public void PrepareUI(IUserModel activeUser)
@@ -37,11 +39,11 @@ namespace VirtualLibrarian.Presenter
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
             if (ActiveUser != null && book != null && LibraryManager.IssueBookToReader(ActiveUser, book))
             {
-                ui.Speaker.TellUser(StringConstants.aiIssued, ui.AI);
+                ui.Speaker.TellUser(StringConstants.aiIssued);
             }
             else
             {
-                ui.Speaker.TellUser(StringConstants.aiIssuingFailed, ui.AI);
+                ui.Speaker.TellUser(StringConstants.aiIssuingFailed);
             }
             TakeBook.Instance.HideScanner();
         }
@@ -51,11 +53,11 @@ namespace VirtualLibrarian.Presenter
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
             if (LibraryManager.ReturnBook(ActiveUser, book))
             {
-                ui.Speaker.TellUser(StringConstants.aiReturnedBook, ui.AI);
+                ui.Speaker.TellUser(StringConstants.aiReturnedBook);
             }
             else
             {
-                ui.Speaker.TellUser(StringConstants.aiReturnFailed, ui.AI);
+                ui.Speaker.TellUser(StringConstants.aiReturnFailed);
             }
             ReturnBook.Instance.HideScanner();
             
@@ -125,6 +127,31 @@ namespace VirtualLibrarian.Presenter
         {
             ActiveUser = null;
             UIClosed?.Invoke(this, e);
+        }
+
+        private void OnUserInfoChange(object sender, UserRelatedEventArgs args)
+        {
+            if (LibraryDataIO.Instance.ChangeUserInfo(ActiveUser, args.UserName, args.UserSurname, args.UserEmail))
+            {
+                ui.Speaker.TellUser(StringConstants.aiChangesSaved);
+                ui.UpdateUser();
+            }
+            else
+            {
+                ui.Speaker.TellUser(StringConstants.aiSaveChangesFailed);
+            }
+        }
+
+        private void OnSoundSettingsChanged(object sender, SoundSettingsEventArgs args)
+        {
+            if (args.SoundEnabled)
+            {
+                ui.Speaker.EnableSound();
+            }
+            else
+            {
+                ui.Speaker.DisableSound();
+            }
         }
 
 
