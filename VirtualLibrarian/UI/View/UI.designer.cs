@@ -37,8 +37,8 @@
             this.takeBookButton = new System.Windows.Forms.Button();
             this.searchButton = new System.Windows.Forms.Button();
             this.aiOutput = new VirtualLibrarian.AI();
-            this.userInformation1 = new VirtualLibrarian.UserInformation();
-            this.settings1 = new VirtualLibrarian.Settings();
+            this.userInformation = new VirtualLibrarian.UserInformation();
+            this.settings1 = VirtualLibrarian.Settings.Instance;
             this.SuspendLayout();
             // 
             // containerPanel
@@ -131,16 +131,16 @@
             this.aiOutput.Size = new System.Drawing.Size(1000, 150);
             this.aiOutput.TabIndex = 8;
             // 
-            // userInformation1
+            // userInformation
             // 
-            this.userInformation1.BackColor = System.Drawing.Color.White;
-            this.userInformation1.Location = new System.Drawing.Point(42, 56);
-            this.userInformation1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.userInformation1.Name = "userInformation1";
-            this.userInformation1.Size = new System.Drawing.Size(594, 248);
-            this.userInformation1.TabIndex = 3;
-            this.userInformation1.UserName = "NAME";
-            this.userInformation1.UserSurname = "SURNAME";
+            this.userInformation.BackColor = System.Drawing.Color.White;
+            this.userInformation.Location = new System.Drawing.Point(42, 56);
+            this.userInformation.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.userInformation.Name = "userInformation";
+            this.userInformation.Size = new System.Drawing.Size(594, 248);
+            this.userInformation.TabIndex = 3;
+            this.userInformation.UserName = "NAME";
+            this.userInformation.UserSurname = "SURNAME";
             // 
             // UI
             // 
@@ -153,7 +153,7 @@
             this.Controls.Add(this.logoutButton);
             this.Controls.Add(this.historyButton);
             this.Controls.Add(this.returnButton);
-            this.Controls.Add(this.userInformation1);
+            this.Controls.Add(this.userInformation);
             this.Controls.Add(this.containerPanel);
             this.Controls.Add(this.takeBookButton);
             this.Controls.Add(this.searchButton);
@@ -180,7 +180,7 @@
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Panel containerPanel;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private UserInformation userInformation1;
+        private UserInformation userInformation;
         private Settings settings1;
         private AI aiOutput;
     }

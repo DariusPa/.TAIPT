@@ -37,6 +37,8 @@ namespace VirtualLibrarian.Helpers
         public static string aiReturnFailed = "Returning failed! You might have returned this book earlier or it had been taken by another user.";
 
         public static string currentlyTakenString = "Currently taken";
+        public static string aiSaveChangesFailed = "Updating your account settings failed.";
+        public static string aiChangesSaved = "Your account settings have been successfully updated.";
 
         public static string AIGreeting(string name)
         {

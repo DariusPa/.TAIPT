@@ -1,11 +1,24 @@
 ﻿using System;
 using System.Windows.Forms;
+using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
 {
     public partial class Settings : UserControl
     {
         private static Settings _instance;
+        public IUserModel ActiveUser
+        {
+            get { return ActiveUser; }
+            set
+            {
+                ActiveUser = value;
+                UserName = ActiveUser.Name;
+                UserSurname = ActiveUser.Surname;
+                UserEmail = ActiveUser.Email;
+            }
+        }
 
         public static Settings Instance
         {
@@ -16,9 +29,10 @@ namespace VirtualLibrarian
                 return _instance;
             }
         }
-        public Settings()
+        private Settings()
         {
             InitializeComponent();
+            soundsCheckBox.BackgroundImage = Properties.Resources._checked;
         }
 
         public Settings(string userName, string userSurname, string userEmail) : this()
@@ -46,15 +60,29 @@ namespace VirtualLibrarian
             set { sEmailInput.Text = value; }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        public event SaveChangesEventHandler SaveChanges;
+        public event SoundSettingsEventHandler SoundSettingsChanged;
+        public delegate void SaveChangesEventHandler(object sender, UserRelatedEventArgs args);
+        public delegate void SoundSettingsEventHandler(object sender, SoundSettingsEventArgs args);
+
+        private void soundCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (soundsCheckBox.Checked)
             {
                 soundsCheckBox.BackgroundImage = Properties.Resources._checked;
-            } else
+                SoundSettingsChanged?.Invoke(this, new SoundSettingsEventArgs {SoundEnabled = true });
+            }
+            else
             {
                 soundsCheckBox.BackgroundImage = Properties.Resources._unchecked;
+                SoundSettingsChanged?.Invoke(this, new SoundSettingsEventArgs { SoundEnabled = false });
             }
+        }
+
+        private void saveChangesButton_Click(object sender, EventArgs e)
+        {
+            SaveChanges?.Invoke(this, new UserRelatedEventArgs(UserName, UserSurname, UserEmail));
+
         }
     }
 }

@@ -14,6 +14,17 @@ namespace VirtualLibrarian.Helpers
     {
         public string UserID { get; set; }
         public IUserModel PendingUser { get; set; }
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string UserEmail { get; set; }
+
+        public UserRelatedEventArgs() { }
+        public UserRelatedEventArgs(string name, string surname, string email) : this()
+        {
+            UserName = name;
+            UserSurname = surname;
+            UserEmail = email;
+        }
     }
 
     public class FrameGrabbedEventArgs : EventArgs
@@ -29,6 +40,11 @@ namespace VirtualLibrarian.Helpers
     public class BarcodeDetectedEventArgs : EventArgs
     {
         public string DecodedText { get; set; }
+    }
+
+    public class SoundSettingsEventArgs : EventArgs
+    {
+        public bool SoundEnabled { get; set; }
     }
 
 }
