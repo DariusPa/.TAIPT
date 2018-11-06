@@ -144,14 +144,7 @@ namespace VirtualLibrarian.Presenter
 
         private void OnSoundSettingsChanged(object sender, SoundSettingsEventArgs args)
         {
-            if (args.SoundEnabled)
-            {
-                ui.Speaker.EnableSound();
-            }
-            else
-            {
-                ui.Speaker.DisableSound();
-            }
+            ui.Speaker.SoundEnabled = args.SoundEnabled;
         }
 
 
