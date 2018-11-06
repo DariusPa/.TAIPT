@@ -79,15 +79,14 @@ namespace VirtualLibrarian
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //AutomaticFormPosition.SaveFormStatus(this);
         }
 
         private void UpdateProgressBar(object sender, EventArgs e)
         {
+            if(!IsDisposed)
             BeginInvoke(new Action(()=>
             {
-                if (progressBar != null)
-                    progressBar.Value += 1;
+                progressBar.Value += 1;
             }));
         }
     }

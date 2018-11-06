@@ -36,6 +36,8 @@ namespace VirtualLibrarian.BusinessLogic
 
         private FaceRecognition faceRecognition;
 
+        private Thread saveFace;
+
         public FaceCamera(int camWidth, int camHeight)
         {
             faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
@@ -100,6 +102,7 @@ namespace VirtualLibrarian.BusinessLogic
                         var label = faceRecognition.Recognize(detectedFace);
                         if (label != "")
                         {
+                            saveFace?.Abort();
                             ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
                             return;
                         }
@@ -119,7 +122,7 @@ namespace VirtualLibrarian.BusinessLogic
 
         public void SaveFace()
         {
-            Thread saveFace = new Thread(() => SaveNewFace(userLabel));
+            saveFace = new Thread(() => SaveNewFace(userLabel));
             saveFace.Start();
         }
 

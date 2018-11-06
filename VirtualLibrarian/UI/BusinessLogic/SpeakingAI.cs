@@ -48,16 +48,6 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public void EnableSound()
-        {
-            SoundEnabled = true;
-        }
-
-        public void DisableSound()
-        {
-            SoundEnabled = false;
-        }
-
         public void WriteSlowly()
         {
             lock (balanceLock)

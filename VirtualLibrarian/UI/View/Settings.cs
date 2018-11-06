@@ -8,17 +8,6 @@ namespace VirtualLibrarian
     public partial class Settings : UserControl
     {
         private static Settings _instance;
-        public IUserModel ActiveUser
-        {
-            get { return ActiveUser; }
-            set
-            {
-                ActiveUser = value;
-                UserName = ActiveUser.Name;
-                UserSurname = ActiveUser.Surname;
-                UserEmail = ActiveUser.Email;
-            }
-        }
 
         public static Settings Instance
         {
@@ -32,7 +21,7 @@ namespace VirtualLibrarian
         private Settings()
         {
             InitializeComponent();
-            soundsCheckBox.BackgroundImage = Properties.Resources._checked;
+            soundsCheckBox.Checked = true;
         }
 
         public Settings(string userName, string userSurname, string userEmail) : this()
