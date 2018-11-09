@@ -29,8 +29,8 @@ namespace VirtualLibrarian.BusinessLogic
 
         public event FrameGrabbedEventHandler FrameGrabbed;
         public event FaceRecognisedEventHandler ExistingUserRecognised;
-        public event FaceRecognisedEventHandler NewUserRegistered;
-        public event EventHandler FacePhotoSaved;
+        //public event FaceRecognisedEventHandler NewUserRegistered;
+        //public event EventHandler FacePhotoSaved;
 
         public string userLabel;
 
@@ -108,11 +108,11 @@ namespace VirtualLibrarian.BusinessLogic
                         }
                     }
 
-                    if (saved)
+                    /*if (saved)
                     {
                         NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
                         return;
-                    }
+                    }*/
                     
                     break;
                 }
@@ -122,35 +122,10 @@ namespace VirtualLibrarian.BusinessLogic
 
         public void SaveFace()
         {
-            saveFace = new Thread(() => SaveNewFace(userLabel));
+            saveFace = new Thread(() => faceRecognition.SaveNewFace(userLabel, detectedFace));
             saveFace.Start();
         }
 
-        //TODO: move to FaceRecognition class
-        private void SaveNewFace(string label)
-        {
-            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
-            List<String> faceLabelsTemp = new List<String>();
-            List<int> faceIDTemp = new List<int>();
-            int faceCountTemp = faceRecognition.FaceCount;
-
-            for (int picturesSaved = 0; picturesSaved < LibraryDataIO.Instance.PicturesPerUser;)
-            {
-                if (detectedFace != null)
-                {
-                    trainedFacesTemp.Add(detectedFace);
-                    faceLabelsTemp.Add(label);
-                    faceIDTemp.Add(++faceCountTemp);
-                    picturesSaved++;
-                    FacePhotoSaved?.Invoke(this, EventArgs.Empty);
-                    Thread.Sleep(500);
-                }
-            }
-
-            faceRecognition.StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp,label);
-            saved = true;
-            return;
-        }
 
         /*Resizes the snapshot from camera and puts the frame picture on it*/
         private Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)

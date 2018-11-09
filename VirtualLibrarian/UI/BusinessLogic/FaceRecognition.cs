@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
+using static VirtualLibrarian.BusinessLogic.FaceCamera;
 
 namespace VirtualLibrarian.BusinessLogic
 {
@@ -22,6 +24,11 @@ namespace VirtualLibrarian.BusinessLogic
         private List<String> faceLabels = new List<String>();
         private List<int> faceID = new List<int>();
 
+
+        private bool photoSaved;
+
+        public event EventHandler FacePhotoSaved;
+        public event FaceRecognisedEventHandler NewUserRegistered;
 
         public FaceRecognition(int eigenThresh=2000)
         {
@@ -82,6 +89,31 @@ namespace VirtualLibrarian.BusinessLogic
         public Rectangle [] DetectFaces(Mat gray)
         {
             return cascadeClassifier.DetectMultiScale(gray, 1.4, 4, new Size(20, 20));
+        }
+        public void SaveNewFace(string label, Image<Gray, Byte> detectedFace)
+        {
+            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
+            List<String> faceLabelsTemp = new List<String>();
+            List<int> faceIDTemp = new List<int>();
+
+            for (int picturesSaved = 0; picturesSaved < LibraryDataIO.Instance.PicturesPerUser;)
+            {
+                if (detectedFace != null)
+                {
+                    trainedFacesTemp.Add(detectedFace);
+                    faceLabelsTemp.Add(label);
+                    faceIDTemp.Add(++this.FaceCount);
+                    picturesSaved++;
+                    FacePhotoSaved?.Invoke(this, EventArgs.Empty);
+                    Thread.Sleep(500);
+                }
+            }
+
+            StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp, label);
+            photoSaved = true;
+
+            NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
+            return;
         }
 
         public void StoreNewFace(List<Image<Gray, byte>> trainedFacesTemp, List<String> faceLabelsTemp, List<int> faceIDTemp, string label)
