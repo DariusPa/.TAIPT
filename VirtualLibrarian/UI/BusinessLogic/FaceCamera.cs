@@ -29,12 +29,12 @@ namespace VirtualLibrarian.BusinessLogic
 
         public event FrameGrabbedEventHandler FrameGrabbed;
         public event FaceRecognisedEventHandler ExistingUserRecognised;
-        //public event FaceRecognisedEventHandler NewUserRegistered;
-        //public event EventHandler FacePhotoSaved;
+        public event FaceRecognisedEventHandler NewUserRegistered;
+        public event EventHandler FacePhotoSaved;
 
         public string userLabel;
 
-        private FaceRecognition faceRecognition;
+        public FaceRecognition faceRecognition;
 
         private Thread saveFace;
 
@@ -108,11 +108,6 @@ namespace VirtualLibrarian.BusinessLogic
                         }
                     }
 
-                    /*if (saved)
-                    {
-                        NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
-                        return;
-                    }*/
                     
                     break;
                 }

@@ -10,7 +10,8 @@ namespace VirtualLibrarian
 {
     public partial class RegisterForm : Form
     {
-        private FaceCamera faceCam;
+        private FaceCamera faceCamera;
+        private FaceRecognition faceRecognition;
         public IUserModel User;
 
         public event RegistrationEventHandler RegisterCompleted;
@@ -19,11 +20,12 @@ namespace VirtualLibrarian
         {
             User = user;
             InitializeComponent();
-            faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
-            faceCam.ExistingUserRecognised += OnExistingUserRecognised;
-            faceCam.NewUserRegistered += OnNewUserRegistered;
-            faceCam.FrameGrabbed += OnFrameGrabbed;
-            faceCam.FacePhotoSaved += UpdateProgressBar;
+            faceCamera = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
+            faceCamera.ExistingUserRecognised += OnExistingUserRecognised;
+            faceRecognition = faceCamera.faceRecognition;
+            faceRecognition.NewUserRegistered += OnNewUserRegistered;
+            faceCamera.FrameGrabbed += OnFrameGrabbed;
+            faceRecognition.FacePhotoSaved += UpdateProgressBar;
             progressBar.Maximum = LibraryDataIO.Instance.PicturesPerUser;
         }
 
@@ -34,12 +36,12 @@ namespace VirtualLibrarian
 
         private void RegisterForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            faceCam.StopStreaming();
+            faceCamera.StopStreaming();
         }
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.SaveFace();
+            faceCamera.SaveFace();
             cancelButton.Hide();
             saveFaceButton.Hide();
         }
@@ -48,7 +50,7 @@ namespace VirtualLibrarian
         {
             registerPicBox.Show();
             saveFaceButton.Show();
-            faceCam.AddNewFace(User.ID.ToString());
+            faceCamera.AddNewFace(User.ID.ToString());
         }
 
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
