@@ -39,11 +39,11 @@
             this.descriptionBox = new System.Windows.Forms.RichTextBox();
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.saveButton = new System.Windows.Forms.Button();
-            this.barcodeBox = new System.Windows.Forms.PictureBox();
             this.genreBox = new System.Windows.Forms.CheckedListBox();
             this.newAuthor = new System.Windows.Forms.Button();
             this.authorListBox = new System.Windows.Forms.ListBox();
-            ((System.ComponentModel.ISupportInitialize)(this.barcodeBox)).BeginInit();
+            this.qtyBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -99,7 +99,7 @@
             // titleBox
             // 
             this.titleBox.Location = new System.Drawing.Point(235, 48);
-            this.titleBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.titleBox.Margin = new System.Windows.Forms.Padding(5);
             this.titleBox.Name = "titleBox";
             this.titleBox.Size = new System.Drawing.Size(721, 38);
             this.titleBox.TabIndex = 5;
@@ -107,7 +107,7 @@
             // isbnBox
             // 
             this.isbnBox.Location = new System.Drawing.Point(235, 582);
-            this.isbnBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.isbnBox.Margin = new System.Windows.Forms.Padding(5);
             this.isbnBox.Name = "isbnBox";
             this.isbnBox.Size = new System.Drawing.Size(721, 38);
             this.isbnBox.TabIndex = 9;
@@ -115,7 +115,7 @@
             // publisherBox
             // 
             this.publisherBox.Location = new System.Drawing.Point(235, 310);
-            this.publisherBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.publisherBox.Margin = new System.Windows.Forms.Padding(5);
             this.publisherBox.Name = "publisherBox";
             this.publisherBox.Size = new System.Drawing.Size(721, 38);
             this.publisherBox.TabIndex = 7;
@@ -123,7 +123,7 @@
             // descriptionBox
             // 
             this.descriptionBox.Location = new System.Drawing.Point(235, 634);
-            this.descriptionBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.descriptionBox.Margin = new System.Windows.Forms.Padding(5);
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(721, 211);
             this.descriptionBox.TabIndex = 11;
@@ -142,8 +142,8 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(677, 987);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.saveButton.Location = new System.Drawing.Point(671, 885);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(5);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(285, 112);
             this.saveButton.TabIndex = 12;
@@ -151,22 +151,13 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.OnSaveBook);
             // 
-            // barcodeBox
-            // 
-            this.barcodeBox.Location = new System.Drawing.Point(235, 882);
-            this.barcodeBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
-            this.barcodeBox.Name = "barcodeBox";
-            this.barcodeBox.Size = new System.Drawing.Size(309, 238);
-            this.barcodeBox.TabIndex = 14;
-            this.barcodeBox.TabStop = false;
-            // 
             // genreBox
             // 
             this.genreBox.CheckOnClick = true;
             this.genreBox.FormattingEnabled = true;
             this.genreBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
             this.genreBox.Location = new System.Drawing.Point(235, 365);
-            this.genreBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.genreBox.Margin = new System.Windows.Forms.Padding(5);
             this.genreBox.Name = "genreBox";
             this.genreBox.Size = new System.Drawing.Size(721, 169);
             this.genreBox.TabIndex = 8;
@@ -174,7 +165,7 @@
             // newAuthor
             // 
             this.newAuthor.Location = new System.Drawing.Point(971, 155);
-            this.newAuthor.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.newAuthor.Margin = new System.Windows.Forms.Padding(5);
             this.newAuthor.Name = "newAuthor";
             this.newAuthor.Size = new System.Drawing.Size(69, 81);
             this.newAuthor.TabIndex = 15;
@@ -187,21 +178,39 @@
             this.authorListBox.FormattingEnabled = true;
             this.authorListBox.ItemHeight = 31;
             this.authorListBox.Location = new System.Drawing.Point(232, 100);
-            this.authorListBox.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.authorListBox.Margin = new System.Windows.Forms.Padding(5);
             this.authorListBox.Name = "authorListBox";
             this.authorListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
             this.authorListBox.Size = new System.Drawing.Size(724, 190);
             this.authorListBox.TabIndex = 6;
             // 
+            // qtyBox
+            // 
+            this.qtyBox.Location = new System.Drawing.Point(235, 870);
+            this.qtyBox.Name = "qtyBox";
+            this.qtyBox.Size = new System.Drawing.Size(147, 38);
+            this.qtyBox.TabIndex = 16;
+            this.qtyBox.TextChanged += new System.EventHandler(this.qtyBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(53, 873);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(122, 32);
+            this.label1.TabIndex = 17;
+            this.label1.Text = "Quantity";
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1069, 1142);
+            this.ClientSize = new System.Drawing.Size(1055, 1041);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.qtyBox);
             this.Controls.Add(this.authorListBox);
             this.Controls.Add(this.newAuthor);
             this.Controls.Add(this.genreBox);
-            this.Controls.Add(this.barcodeBox);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.descriptionLabel);
             this.Controls.Add(this.descriptionBox);
@@ -213,11 +222,10 @@
             this.Controls.Add(this.publisherLabel);
             this.Controls.Add(this.authorLabel);
             this.Controls.Add(this.titleLabel);
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "AdminForm";
             this.Text = "AdminForm";
             this.Load += new System.EventHandler(this.AdminForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.barcodeBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -236,9 +244,10 @@
         private System.Windows.Forms.RichTextBox descriptionBox;
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.PictureBox barcodeBox;
         private System.Windows.Forms.CheckedListBox genreBox;
         private System.Windows.Forms.Button newAuthor;
         private System.Windows.Forms.ListBox authorListBox;
+        private System.Windows.Forms.TextBox qtyBox;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -58,8 +58,8 @@ namespace VirtualLibrarian
             {
                 containerPanel.Controls.Add(Search.Instance);
                 Search.Instance.Dock = DockStyle.Fill;
-                SearchRequested?.Invoke(this, EventArgs.Empty);
             }
+            SearchRequested?.Invoke(this, EventArgs.Empty);
             Search.Instance.BringToFront();
         }
 

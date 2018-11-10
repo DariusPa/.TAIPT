@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using ZXing;
 
 namespace VirtualLibrarian.BusinessLogic
@@ -22,8 +24,17 @@ namespace VirtualLibrarian.BusinessLogic
         public Image GenerateBarcode(int value)
         {
             var filePath = $"{barcodeDir}\\{value}.bmp";
-            barcodeWriter.Write((value).ToString()).Save(filePath);
+
+            try
+            {
+                barcodeWriter.Write(value.ToString()).Save(filePath);
+            }
+            catch (Exception e)
+            {
+                LibraryDataIO.Instance.Logger.LogException(e);
+            }
             return Image.FromFile(filePath);
+
         }
 
 

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian.Data
@@ -30,11 +31,16 @@ namespace VirtualLibrarian.Data
         public static LibraryDataIO Instance { get { return library.Value; } }
 
         public int PicturesPerUser { get; private set; }
+        public ILogger Logger { get; set; }
+        public ILogger UILogger { get; set; }
+
 
         private LibraryDataIO() { }
 
         public void Init(string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
+            Logger = new FileLogger();
+            UILogger = new UILogger();
             this.bookPath = DirectoryPath + bookPath;
             this.usersPath = DirectoryPath + usersPath;
             this.authorsPath = DirectoryPath + authorsPath;
@@ -46,24 +52,54 @@ namespace VirtualLibrarian.Data
 
         public void SerializeData()
         {
-            File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors,Formatting.Indented,settings));
-            File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
-            File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
+            try
+            {
+                File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings));
+                File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
+                File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+                UILogger.LogError(StringConstants.serealizationError);
+            }
         }
 
         public void SerializeAuthors()
         {
-            new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings))).Start();
+            try
+            {
+                new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings))).Start();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
         public void SerializeBooks()
         {
-            new Thread(()=>File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings))).Start();
+            try
+            {
+                new Thread(() => File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings))).Start();
+
+            } 
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
         public void SerializeUsers()
         {
-            new Thread(()=>File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings))).Start();
+            try
+            {
+                new Thread(() => File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings))).Start();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
         public void LoadData()
@@ -71,12 +107,13 @@ namespace VirtualLibrarian.Data
             try
             {
                 if (!File.Exists(FaceLabelsPath))
-                    File.Create(FaceLabelsPath).Dispose();
+                    File.Create(FaceLabelsPath).Dispose(); 
             }
             catch
             {
-                //TODO: handle properly
-                Console.Write("Failed to open/create face labels file");
+                Logger.LogError("Failed to open/create face labels file.");
+                UILogger.LogError(StringConstants.loadError);
+                Environment.Exit(0);
             }
             try
             {
@@ -86,16 +123,25 @@ namespace VirtualLibrarian.Data
             }
             catch (Exception e)
             {
-                //TODO: handle properly
-                Console.Write(e.Message);
+                Logger.LogException(e);
+                UILogger.LogWarning(StringConstants.noDataWarning);
             }
         }
 
 
         public void AddNewFace(Image<Gray, byte> face,string label, int faceCount)
         {
-            face.Save($"{FacesPath}\\{faceCount}.bmp");
-            File.AppendAllText(FaceLabelsPath, label + "%");
+            try
+            {
+                face.Save($"{FacesPath}\\{faceCount}.bmp");
+                File.AppendAllText(FaceLabelsPath, label + "%");
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+                UILogger.LogError(StringConstants.saveFaceErrror);
+            }
+
         }
 
         public void AddBook(IBookModel book)
