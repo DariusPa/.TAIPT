@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using VirtualLibrarian.Data;
 
@@ -21,6 +22,8 @@ namespace VirtualLibrarian.BusinessLogic
         private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
         private List<String> faceLabels = new List<String>();
         private List<int> faceID = new List<int>();
+
+        public event EventHandler FacePhotoSaved;
 
 
         public FaceRecognition(int eigenThresh=2000)
@@ -93,6 +96,29 @@ namespace VirtualLibrarian.BusinessLogic
                 faceLabels.Add(faceLabelsTemp[i]);
                 faceID.Add(++FaceCount);
             }
+        }
+
+        public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace)
+        {
+            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
+            List<string> faceLabelsTemp = new List<String>();
+            List<int> faceIDTemp = new List<int>();
+            int faceCountTemp = FaceCount;
+
+            for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser; i++)
+            {
+                if (detectedFace != null)
+                {
+                    trainedFacesTemp.Add(detectedFace);
+                    faceLabelsTemp.Add(label);
+                    faceIDTemp.Add(++faceCountTemp);
+                    FacePhotoSaved?.Invoke(this, EventArgs.Empty);
+                    Thread.Sleep(500);
+                }
+            }
+
+            StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp, label);
+            return true;
         }
 
     }

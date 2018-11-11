@@ -39,6 +39,7 @@ namespace VirtualLibrarian
             {
                 BookGenre genres = new BookGenre();
                 List<int> authors = new List<int>();
+                int.TryParse(qtyBox.Text, out int qty);
 
                 foreach (var genre in genreBox.CheckedItems)
                 {
@@ -50,7 +51,7 @@ namespace VirtualLibrarian
                     authors.Add(author.ID);
                 }
 
-                for (int i = 0; i < int.Parse(qtyBox.Text); i++)
+                for (int i = 0; i < qty; i++)
                 {
                     Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors,
                                         publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
@@ -79,8 +80,8 @@ namespace VirtualLibrarian
         {
             foreach(var control in Controls)
             {
-                if (control.GetType() == typeof(TextBoxBase))
-                    ((TextBoxBase)control).Text = string.Empty;
+                if (control is TextBox) ((TextBox)control).Clear();
+                if (control is RichTextBox) ((RichTextBox)control).Clear();
                 if (control is ListBox)
                     ((ListBox)control).ClearSelected();
                 if (control is CheckedListBox)
@@ -110,6 +111,7 @@ namespace VirtualLibrarian
             if (System.Text.RegularExpressions.Regex.IsMatch(qtyBox.Text, "[^0-9]"))
             {
                 qtyBox.Text = qtyBox.Text.Remove(qtyBox.Text.Length - 1);
+                qtyBox.SelectionStart = qtyBox.Text.Length;
             }
         }
     }
