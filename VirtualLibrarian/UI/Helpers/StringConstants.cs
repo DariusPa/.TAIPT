@@ -8,6 +8,8 @@ namespace VirtualLibrarian.Helpers
 {
     public static class StringConstants
     {
+        public static string LogFile = "Log.txt";
+
         public static string fullNameString = "FullName";
         public static string missingInfo = "Information missing!";
 
@@ -39,6 +41,11 @@ namespace VirtualLibrarian.Helpers
         public static string currentlyTakenString = "Currently taken";
         public static string aiSaveChangesFailed = "Updating your account settings failed.";
         public static string aiChangesSaved = "Your account settings have been successfully updated.";
+
+        public static string serealizationError = "Last changes made in the library could not be saved";
+        public static string loadError = "System is not ready to work. Contact administrators for help.";
+        public static string noDataWarning = "Library has no data of users/books. Contact administrators if this is not expected behaviour.";
+        public static string saveFaceErrror = "Attempt to save new face failed.";
 
         public static string AIGreeting(string name)
         {

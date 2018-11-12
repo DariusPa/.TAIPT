@@ -23,16 +23,11 @@ namespace VirtualLibrarian.Presenter
         private NewAuthorForm authorForm;
         public IBookModel Book;
 
-        public event BarcodeGeneratedEventHandler BarcodeGenerated;
-        
-
         public AdministratorPresenter(FirstPage firstPage)
         {
             barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DirectoryPath + "\\Barcodes");
-           
             this.firstPage = firstPage;
             firstPage.Administrate += ShowAdminForm;
-
         }
 
         private void ShowAdminForm(object sender, EventArgs e)
@@ -48,11 +43,8 @@ namespace VirtualLibrarian.Presenter
         {
             Book = e.Book;
             LibraryDataIO.Instance.AddBook(Book);
-
             var barcode = barcodeGenerator.GenerateBarcode(Book.ID);
-            BarcodeGenerated?.Invoke(this, new BarcodeGeneratedEventArgs { Barcode = barcode });
             adminForm.RefreshAndClear();
-
         }
 
         private void ShowFirstPage(object sender, EventArgs e)
@@ -82,15 +74,6 @@ namespace VirtualLibrarian.Presenter
             }
 
         }
-
-        public class BarcodeGeneratedEventArgs : EventArgs
-        {
-            public Image Barcode { get; set; }
-        }
-
-
-
-        public delegate void BarcodeGeneratedEventHandler(object sender, BarcodeGeneratedEventArgs e);
 
     }
 }

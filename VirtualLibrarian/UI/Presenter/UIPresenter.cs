@@ -65,7 +65,7 @@ namespace VirtualLibrarian.Presenter
 
         private void OnSearchRequested(object sender, EventArgs e)
         {
-            string[] columns = { "Title", "Author", "ISBN", "Genre"};
+            string[] columns = { "Title", "Author", "ISBN", "Genre", "Status"};
             DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
 
             //prepare column with authors' full names

@@ -44,6 +44,7 @@ namespace VirtualLibrarian.BusinessLogic
             faceRecognition = new FaceRecognition();
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
+            faceRecognition.FacePhotoSaved += (object sender,EventArgs e) => FacePhotoSaved?.Invoke(sender, e);
             faceRecognition.LoadRecognizer();
         }
 
@@ -64,6 +65,11 @@ namespace VirtualLibrarian.BusinessLogic
             videoCapture?.Dispose();
         }
 
+        public async void SaveFace()
+        {
+            saved = await Task.Run(() => faceRecognition.SaveNewFace(userLabel, ref detectedFace));
+        }
+
         private void StartStreaming()
         {
             isTrained = faceRecognition.TrainRecognizer();
@@ -71,12 +77,21 @@ namespace VirtualLibrarian.BusinessLogic
             captureThread.Start();
         }
 
-
         private void DisplayCam()
         {
             while (videoCapture.IsOpened)
             {
-                var frame = videoCapture.QueryFrame();
+                Mat frame;
+                try
+                {   
+                    frame = videoCapture.QueryFrame();
+                }
+                catch 
+                {
+                    LibraryDataIO.Instance.UILogger.LogError("Camera stopped.");
+                    return;
+                }
+                
                 var gray = new Mat();
 
                 //Prepares a gray frame and increases its brightness & contrast
@@ -89,6 +104,10 @@ namespace VirtualLibrarian.BusinessLogic
                 frame.Dispose();
 
                 Rectangle[] facesDetected = faceRecognition.DetectFaces(gray);
+
+                //Forget the previously detected face so if no faces were detected in current iteration,
+                //the same value wouldn't get stored
+                detectedFace = null;
                
                 foreach (Rectangle face in facesDetected)
                 {
@@ -120,37 +139,9 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public void SaveFace()
-        {
-            saveFace = new Thread(() => SaveNewFace(userLabel));
-            saveFace.Start();
-        }
 
-        //TODO: move to FaceRecognition class
-        private void SaveNewFace(string label)
-        {
-            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
-            List<String> faceLabelsTemp = new List<String>();
-            List<int> faceIDTemp = new List<int>();
-            int faceCountTemp = faceRecognition.FaceCount;
 
-            for (int picturesSaved = 0; picturesSaved < LibraryDataIO.Instance.PicturesPerUser;)
-            {
-                if (detectedFace != null)
-                {
-                    trainedFacesTemp.Add(detectedFace);
-                    faceLabelsTemp.Add(label);
-                    faceIDTemp.Add(++faceCountTemp);
-                    picturesSaved++;
-                    FacePhotoSaved?.Invoke(this, EventArgs.Empty);
-                    Thread.Sleep(500);
-                }
-            }
 
-            faceRecognition.StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp,label);
-            saved = true;
-            return;
-        }
 
         /*Resizes the snapshot from camera and puts the frame picture on it*/
         private Bitmap FrameSquarePicture(Bitmap cameraFrame, int width, int height)
