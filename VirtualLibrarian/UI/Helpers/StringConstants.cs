@@ -12,7 +12,7 @@ namespace VirtualLibrarian.Helpers
         public static string LogFile = "Log.txt";
 
         public static string directory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
-        public static string directoryForWeb = $@"{directory}\VirtualLibrarian\UI";
+        public static string directoryForWeb = $@"{directory}\VirtualLibrarian\UI\";
 
         public static string resourcePath = @"\Resources\";
         public static string dataDirPath = @"\Data\";
