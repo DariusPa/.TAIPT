@@ -37,12 +37,12 @@ namespace VirtualLibrarian.Data
 
         private LibraryDataIO() { }
 
-        public void Init(string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
+        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
-            Logger = new FileLogger();
+            Logger = new FileLogger(directory);
             UILogger = new UILogger();
-            ResourcePath = StringConstants.resourcePath;
-            DataDirPath = StringConstants.dataDirPath;
+            ResourcePath = directory + StringConstants.resourcePath;
+            DataDirPath = directory + StringConstants.dataDirPath;
             this.bookPath = DataDirPath + bookPath;
             this.usersPath = DataDirPath + usersPath;
             this.authorsPath = DataDirPath + authorsPath;

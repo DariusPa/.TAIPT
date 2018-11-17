@@ -1,0 +1,106 @@
+﻿body {
+    background: white;
+    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.rightside {
+    background: url('background.png') no-repeat;
+    background-size: cover;
+}
+
+button {
+    outline: none !important;
+}
+
+h1.welcome {
+    font-size: 56px;
+    line-height: 50px;
+    color: #52525D;
+}
+
+div.subtitle {
+    font-size: 26px;
+    color: #848382;
+}
+
+h1.logo {
+    padding-top: 10vw;
+    color: white;
+    font-size: 96px;
+}
+
+h2.subtitle {
+    color: white;
+    font-size: 36px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+button.login {
+    width: 170px;
+    height: 170px;
+    background: #93bb94;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 50%;
+    border: 0;
+    cursor: pointer;
+}
+
+.userInfo {
+    font-size: 22px;
+}
+
+.userInfo strong {
+    font-size: 30px;
+    color: #539487;
+    line-height: 30px;
+}
+
+.userInfo i {
+    margin-top: 10px;
+    font-size: 80px;
+}
+
+button.dashboard {
+    color: white;
+    padding: 13px 0;
+    border: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+button.dashboard i {
+    font-size: 46px;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    padding: 0 10px;
+}
+
+.ai {
+    background: url('ai.png') no-repeat;
+    height: 71px;
+    padding: 15px 0 0 85px;
+}
+
+div.row div.buttons:nth-child(5) .dashboard i,
+div.row div.buttons:last-child .dashboard i {
+    font-size: 64px;
+}
+
+@media (min-width: 768px) {
+    .rightside {
+        height: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+    }
+}

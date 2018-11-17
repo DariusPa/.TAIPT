@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian
@@ -17,7 +18,8 @@ namespace VirtualLibrarian
         static void Main()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-            LibraryDataIO.Instance.Init(@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", @"Faces", @"Faces\TrainedLabels.txt");
+            LibraryDataIO.Instance.Init(StringConstants.directory,@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", 
+                                            @"Faces", @"Faces\TrainedLabels.txt");
             LibraryDataIO.Instance.LoadData();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

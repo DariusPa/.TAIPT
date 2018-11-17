@@ -10,8 +10,12 @@ namespace VirtualLibrarian.Helpers
     public static class StringConstants
     {
         public static string LogFile = "Log.txt";
-        public static string resourcePath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName + @"\Resources\";
-        public static string dataDirPath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName + @"\Data\";
+
+        public static string directory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+        public static string directoryForWeb = $@"{directory}\VirtualLibrarian\UI";
+
+        public static string resourcePath = @"\Resources\";
+        public static string dataDirPath = @"\Data\";
 
 
         public static string fullNameString = "FullName";
