@@ -15,7 +15,7 @@ namespace VirtualLibrarian.Data
             {
                 book.Issue(reader);
                 reader.TakeBook(book);
-                LibraryDataIO.Instance.SerializeData();
+                Task.Run(()=>LibraryDataIO.Instance.SerializeAllData());
                 return true;
             }
             else return false;
@@ -27,7 +27,7 @@ namespace VirtualLibrarian.Data
             {
                 book.Return();
                 reader.ReturnBook(book);
-                LibraryDataIO.Instance.SerializeData();
+                Task.Run(() => LibraryDataIO.Instance.SerializeAllData());
                 return true;
             }
             else return false;

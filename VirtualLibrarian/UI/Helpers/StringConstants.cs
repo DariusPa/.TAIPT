@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,9 @@ namespace VirtualLibrarian.Helpers
     public static class StringConstants
     {
         public static string LogFile = "Log.txt";
+        public static string resourcePath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName + @"\Resources\";
+        public static string dataDirPath = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName + @"\Data\";
+
 
         public static string fullNameString = "FullName";
         public static string missingInfo = "Information missing!";
@@ -44,8 +48,11 @@ namespace VirtualLibrarian.Helpers
 
         public static string serealizationError = "Last changes made in the library could not be saved";
         public static string loadError = "System is not ready to work. Contact administrators for help.";
-        public static string noDataWarning = "Library has no data of users/books. Contact administrators if this is not expected behaviour.";
+        public static string noUsersWarning = $"Library has no data of users. {reachHelp}";
+        public static string noAuthorsWarning = $"Library has no data of authors. {reachHelp}";
+        public static string noBooksWarning = $"Library has no data of books. {reachHelp}";
         public static string saveFaceErrror = "Attempt to save new face failed.";
+        public static string reachHelp = "Contact administrators if this is not expected behaviour.";
 
         public static string AIGreeting(string name)
         {

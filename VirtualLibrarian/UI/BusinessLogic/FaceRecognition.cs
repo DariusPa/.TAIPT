@@ -25,11 +25,10 @@ namespace VirtualLibrarian.BusinessLogic
 
         public event EventHandler FacePhotoSaved;
 
-
         public FaceRecognition(int eigenThresh=2000)
         {
             faceRecognizer = new EigenFaceRecognizer(80, double.PositiveInfinity);
-            cascadeClassifier = new CascadeClassifier(LibraryDataIO.Instance.ResourcePath + "\\haarcascade_frontalface_default.xml");
+            cascadeClassifier = new CascadeClassifier(LibraryDataIO.Instance.ResourcePath + "haarcascade_frontalface_default.xml");
             this.eigenThresh = eigenThresh;
         }
 
@@ -43,7 +42,7 @@ namespace VirtualLibrarian.BusinessLogic
             {
                 for (int j = 0; j < FaceCount; j++)
                 {
-                    trainedFaces.Add(new Image<Gray, byte>(LibraryDataIO.Instance.FacesPath + "\\" + j + ".bmp"));
+                    trainedFaces.Add(new Image<Gray, byte>($@"{LibraryDataIO.Instance.FacesPath}\{j}.bmp"));
                     faceLabels.Add(labels[j]);
                     faceID.Add(j);
                 }
@@ -54,6 +53,7 @@ namespace VirtualLibrarian.BusinessLogic
                 faceLabels.Clear();
                 faceID.Clear();
                 FaceCount = 0;
+                LibraryDataIO.Instance.Logger.LogException(e);
             }
         }
 
@@ -98,14 +98,14 @@ namespace VirtualLibrarian.BusinessLogic
             }
         }
 
-        public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace)
+        public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace, CancellationToken token)
         {
             List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
             List<string> faceLabelsTemp = new List<String>();
             List<int> faceIDTemp = new List<int>();
             int faceCountTemp = FaceCount;
 
-            for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser; i++)
+            for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser && !token.IsCancellationRequested;)
             {
                 if (detectedFace != null)
                 {
@@ -113,12 +113,17 @@ namespace VirtualLibrarian.BusinessLogic
                     faceLabelsTemp.Add(label);
                     faceIDTemp.Add(++faceCountTemp);
                     FacePhotoSaved?.Invoke(this, EventArgs.Empty);
+                    i++;
                     Thread.Sleep(500);
                 }
             }
 
-            StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp, label);
-            return true;
+            if (!token.IsCancellationRequested)
+            {
+                StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp, label);
+                return true;
+            }
+            return false;
         }
 
     }

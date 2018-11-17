@@ -11,12 +11,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Properties;
 
 namespace VirtualLibrarian.BusinessLogic
 {
     public class FaceCamera
     {
         private Thread captureThread;
+
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationToken token;
 
         private Bitmap faceFrame;
         private VideoCapture videoCapture;
@@ -36,11 +40,10 @@ namespace VirtualLibrarian.BusinessLogic
 
         private FaceRecognition faceRecognition;
 
-        private Thread saveFace;
 
         public FaceCamera(int camWidth, int camHeight)
         {
-            faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
+            faceFrame = Resources.FaceFrame;
             faceRecognition = new FaceRecognition();
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
@@ -53,7 +56,7 @@ namespace VirtualLibrarian.BusinessLogic
             StartStreaming();
         }
 
-        public void AddNewFace(String userLabel)
+        public void AddNewFace(string userLabel)
         {
             this.userLabel = userLabel;
             StartStreaming();
@@ -67,7 +70,8 @@ namespace VirtualLibrarian.BusinessLogic
 
         public async void SaveFace()
         {
-            saved = await Task.Run(() => faceRecognition.SaveNewFace(userLabel, ref detectedFace));
+            token = tokenSource.Token;
+            saved = await Task.Run(() => faceRecognition.SaveNewFace(userLabel, ref detectedFace,token));
         }
 
         private void StartStreaming()
@@ -121,7 +125,7 @@ namespace VirtualLibrarian.BusinessLogic
                         var label = faceRecognition.Recognize(detectedFace);
                         if (label != "")
                         {
-                            saveFace?.Abort();
+                            tokenSource.Cancel();
                             ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
                             return;
                         }

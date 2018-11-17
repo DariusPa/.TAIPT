@@ -25,7 +25,7 @@ namespace VirtualLibrarian.Presenter
 
         public AdministratorPresenter(FirstPage firstPage)
         {
-            barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DirectoryPath + "\\Barcodes");
+            barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DataDirPath + @"Barcodes");
             this.firstPage = firstPage;
             firstPage.Administrate += ShowAdminForm;
         }
