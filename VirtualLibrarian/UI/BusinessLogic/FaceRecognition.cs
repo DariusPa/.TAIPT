@@ -100,9 +100,9 @@ namespace VirtualLibrarian.BusinessLogic
 
         public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace, CancellationToken token)
         {
-            List<Image<Gray, byte>> trainedFacesTemp = new List<Image<Gray, byte>>();
-            List<string> faceLabelsTemp = new List<String>();
-            List<int> faceIDTemp = new List<int>();
+            var trainedFacesTemp = new List<Image<Gray, byte>>();
+            var faceLabelsTemp = new List<String>();
+            var faceIDTemp = new List<int>();
             int faceCountTemp = FaceCount;
 
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser && !token.IsCancellationRequested;)
