@@ -45,6 +45,7 @@ namespace VirtualLibrarian.Helpers
         public static string aiIssuingFailed = "Issuing failed!";
         public static string aiReturnedBook = "You successfully returned the book.";
         public static string aiReturnFailed = "Returning failed! You might have returned this book earlier or it had been taken by another user.";
+        public static string aiWorking = "Work in progress...";
 
         public static string currentlyTakenString = "Currently taken";
         public static string aiSaveChangesFailed = "Updating your account settings failed.";

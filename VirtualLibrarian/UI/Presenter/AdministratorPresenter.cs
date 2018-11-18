@@ -44,7 +44,6 @@ namespace VirtualLibrarian.Presenter
             Book = e.Book;
             LibraryDataIO.Instance.AddBook(Book);
             var barcode = barcodeGenerator.GenerateBarcode(Book.ID);
-            adminForm.RefreshAndClear();
         }
 
         private void ShowFirstPage(object sender, EventArgs e)

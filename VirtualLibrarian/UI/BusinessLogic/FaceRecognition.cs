@@ -105,6 +105,7 @@ namespace VirtualLibrarian.BusinessLogic
             var faceIDTemp = new List<int>();
             int faceCountTemp = FaceCount;
 
+
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser && !token.IsCancellationRequested;)
             {
                 if (detectedFace != null)

@@ -64,6 +64,7 @@ namespace VirtualLibrarian
             {
                 MessageBox.Show(StringConstants.missingInfo);
             }
+            RefreshAndClear();
             AutomaticFormPosition.SaveFormStatus(this);
         }
 

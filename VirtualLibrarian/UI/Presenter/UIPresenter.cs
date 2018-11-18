@@ -37,29 +37,33 @@ namespace VirtualLibrarian.Presenter
         private void OnBookDetected(object sender, BarcodeDetectedEventArgs e)
         {
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
-            if (ActiveUser != null && book != null && LibraryManager.IssueBookToReader(ActiveUser, book))
+            TakeBook.Instance.HideScanner();
+            if (LibraryManager.ValidateIssuing(ActiveUser, book))
             {
+                ui.Speaker.TellUser(StringConstants.aiWorking);
+                LibraryManager.IssueBookToReader(ActiveUser, book);
                 ui.Speaker.TellUser(StringConstants.aiIssued);
             }
             else
             {
                 ui.Speaker.TellUser(StringConstants.aiIssuingFailed);
             }
-            TakeBook.Instance.HideScanner();
         }
 
         private void OnBookReturn(object sender, BarcodeDetectedEventArgs e)
         {
             var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
-            if (LibraryManager.ReturnBook(ActiveUser, book))
+            ReturnBook.Instance.HideScanner();
+            if (LibraryManager.ValidateReturning(ActiveUser, book))
             {
+                ui.Speaker.TellUser(StringConstants.aiWorking);
+                LibraryManager.ReturnBook(ActiveUser, book);
                 ui.Speaker.TellUser(StringConstants.aiReturnedBook);
             }
             else
             {
                 ui.Speaker.TellUser(StringConstants.aiReturnFailed);
             }
-            ReturnBook.Instance.HideScanner();
             
         }
 
