@@ -11,7 +11,6 @@ namespace VirtualLibrarian.Helpers
 {
     public static class DataTransformationUtility
     {
-        //TODO: convert enum so string 
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
@@ -20,8 +19,10 @@ namespace VirtualLibrarian.Helpers
             PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance );
             foreach (PropertyInfo prop in Props)
             {
-                //Defining type of data column gives proper data table 
+                //Enums are converted to strings
                 var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
+                type = type.BaseType == typeof(Enum) ? typeof(string) : type;
+
                 //Setting column names as Property names
                 dataTable.Columns.Add(prop.Name, type);
             }
@@ -30,8 +31,7 @@ namespace VirtualLibrarian.Helpers
                 var values = new object[Props.Length];
                 for (int i = 0; i < Props.Length; i++)
                 {
-                    //inserting property values to datatable rows
-                    values[i] = Props[i].GetValue(item, null);
+                    values[i] = Props[i].PropertyType.BaseType == typeof(Enum) ? Props[i].GetValue(item, null).ToString() : Props[i].GetValue(item, null);
                 }
                 dataTable.Rows.Add(values);
             }
