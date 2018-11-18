@@ -11,6 +11,7 @@ namespace VirtualLibrarian.Helpers
 {
     public static class DataTransformationUtility
     {
+        //TODO: convert enum so string 
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
@@ -36,6 +37,29 @@ namespace VirtualLibrarian.Helpers
             }
             return dataTable;
         }
+
+        public static DataTable RemoveUnusedColumns(DataTable dt, string[] columns)
+        {
+            var newDt = new DataTable();
+            foreach(DataColumn col in dt.Columns)
+            {
+                if (columns.Contains(col.ColumnName))
+                {
+                    newDt.Columns.Add(col.ColumnName);
+                }
+            }
+            foreach(DataRow row in dt.Rows)
+            {
+                var newRow = newDt.NewRow();
+                foreach(string column in columns)
+                {
+                    newRow[column] = row[column];
+                }
+                newDt.Rows.Add(newRow);
+            }
+            return newDt;
+        }
+
 
         //Adds additional column to DataTable for filtering values
         public static void EnableFiltering(DataTable dataTable, params string[] filteredColumns)
