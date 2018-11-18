@@ -13,7 +13,7 @@ using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian.BusinessLogic
 {
-    public class FaceRecognition
+    public class FaceRecognition : IFaceRecognition
     {
         private CascadeClassifier cascadeClassifier;
         private int eigenThresh;
@@ -101,9 +101,10 @@ namespace VirtualLibrarian.BusinessLogic
         public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace, CancellationToken token)
         {
             var trainedFacesTemp = new List<Image<Gray, byte>>();
-            var faceLabelsTemp = new List<string>();
+            var faceLabelsTemp = new List<String>();
             var faceIDTemp = new List<int>();
-            var faceCountTemp = FaceCount;
+            int faceCountTemp = FaceCount;
+
 
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser && !token.IsCancellationRequested;)
             {

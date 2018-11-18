@@ -27,7 +27,7 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Connect(ConnectToDashboardViewModel model)
         {
-            faceCam = new FaceCamera(250, 350);
+            faceCam = new FaceCamera(250, 350, new FaceRecognition());
             faceCam.RecognizeExistingFace();
             return View();
             // Load Emgu
