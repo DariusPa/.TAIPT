@@ -17,29 +17,26 @@ namespace VirtualLibrarian.BusinessLogic
 {
     public class FaceCamera
     {
-        private Thread captureThread;
+        public string userLabel;
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
         private CancellationToken token;
 
         private Bitmap faceFrame;
         private VideoCapture videoCapture;
-
+        private FaceRecognition faceRecognition;
         private bool isTrained = false;
         private Size camSize;
         private Image<Gray, Byte> detectedFace;
-
         private bool saved;
+        private Thread captureThread;
 
-        public event FrameGrabbedEventHandler FrameGrabbed;
-        public event FaceRecognisedEventHandler ExistingUserRecognised;
-        public event FaceRecognisedEventHandler NewUserRegistered;
+        public event EventHandler<FrameGrabbedEventArgs> FrameGrabbed;
+        public event EventHandler<FaceRecognisedEventArgs> ExistingUserRecognised;
+        public event EventHandler<FaceRecognisedEventArgs> NewUserRegistered;
         public event EventHandler FacePhotoSaved;
 
-        public string userLabel;
-
-        private FaceRecognition faceRecognition;
-
+        public delegate void EventHandler<T>(object sender, T e);
 
         public FaceCamera(int camWidth, int camHeight)
         {
@@ -172,7 +169,5 @@ namespace VirtualLibrarian.BusinessLogic
             return framedPhoto;
         }
 
-        public delegate void FaceRecognisedEventHandler(object sender, FaceRecognisedEventArgs e);
-        public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);
     }
 }

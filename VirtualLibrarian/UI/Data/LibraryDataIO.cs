@@ -88,6 +88,10 @@ namespace VirtualLibrarian.Data
             {
                 new Thread(() => File.WriteAllText(filePath, JsonConvert.SerializeObject(data, Formatting.Indented, settings))).Start();
             }
+            catch (FileNotFoundException)
+            {
+                Logger.LogError($"Serializing data to {filePath} failed.");
+            }
             catch (Exception e)
             {
                 Logger.LogException(e);
@@ -99,6 +103,11 @@ namespace VirtualLibrarian.Data
             try
             {
                 return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath), settings);
+            }
+            catch (FileNotFoundException)
+            {
+                Logger.LogError($"Deserializing data from {filePath} failed.");
+                return default(T);
             }
             catch (Exception e)
             {
