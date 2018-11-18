@@ -24,7 +24,7 @@ namespace VirtualLibrarian.BusinessLogic
 
         private Bitmap faceFrame;
         private VideoCapture videoCapture;
-        private FaceRecognition faceRecognition;
+        private IFaceRecognition faceRecognition;
         private bool isTrained = false;
         private Size camSize;
         private Image<Gray, Byte> detectedFace;
@@ -38,10 +38,10 @@ namespace VirtualLibrarian.BusinessLogic
 
         public delegate void EventHandler<T>(object sender, T e);
 
-        public FaceCamera(int camWidth, int camHeight)
+        public FaceCamera(int camWidth, int camHeight, IFaceRecognition faceRecognition)
         {
             faceFrame = Resources.FaceFrame;
-            faceRecognition = new FaceRecognition();
+            this.faceRecognition = faceRecognition;
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             faceRecognition.FacePhotoSaved += (object sender,EventArgs e) => FacePhotoSaved?.Invoke(sender, e);

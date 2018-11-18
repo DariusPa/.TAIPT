@@ -13,7 +13,7 @@ using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian.BusinessLogic
 {
-    public class FaceRecognition
+    public class FaceRecognition : IFaceRecognition
     {
         private CascadeClassifier cascadeClassifier;
         private int eigenThresh;
