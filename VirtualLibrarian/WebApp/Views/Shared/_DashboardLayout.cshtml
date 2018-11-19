@@ -1,73 +1,78 @@
-﻿@{
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="col-12 mt-3 d-block d-lg-none">
-    <div class="ai">
-        AI text
-    </div>
-</div>
-<div class="row p-5 mt-0 mt-lg-5">
-    <div class="col-12 col-md-6 col-lg-5 col-xl-5 px-0 px-sm-0 px-md-0 px-lg-0 px-xl-5">
-        <div class="userInfo mb-5 text-center">
-            LOGGED IN AS:<br />
-            <strong>VARDENIS PAVARDENIS</strong><br />
-            <i class="far fa-user-circle"></i>
-        </div>
-        <div class="row px-0 px-md-5 px-lg-0 px-xl-5">
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#E06E69;" onclick="goToPage('Search');">
-                    <i class="fa fa-search"></i><br />
-                    <strong>SEARCH</strong><br />
-                    for a book
-                </button>
-            </div>
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#493C85;" onclick="goToPage('Take');">
-                    <i class="fa fa-book"></i><br />
-                    <strong>TAKE</strong><br />
-                    a book
-                </button>
-            </div>
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#728099;" onclick="goToPage('Return');">
-                    <i class="fa fa-redo"></i><br />
-                    <strong>RETURN</strong><br />
-                    a book
-                </button>
-            </div>
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#75624C;" onclick="goToPage('History');">
-                    <i class="fa fa-history"></i><br />
-                    <strong>HISTORY</strong><br />
-                    of your readings
-                </button>
-            </div>
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#A6CCB3;" onclick="goToPage('Settings');">
-                    <i class="fa fa-cog"></i><br />
-                    <strong>SETTINGS</strong>
-                </button>
-            </div>
-            <div class="col-6 mb-4 buttons">
-                <button class="w-100 dashboard hvr-float-shadow" style="background:#9D97B9;" onclick="goToPage('Logout');">
-                    <i class="fa fa-sign-out-alt"></i><br />
-                    <strong>LOGOUT</strong>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-md-6 col-lg-7 col-xl-7">
-        <div class="ai d-none d-lg-block">
+@section Styles {
+    @Styles.Render("~/Content/datatables")
+}
+
+<div class="container-fluid">
+    <div class="col-12 mt-3 d-block d-lg-none">
+        <div class="ai">
             AI text
         </div>
-        <h1 class="mt-4 text-center mb-5">@ViewBag.PageTitle</h1>
-        @RenderBody()
+    </div>
+    <div class="row p-5 mt-0 mt-lg-5">
+        <div class="col-12 col-md-12 col-lg-4 px-0 px-sm-0 px-md-0 px-lg-0 px-xl-5">
+            <div class="userInfo mb-5 text-center">
+                LOGGED IN AS:<br />
+                <strong>VARDENIS PAVARDENIS</strong><br />
+                <i class="far fa-user-circle"></i>
+            </div>
+            <div class="row px-0 px-md-5 px-xl-5">
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#E06E69;" onclick="goToPage('Search');">
+                        <i class="fa fa-search"></i><br />
+                        <strong>SEARCH</strong><br />
+                        for a book
+                    </button>
+                </div>
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#493C85;" onclick="goToPage('Take');">
+                        <i class="fa fa-book"></i><br />
+                        <strong>TAKE</strong><br />
+                        a book
+                    </button>
+                </div>
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#728099;" onclick="goToPage('Return');">
+                        <i class="fa fa-redo"></i><br />
+                        <strong>RETURN</strong><br />
+                        a book
+                    </button>
+                </div>
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#75624C;" onclick="goToPage('History');">
+                        <i class="fa fa-history"></i><br />
+                        <strong>HISTORY</strong><br />
+                        of your readings
+                    </button>
+                </div>
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#A6CCB3;" onclick="goToPage('Settings');">
+                        <i class="fa fa-cog"></i><br />
+                        <strong>SETTINGS</strong>
+                    </button>
+                </div>
+                <div class="col-6 mb-4 buttons">
+                    <button class="w-100 dashboard hvr-float-shadow" style="background:#9D97B9;" onclick="goToPage('Logout');">
+                        <i class="fa fa-sign-out-alt"></i><br />
+                        <strong>LOGOUT</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-8">
+            <div class="ai d-none d-lg-block w-75 mx-auto">
+                AI text
+            </div>
+            <h1 class="mt-4 text-center mb-5">@ViewBag.PageTitle</h1>
+            @RenderBody()
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/app")
     @Scripts.Render("~/bundles/datatables")
-    @Styles.Render("~/Content/datatables")
 }

@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Search";
     ViewBag.PageTitle = "Search";
 }
@@ -6,7 +6,7 @@
 @model System.Data.DataTable
 @using System.Data;
 
-<table class="table table-bordered">
+<table id="search" class="display" style="width:100%">
     <thead>
         <tr>
             @foreach (DataColumn col in Model.Columns)
