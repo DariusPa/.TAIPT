@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.returnBookLabel = new System.Windows.Forms.Label();
-            this.bookListDataGrid = new System.Windows.Forms.DataGridView();
-            this.returnButton = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.bookListDataGrid)).BeginInit();
+            this.scanButton = new System.Windows.Forms.Button();
+            this.scanBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.scanBox)).BeginInit();
             this.SuspendLayout();
             // 
             // returnBookLabel
@@ -40,64 +40,66 @@
             this.returnBookLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.returnBookLabel.ForeColor = System.Drawing.SystemColors.AppWorkspace;
             this.returnBookLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.returnBookLabel.Location = new System.Drawing.Point(145, 8);
+            this.returnBookLabel.Location = new System.Drawing.Point(387, 19);
             this.returnBookLabel.Margin = new System.Windows.Forms.Padding(0);
             this.returnBookLabel.Name = "returnBookLabel";
-            this.returnBookLabel.Size = new System.Drawing.Size(213, 36);
+            this.returnBookLabel.Size = new System.Drawing.Size(537, 89);
             this.returnBookLabel.TabIndex = 1;
             this.returnBookLabel.Text = "Return a book";
             this.returnBookLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // bookListDataGrid
+            // scanButton
             // 
-            this.bookListDataGrid.AllowUserToAddRows = false;
-            this.bookListDataGrid.AllowUserToDeleteRows = false;
-            this.bookListDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.bookListDataGrid.BackgroundColor = System.Drawing.Color.White;
-            this.bookListDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.bookListDataGrid.Location = new System.Drawing.Point(32, 70);
-            this.bookListDataGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.bookListDataGrid.Name = "bookListDataGrid";
-            this.bookListDataGrid.RowTemplate.Height = 24;
-            this.bookListDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.bookListDataGrid.Size = new System.Drawing.Size(444, 274);
-            this.bookListDataGrid.TabIndex = 4;
+            this.scanButton.BackColor = System.Drawing.Color.Transparent;
+            this.scanButton.BackgroundImage = global::VirtualLibrarian.Properties.Resources.QR;
+            this.scanButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.scanButton.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(182)))), ((int)(((byte)(243)))));
+            this.scanButton.FlatAppearance.BorderSize = 0;
+            this.scanButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(152)))), ((int)(((byte)(230)))));
+            this.scanButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(152)))), ((int)(((byte)(230)))));
+            this.scanButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.scanButton.Font = new System.Drawing.Font("Arial", 11F, System.Drawing.FontStyle.Bold);
+            this.scanButton.ForeColor = System.Drawing.Color.White;
+            this.scanButton.Location = new System.Drawing.Point(543, 406);
+            this.scanButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.scanButton.Name = "scanButton";
+            this.scanButton.Size = new System.Drawing.Size(275, 243);
+            this.scanButton.TabIndex = 10;
+            this.scanButton.UseVisualStyleBackColor = false;
+            this.scanButton.Click += new System.EventHandler(this.ScanButton_Click);
             // 
-            // returnButton
+            // scanBox
             // 
-            this.returnButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(129)))), ((int)(((byte)(156)))));
-            this.returnButton.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.returnButton.ForeColor = System.Drawing.Color.White;
-            this.returnButton.Location = new System.Drawing.Point(151, 360);
-            this.returnButton.Margin = new System.Windows.Forms.Padding(2);
-            this.returnButton.Name = "returnButton";
-            this.returnButton.Size = new System.Drawing.Size(194, 41);
-            this.returnButton.TabIndex = 5;
-            this.returnButton.Text = "RETURN SELECTED";
-            this.returnButton.UseVisualStyleBackColor = false;
-            this.returnButton.Click += new System.EventHandler(this.returnButton_Click);
+            this.scanBox.Location = new System.Drawing.Point(103, 189);
+            this.scanBox.Margin = new System.Windows.Forms.Padding(5);
+            this.scanBox.Name = "scanBox";
+            this.scanBox.Size = new System.Drawing.Size(1133, 701);
+            this.scanBox.TabIndex = 9;
+            this.scanBox.TabStop = false;
+            this.scanBox.Visible = false;
             // 
             // ReturnBook
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.returnButton);
-            this.Controls.Add(this.bookListDataGrid);
+            this.Controls.Add(this.scanButton);
+            this.Controls.Add(this.scanBox);
             this.Controls.Add(this.returnBookLabel);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "ReturnBook";
-            this.Size = new System.Drawing.Size(508, 414);
-            ((System.ComponentModel.ISupportInitialize)(this.bookListDataGrid)).EndInit();
+            this.Size = new System.Drawing.Size(1355, 987);
+            ((System.ComponentModel.ISupportInitialize)(this.scanBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.Leave += new System.EventHandler(this.ReturnBook_Leave);
 
         }
 
         #endregion
 
         private System.Windows.Forms.Label returnBookLabel;
-        private System.Windows.Forms.DataGridView bookListDataGrid;
-        private System.Windows.Forms.Button returnButton;
+        private System.Windows.Forms.Button scanButton;
+        private System.Windows.Forms.PictureBox scanBox;
     }
 }

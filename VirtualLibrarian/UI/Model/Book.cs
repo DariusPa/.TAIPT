@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
@@ -11,7 +12,7 @@ namespace VirtualLibrarian.Model
     {
         private static int count;
         public string Title { get; set; }
-        public List<Author> Authors { get; set; } = new List<Author>();
+        public List<int> AuthorID { get; set; } = new List<int>();
         public string Publisher { get; set; }
         public string ISBN { get; set; }
         public string Description { get; set; }
@@ -22,41 +23,50 @@ namespace VirtualLibrarian.Model
         public Status Status { get; private set; }
         [JsonProperty]
         public int ReaderID { get; private set; }
+        public DateTime IssueDate {get;set; }
+        public DateTime ReturnDate { get; set; }
+        public int LendingMonths { get; set; }
+
 
 
         public Book()
         {
-            ID = ++count;
+            ID = Interlocked.Increment(ref count);
             Status = Status.Available;
         }
 
-        public Book(string title, List<Author> authors, string publisher, BookGenre genre, string isbn, string description = "") : this()
+        public Book(string title, List<int> authorID, string publisher, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
         {
             Title = title;
-            Authors = authors;
+            AuthorID = authorID;
             Publisher = publisher;
             ISBN = isbn;
             Description = description;
             Genre = genre;
+            LendingMonths = lendingMonths;
         }
 
         public void Issue(IUserModel reader)
         {
             Status = Status.Taken;
             ReaderID = reader.ID;
+            IssueDate = DateTime.Now;
+            ReturnDate = IssueDate.AddMonths(LendingMonths);
         }
 
         public void Return()
         {
             Status = Status.Available;
             ReaderID = -1;
+            ReturnDate = DateTime.Now;
+
         }
 
         public object Clone()
         {
             Book book = new Book();
             book.Title = Title;
-            book.Authors = Authors;
+            book.AuthorID = AuthorID;
             book.Publisher = Publisher;
             book.ISBN = ISBN;
             book.Description = Description;

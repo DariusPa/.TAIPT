@@ -19,10 +19,12 @@ namespace VirtualLibrarian
         {
             User = user;
             InitializeComponent();
-            faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
+            faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, new FaceRecognition());
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
             faceCam.NewUserRegistered += OnNewUserRegistered;
             faceCam.FrameGrabbed += OnFrameGrabbed;
+            faceCam.FacePhotoSaved += UpdateProgressBar;
+            progressBar.Maximum = LibraryDataIO.Instance.PicturesPerUser;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -37,7 +39,7 @@ namespace VirtualLibrarian
 
         private void SaveFaceButton_Click(object sender, EventArgs e)
         {
-            faceCam.StartSaving(progressBar);
+            faceCam.SaveFace();
             cancelButton.Hide();
             saveFaceButton.Hide();
         }
@@ -52,13 +54,13 @@ namespace VirtualLibrarian
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
         {
             User = LibraryDataIO.Instance.FindUser(e.Label);
-            MessageBox.Show(string.Format("User is already registered as {0} {1} !", User.Name, User.Surname));
+            MessageBox.Show(StringConstants.ExistingUserErrorString(User.Name, User.Surname));
             BeginInvoke(new Action(() => Close()));
         }
 
         private void OnNewUserRegistered(object sender, FaceRecognisedEventArgs e)
         {
-            MessageBox.Show("Registration succeeded!");
+            MessageBox.Show(StringConstants.successfulRegistration);
             RegisterCompleted?.Invoke(this, e);
             BeginInvoke(new Action(()=>Close()));
         }
@@ -77,7 +79,15 @@ namespace VirtualLibrarian
 
         private void RegisterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //AutomaticFormPosition.SaveFormStatus(this);
+        }
+
+        private void UpdateProgressBar(object sender, EventArgs e)
+        {
+            if(!IsDisposed)
+            BeginInvoke(new Action(()=>
+            {
+                progressBar.Value += 1;
+            }));
         }
     }
 }

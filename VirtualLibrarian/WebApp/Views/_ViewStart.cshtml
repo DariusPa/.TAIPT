@@ -1,0 +1,10 @@
+﻿@{
+    if (Context.Request.Path.StartsWith("/Dashboard", StringComparison.OrdinalIgnoreCase))
+    {
+        Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}

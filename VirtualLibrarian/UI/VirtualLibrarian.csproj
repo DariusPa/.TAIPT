@@ -91,16 +91,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
+    <Compile Include="BusinessLogic\FaceRecognition.cs" />
+    <Compile Include="BusinessLogic\IFaceRecognition.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
+    <Compile Include="Data\LibraryManager.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
+    <Compile Include="Helpers\ILogger.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
+    <Compile Include="Helpers\FileLogger.cs" />
+    <Compile Include="Helpers\StringConstants.cs" />
+    <Compile Include="Helpers\DataTransformationUtility.cs" />
+    <Compile Include="Helpers\UILogger.cs" />
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\ReadingHistory.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
     <Compile Include="BusinessLogic\Sorter.cs" />
-    <Compile Include="Temp\Author.cs" />
-    <Compile Include="Temp\Book.cs" />
     <Compile Include="View\AdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,11 +185,11 @@
     <Compile Include="View\Homepage.Designer.cs">
       <DependentUpon>Homepage.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\PersonalInfo.cs">
+    <Compile Include="View\TakeBook.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\PersonalInfo.Designer.cs">
-      <DependentUpon>PersonalInfo.cs</DependentUpon>
+    <Compile Include="View\TakeBook.Designer.cs">
+      <DependentUpon>TakeBook.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -233,8 +240,8 @@
     <EmbeddedResource Include="View\Homepage.resx">
       <DependentUpon>Homepage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\PersonalInfo.resx">
-      <DependentUpon>PersonalInfo.cs</DependentUpon>
+    <EmbeddedResource Include="View\TakeBook.resx">
+      <DependentUpon>TakeBook.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -293,6 +300,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License-LGPL.txt" />
+    <None Include="Resources\checked.png" />
+    <None Include="Resources\unchecked.png" />
+    <None Include="Resources\takebook.png" />
     <None Include="Resources\admin.png" />
     <None Include="Resources\QR.png" />
   </ItemGroup>

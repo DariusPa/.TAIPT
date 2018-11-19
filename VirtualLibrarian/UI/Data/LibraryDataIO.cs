@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,16 +8,21 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian.Data
 {
     public sealed class LibraryDataIO: ILibraryData
     {
-        public string DirectoryPath { get; set; } = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Data";
+        public string ResourcePath { get; set; }
+        public string DataDirPath { get; set; }
         private string bookPath;
         private string usersPath;
         private string authorsPath;
+        public string FacesPath { get; set; }
+        public string FaceLabelsPath { get; set; }
+        private JsonSerializerSettings settings;
 
         private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
         public List<IBookModel> Books { get; set; } = new List<IBookModel>();
@@ -23,73 +30,126 @@ namespace VirtualLibrarian.Data
         public List<Author> Authors { get; set; } = new List<Author>();
         public static LibraryDataIO Instance { get { return library.Value; } }
 
+        public int PicturesPerUser { get; private set; }
+        public ILogger Logger { get; set; }
+        public ILogger UILogger { get; set; }
+
+
         private LibraryDataIO() { }
 
-        public void Init(string bookPath, string usersPath, string authorsPath)
+        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
-            this.bookPath = bookPath;
-            this.usersPath = usersPath;
-            this.authorsPath = authorsPath;
+            Logger = new FileLogger(directory);
+            UILogger = new UILogger();
+            ResourcePath = directory + StringConstants.resourcePath;
+            DataDirPath = directory + StringConstants.dataDirPath;
+            this.bookPath = DataDirPath + bookPath;
+            this.usersPath = DataDirPath + usersPath;
+            this.authorsPath = DataDirPath + authorsPath;
+            FacesPath = DataDirPath + facesPath;
+            FaceLabelsPath = DataDirPath + faceLabelsPath;
+            PicturesPerUser = picturesPerUser;
+            settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         }
 
-        public void SerializeData()
+        public void SerializeAllData()
         {
-            File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors));
-            File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
+            try
             {
-                TypeNameHandling = TypeNameHandling.All,
-            }));
-            File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
+                File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings));
+                File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
+                File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
+            }
+            catch (Exception e)
             {
-                TypeNameHandling = TypeNameHandling.All,
-            }));
-
-            //SerializeAuthors();
-            //SerializeBooks();
-            //SerializeUsers();
+                Logger.LogException(e);
+                UILogger.LogError(StringConstants.serealizationError);
+            }
         }
 
-        public void SerializeAuthors()
+        private void SerializeAuthors()
         {
-            new Thread(() => File.WriteAllText(DirectoryPath + authorsPath, JsonConvert.SerializeObject(Authors))).Start();
+            SerializeData(authorsPath, Authors);
         }
 
-        public void SerializeBooks()
+        private void SerializeBooks()
         {
-            new Thread(()=>File.WriteAllText(DirectoryPath + bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, new JsonSerializerSettings
+            SerializeData(bookPath, Books);
+        }
+
+        private void SerializeUsers()
+        {
+             SerializeData(usersPath, Users);
+        }
+
+        private void SerializeData<T>(string filePath, T data)
+        {
+            try
             {
-                TypeNameHandling = TypeNameHandling.All,
-            }))).Start();
-        }
-
-        public void SerializeUsers()
-        {
-            new Thread(()=>File.WriteAllText(DirectoryPath + usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, new JsonSerializerSettings
+                new Thread(() => File.WriteAllText(filePath, JsonConvert.SerializeObject(data, Formatting.Indented, settings))).Start();
+            }
+            catch (FileNotFoundException)
             {
-                TypeNameHandling = TypeNameHandling.All,
-            }))).Start();
+                Logger.LogError($"Serializing data to {filePath} failed.");
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
+        private T DeserializeData<T>(string filePath, string warning)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath), settings);
+            }
+            catch (FileNotFoundException)
+            {
+                Logger.LogError($"Deserializing data from {filePath} failed.");
+                return default(T);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+                UILogger.LogWarning(warning);
+                return default(T);
+            }
+        }
 
         public void LoadData()
         {
             try
             {
-                Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(DirectoryPath + authorsPath));
-                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(DirectoryPath + bookPath), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                });
-                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(DirectoryPath + usersPath), new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                }); 
+                if (!File.Exists(FaceLabelsPath))
+                    File.Create(FaceLabelsPath).Dispose(); 
+            }
+            catch
+            {
+                Logger.LogError("Failed to open/create face labels file.");
+                UILogger.LogError(StringConstants.loadError);
+                Environment.Exit(0);
+            }
+
+            Users = DeserializeData<List<IUserModel>>(usersPath, StringConstants.noUsersWarning) ?? new List<IUserModel>();
+            Books = DeserializeData<List<IBookModel>>(bookPath,StringConstants.noBooksWarning) ?? new List<IBookModel>();
+            Authors = DeserializeData<List<Author>>(authorsPath,StringConstants.noAuthorsWarning) ?? new List<Author>();
+        }
+
+
+        public void AddNewFace(Image<Gray, byte> face,string label, int faceCount)
+        {
+            try
+            {
+                face.Save($"{FacesPath}\\{faceCount}.bmp");
+                File.AppendAllText(FaceLabelsPath, label + "%");
             }
             catch (Exception e)
             {
-                //TODO: handle properly
-                Console.Write(e.Message);
+                Logger.LogException(e);
+                UILogger.LogError(StringConstants.saveFaceErrror);
             }
+
         }
 
         public void AddBook(IBookModel book)
@@ -129,16 +189,6 @@ namespace VirtualLibrarian.Data
             SerializeAuthors();
         }
 
-        public List<IBookModel> GetBooks()
-        {
-            return Books;
-        }
-
-        public List<IUserModel> GetUsers()
-        {
-            return Users;
-        }
-
         public IUserModel FindUser(string label)
         {
             return Instance.Users.Find(x => x.ID == int.Parse(label));
@@ -149,30 +199,18 @@ namespace VirtualLibrarian.Data
             return Instance.Books.Find(x => x.ID == int.Parse(label));
         }
 
-
-        //TODO: move to a separate class
-        public bool IssueBookToReader(IUserModel reader, IBookModel book)
+        //TODO: logic for verifying changes
+        public bool ChangeUserInfo(IUserModel user, string name, string surname, string email)
         {
-            if (book.Status == Status.Available)
-            {
-                book.Issue(reader);
-                reader.TakeBook(book);
-                SerializeData();
-                return true;
-            }
-            else return false;
+            user.Name = name;
+            user.Surname = surname;
+            user.Email = email;
+            SerializeUsers();
+            return true;
         }
 
-        public bool ReturnBook(IUserModel reader, IBookModel book)
-        {
-            if (reader.ReadingsID.Contains(book.ID) && book.ReaderID == reader.ID)
-            {
-                book.Return();
-                reader.ReturnBook(book);
-                SerializeData();
-                return true;
-            }
-            else return false;
-        }
+
+
+
     }
 }

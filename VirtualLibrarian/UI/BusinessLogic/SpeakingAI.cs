@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace VirtualLibrarian.BusinessLogic
 {
-    class SpeakingAI
+    public class SpeakingAI
     {
         private SpeechSynthesizer synthesizer = new SpeechSynthesizer();
         private string text = "";
@@ -20,20 +20,34 @@ namespace VirtualLibrarian.BusinessLogic
         private Label lbl;
         private Thread t;
         private readonly object balanceLock = new object();
-        public void TellUser(string msg, AI ai1)
+        public bool SoundEnabled { get; set; }
+
+        //TODO: move UI logic elsewhere
+        public AI TextControl { get; set; }
+
+        public SpeakingAI(AI ai,bool soundEnabled = true, int volume = 100,int rate = -2)
         {
-            synthesizer.Volume = 100;
-            synthesizer.Rate = -2;
-            lbl = ai1.guideLabel;
+            TextControl = ai;
+            SoundEnabled = soundEnabled;
+            synthesizer.Volume = volume;
+            synthesizer.Rate = rate;
+        }
+
+        public void TellUser(string msg)
+        {
+            lbl = TextControl.guideLabel;
             t = new Thread(new ThreadStart(WriteSlowly));
             t.Start();
-            ai1.guideLabel.Text = "";
-            this.text = msg;
+            text = msg;
             show = true;
             restart = true;
-            synthesizer.SpeakAsyncCancelAll();
-            synthesizer.SpeakAsync(msg);
+            if (SoundEnabled)
+            {
+                synthesizer.SpeakAsyncCancelAll();
+                synthesizer.SpeakAsync(msg);
+            }
         }
+
         public void WriteSlowly()
         {
             lock (balanceLock)

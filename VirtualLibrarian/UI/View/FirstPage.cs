@@ -41,15 +41,15 @@ namespace VirtualLibrarian
             } else {
                 if (string.IsNullOrWhiteSpace(nameInput.Text))
                 {
-                    nameLabel.Text = "Name (required)";
+                    nameLabel.Text = StringConstants.nameRequirement;
                 }
                 if (string.IsNullOrWhiteSpace(surnameInput.Text))
                 {
-                    surnameLabel.Text = "Surname (required)";
+                    surnameLabel.Text = StringConstants.surnameRequirement;
                 }
-                if (string.IsNullOrWhiteSpace(emailInput.Text) || Verifier.IsValidEmail(emailInput.Text) == false)
+                if (string.IsNullOrWhiteSpace(emailInput.Text) || !Verifier.IsValidEmail(emailInput.Text))
                 {
-                    emailLabel.Text = "E-mail (required)";
+                    emailLabel.Text = StringConstants.emailRequirement;
                 }
             }
         }
@@ -57,15 +57,15 @@ namespace VirtualLibrarian
         private void Keydown_func(object sender, KeyPressEventArgs e)
         {
             RichTextBox textBox = (RichTextBox)sender;
-            if (textBox.Name == "nameInput")
+            if (textBox.Name == StringConstants.nameInputString)
             {
-                nameLabel.Text = "Name";
-            } else if (textBox.Name == "surnameInput")
+                nameLabel.Text = StringConstants.nameString;
+            } else if (textBox.Name == StringConstants.surnameInputString)
             {
-                surnameLabel.Text = "Surname";
-            } else if (textBox.Name == "emailInput")
+                surnameLabel.Text = StringConstants.surnameString;
+            } else if (textBox.Name == StringConstants.emailInputString)
             {
-                emailLabel.Text = "E-mail address";
+                emailLabel.Text = StringConstants.emailAdressString;
             }
         }
 

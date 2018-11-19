@@ -8,8 +8,11 @@ namespace VirtualLibrarian
     public partial class Search : UserControl
     {
         private static Search _instance;
-        public BarcodeCamera barcodeCamera;
-        public string DetectedBook;
+        public DataGridView libraryGrid
+        {
+            get { return libraryBooksGrid; }
+        }
+        public TextBox searchText { get { return searchBox; } }
 
         public static Search Instance
         {
@@ -24,33 +27,8 @@ namespace VirtualLibrarian
         public Search()
         {
             InitializeComponent();
-            barcodeCamera = new BarcodeCamera();
-            barcodeCamera.FrameGrabbed += StreamCamera;
         }
 
-        private void scanButton_Click(object sender, EventArgs e)
-        {
-            scanBox.Show();
-            scanButton.Hide();
-            barcodeCamera.ScanBarcode();
-        }
-
-        private void StreamCamera(object sender, FrameGrabbedEventArgs e)
-        {
-            scanBox.Image = e.Frame;
-        }
-
-        private void Search_Leave(object sender, EventArgs e)
-        {
-            barcodeCamera.StopStreaming();
-            scanBox.Hide();
-            scanButton.Show();
-        }
-
-        public void HideScanner()
-        {
-            BeginInvoke(new Action(() => { scanBox.Hide(); scanButton.Show(); }));
-        }
 
     }
 }

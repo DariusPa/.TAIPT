@@ -1,0 +1,2 @@
+2018-11-18 12:31:49 AM FileNotFoundException: The file C:\Workspace\git\teisinga versija\.TAIPT\VirtualLibrarian\UI\Data\@Faces\0.bmp could not be not found.   at Emgu.CV.Image`2..ctor(String fileName)
+   at VirtualLibrarian.BusinessLogic.FaceRecognition.LoadRecognizer() in C:\Workspace\git\teisinga versija\.TAIPT\VirtualLibrarian\UI\BusinessLogic\FaceRecognition.cs:line 45

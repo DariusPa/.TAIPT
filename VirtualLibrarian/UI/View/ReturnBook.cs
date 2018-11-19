@@ -10,19 +10,15 @@ using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Model;
 using VirtualLibrarian.Helpers;
+using VirtualLibrarian.BusinessLogic;
 
 namespace VirtualLibrarian
 {
     public partial class ReturnBook : UserControl
     {
         private static ReturnBook _instance;
-        public event BookReturnEventHandler BookReturn;
-
-        public DataGridView dataGridView
-        {
-            get { return bookListDataGrid; }
-            set { bookListDataGrid = value; }
-        }
+        public BarcodeCamera barcodeCamera;
+        public string DetectedBook;
 
         public static ReturnBook Instance
         {
@@ -37,19 +33,33 @@ namespace VirtualLibrarian
         public ReturnBook()
         {
             InitializeComponent();
+            barcodeCamera = new BarcodeCamera();
+            barcodeCamera.FrameGrabbed += StreamCamera;
         }
 
-        private void returnButton_Click(object sender, EventArgs e)
+        private void ScanButton_Click(object sender, EventArgs e)
         {
-            foreach (DataGridViewRow item in bookListDataGrid.SelectedRows)
-            {
-                var temp = dataGridView.DataSource;
-                var book = LibraryDataIO.Instance.Books.Find(x => x.ID == int.Parse(item.Cells[0].Value.ToString()));
-                BookReturn?.Invoke(this, new BookRelatedEventArgs { Book = book });
-            }
+            scanBox.Show();
+            scanButton.Hide();
+            barcodeCamera.ScanBarcode();
         }
 
-        public delegate void BookReturnEventHandler(object sender, BookRelatedEventArgs e);
+        private void StreamCamera(object sender, FrameGrabbedEventArgs e)
+        {
+            scanBox.Image = e.Frame;
+        }
+
+        private void ReturnBook_Leave(object sender, EventArgs e)
+        {
+            barcodeCamera.StopStreaming();
+            scanBox.Hide();
+            scanButton.Show();
+        }
+
+        public void HideScanner()
+        {
+            BeginInvoke(new Action(() => { scanBox.Hide(); scanButton.Show(); }));
+        }
 
     }
 }

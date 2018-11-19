@@ -24,11 +24,10 @@ namespace VirtualLibrarian
 
             InitializeComponent();
             this.presenter = presenter;
-            presenter.BarcodeGenerated += ShowBarcode;
             authorSource = new BindingSource();
             authorSource.DataSource = LibraryDataIO.Instance.Authors;
             authorListBox.DataSource = authorSource;
-            authorListBox.DisplayMember = "FullName";
+            authorListBox.DisplayMember = StringConstants.fullNameString;
             genreBox.DataSource = Enum.GetValues(typeof(BookGenre));
         }
 
@@ -36,37 +35,38 @@ namespace VirtualLibrarian
         {
             if (!string.IsNullOrWhiteSpace(titleBox.Text) && !string.IsNullOrWhiteSpace(isbnBox.Text)
                 && !string.IsNullOrWhiteSpace(publisherBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
-                && !string.IsNullOrWhiteSpace(genreBox.Text))
+                && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text))
             {
                 BookGenre genres = new BookGenre();
-                List<Author> authors = new List<Author>();
+                List<int> authors = new List<int>();
+                int.TryParse(qtyBox.Text, out int qty);
 
                 foreach (var genre in genreBox.CheckedItems)
                 {
                     genres = genres | (BookGenre)Enum.Parse(typeof(BookGenre), genre.ToString());
                 }
 
-                foreach (var author in authorListBox.SelectedItems)
+                foreach (Author author in authorListBox.SelectedItems)
                 {
-                    authors.Add((Author)author);
+                    authors.Add(author.ID);
                 }
-                Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authors: authors, 
-                                    publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
 
-                NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
+                for (int i = 0; i < qty; i++)
+                {
+                    Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors,
+                                        publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
+
+                    NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
+                }
+                MessageBox.Show(StringConstants.BookRegistered(titleBox.Text, isbnBox.Text));
+                RefreshAndClear();
 
             }
             else
             {
-                MessageBox.Show("Information missing.");
+                MessageBox.Show(StringConstants.missingInfo);
             }
             AutomaticFormPosition.SaveFormStatus(this);
-        }
-
-        private void ShowBarcode(object sender, BarcodeGeneratedEventArgs e)
-        {
-            barcodeBox.Image = e.Barcode;
-            barcodeBox.Show();
         }
 
 
@@ -80,18 +80,18 @@ namespace VirtualLibrarian
 
         public void RefreshAndClear()
         {
-            
             foreach(var control in Controls)
             {
                 if (control is TextBox) ((TextBox)control).Clear();
-                if (control is ListBox) ((ListBox)control).ClearSelected();
+                if (control is RichTextBox) ((RichTextBox)control).Clear();
+                if (control is ListBox)
+                    ((ListBox)control).ClearSelected();
                 if (control is CheckedListBox)
                 {
                     for(int i = 0; i< ((CheckedListBox)control).Items.Count; i++)
                     {
                         ((CheckedListBox)control).SetItemChecked(i, false);
                     }
-                    
                 }
             }
         }
@@ -106,6 +106,15 @@ namespace VirtualLibrarian
         private void newAuthor_Click(object sender, EventArgs e)
         {
             AddAuthor?.Invoke(sender, e);
+        }
+
+        private void qtyBox_TextChanged(object sender, EventArgs e)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(qtyBox.Text, "[^0-9]"))
+            {
+                qtyBox.Text = qtyBox.Text.Remove(qtyBox.Text.Length - 1);
+                qtyBox.SelectionStart = qtyBox.Text.Length;
+            }
         }
     }
 }

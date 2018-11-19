@@ -1,0 +1,47 @@
+@section Styles {
+    <style>
+        body {
+            background: black !important;
+        }
+    </style>
+}
+
+<div class="w-100 mt-5">
+    <div class="container text-center" style="position:relative;">
+        <img src="~/Content/FaceFrame.png" class="mx-auto" style="width: 500px;height: 450px;position: absolute;top:0;left:0;right:0;" />
+        <div id="camera" class="mx-auto"></div>
+        <form>
+            <button id="snapshot" type="button" onClick="take_snapshot();">Start</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/webcam")
+
+    <script language="JavaScript">
+        Webcam.set({
+            width: 500,
+            height: 525,
+            image_format: 'bmp',
+            jpeg_quality: 90
+        });
+        Webcam.attach( '#camera' );
+    </script>
+
+    <script language="JavaScript">
+        function take_snapshot() {
+            var photos = 0;
+            jQuery("#snapshot").hide();
+            Webcam.snap( function(data_uri) {
+                $.post( '/Account/Bitmap', { name: data_uri })
+                  .done(function( data ) {
+                    alert(data.response);
+                  })
+                  .fail(function() {
+                    alert( "error" );
+                  });
+            });
+        }
+    </script>
+}

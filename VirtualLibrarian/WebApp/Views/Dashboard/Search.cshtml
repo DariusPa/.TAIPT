@@ -1,0 +1,31 @@
+@{
+    ViewBag.Title = "Search";
+    ViewBag.PageTitle = "Search";
+}
+
+@model System.Data.DataTable
+@using System.Data;
+
+<table id="search" class="display" style="width:100%">
+    <thead>
+        <tr>
+            @foreach (DataColumn col in Model.Columns)
+            {
+                <th scope="col">@col.ColumnName</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in Model.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.Columns)
+                {
+                    <td>@row[col.ColumnName]</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+

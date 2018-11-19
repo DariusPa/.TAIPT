@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
@@ -17,11 +18,12 @@ namespace VirtualLibrarian.Model
         public string Email { get; set; }
         public string PhoneNr { get; set; }
         [JsonProperty]
-        public List<int> ReadingsID { get; private set; } = new List<int>();
+        public List<int> TakenBooks { get; private set; } = new List<int>();
+        public List<ReadingHistory> History { get; private set; } = new List<ReadingHistory>();
 
         public User()
         {
-            ID = ++count;
+            ID = Interlocked.Increment(ref count);
         }
 
         public User(string name, string surname, string email) : this()
@@ -33,12 +35,13 @@ namespace VirtualLibrarian.Model
 
         public void TakeBook(IBookModel book)
         {
-            ReadingsID.Add(book.ID);
+            TakenBooks.Add(book.ID);
         }
 
         public void ReturnBook(IBookModel book)
         {
-            ReadingsID.Remove(book.ID);
+            TakenBooks.Remove(book.ID);
+            History.Add(new ReadingHistory(book.ID, book.IssueDate,book.ReturnDate));
         }
     }
 }
