@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
     <Compile Include="BusinessLogic\FaceRecognition.cs" />
+    <Compile Include="BusinessLogic\IFaceRecognition.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Data\LibraryManager.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,14 @@ namespace VirtualLibrarian.Helpers
 {
     public static class StringConstants
     {
-        public static string LogFile = "Log.txt";
+        public static string LogFile = @"\Log.txt";
+
+        public static string directory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+        public static string directoryForWeb = $@"{directory}\VirtualLibrarian\UI";
+
+        public static string resourcePath = @"\Resources\";
+        public static string dataDirPath = @"\Data\";
+
 
         public static string fullNameString = "FullName";
         public static string missingInfo = "Information missing!";
@@ -37,6 +45,7 @@ namespace VirtualLibrarian.Helpers
         public static string aiIssuingFailed = "Issuing failed!";
         public static string aiReturnedBook = "You successfully returned the book.";
         public static string aiReturnFailed = "Returning failed! You might have returned this book earlier or it had been taken by another user.";
+        public static string aiWorking = "Work in progress...";
 
         public static string currentlyTakenString = "Currently taken";
         public static string aiSaveChangesFailed = "Updating your account settings failed.";
@@ -44,8 +53,11 @@ namespace VirtualLibrarian.Helpers
 
         public static string serealizationError = "Last changes made in the library could not be saved";
         public static string loadError = "System is not ready to work. Contact administrators for help.";
-        public static string noDataWarning = "Library has no data of users/books. Contact administrators if this is not expected behaviour.";
+        public static string noUsersWarning = $"Library has no data of users. {reachHelp}";
+        public static string noAuthorsWarning = $"Library has no data of authors. {reachHelp}";
+        public static string noBooksWarning = $"Library has no data of books. {reachHelp}";
         public static string saveFaceErrror = "Attempt to save new face failed.";
+        public static string reachHelp = "Contact administrators if this is not expected behaviour.";
 
         public static string AIGreeting(string name)
         {
@@ -55,6 +67,11 @@ namespace VirtualLibrarian.Helpers
         public static string ExistingUserErrorString (string name, string surname)
         {
             return "User is already registered as " + name + " " + surname + "!";
+        }
+
+        public static string BookRegistered (string name, string ISBN)
+        {
+            return "Book " + name + " with ISBN: " + ISBN + " was registered.";
         }
     }
 }

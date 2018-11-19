@@ -19,7 +19,7 @@ namespace VirtualLibrarian
         {
             User = user;
             InitializeComponent();
-            faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height);
+            faceCam = new FaceCamera(registerPicBox.Width, registerPicBox.Height, new FaceRecognition());
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
             faceCam.NewUserRegistered += OnNewUserRegistered;
             faceCam.FrameGrabbed += OnFrameGrabbed;

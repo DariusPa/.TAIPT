@@ -11,37 +11,37 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Properties;
 
 namespace VirtualLibrarian.BusinessLogic
 {
     public class FaceCamera
     {
-        private Thread captureThread;
+        public string userLabel;
+
+        private CancellationTokenSource tokenSource = new CancellationTokenSource();
+        private CancellationToken token;
 
         private Bitmap faceFrame;
         private VideoCapture videoCapture;
-
+        private IFaceRecognition faceRecognition;
         private bool isTrained = false;
         private Size camSize;
         private Image<Gray, Byte> detectedFace;
-
         private bool saved;
+        private Thread captureThread;
 
-        public event FrameGrabbedEventHandler FrameGrabbed;
-        public event FaceRecognisedEventHandler ExistingUserRecognised;
-        public event FaceRecognisedEventHandler NewUserRegistered;
+        public event EventHandler<FrameGrabbedEventArgs> FrameGrabbed;
+        public event EventHandler<FaceRecognisedEventArgs> ExistingUserRecognised;
+        public event EventHandler<FaceRecognisedEventArgs> NewUserRegistered;
         public event EventHandler FacePhotoSaved;
 
-        public string userLabel;
+        public delegate void EventHandler<T>(object sender, T e);
 
-        private FaceRecognition faceRecognition;
-
-        private Thread saveFace;
-
-        public FaceCamera(int camWidth, int camHeight)
+        public FaceCamera(int camWidth, int camHeight, IFaceRecognition faceRecognition)
         {
-            faceFrame = (Bitmap)Bitmap.FromFile(LibraryDataIO.Instance.ResourcePath + "\\FaceFrame.png");
-            faceRecognition = new FaceRecognition();
+            faceFrame = Resources.FaceFrame;
+            this.faceRecognition = faceRecognition;
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             faceRecognition.FacePhotoSaved += (object sender,EventArgs e) => FacePhotoSaved?.Invoke(sender, e);
@@ -53,7 +53,7 @@ namespace VirtualLibrarian.BusinessLogic
             StartStreaming();
         }
 
-        public void AddNewFace(String userLabel)
+        public void AddNewFace(string userLabel)
         {
             this.userLabel = userLabel;
             StartStreaming();
@@ -67,7 +67,8 @@ namespace VirtualLibrarian.BusinessLogic
 
         public async void SaveFace()
         {
-            saved = await Task.Run(() => faceRecognition.SaveNewFace(userLabel, ref detectedFace));
+            token = tokenSource.Token;
+            saved = await Task.Run(() => faceRecognition.SaveNewFace(userLabel, ref detectedFace,token));
         }
 
         private void StartStreaming()
@@ -121,7 +122,7 @@ namespace VirtualLibrarian.BusinessLogic
                         var label = faceRecognition.Recognize(detectedFace);
                         if (label != "")
                         {
-                            saveFace?.Abort();
+                            tokenSource.Cancel();
                             ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });
                             return;
                         }
@@ -168,7 +169,5 @@ namespace VirtualLibrarian.BusinessLogic
             return framedPhoto;
         }
 
-        public delegate void FaceRecognisedEventHandler(object sender, FaceRecognisedEventArgs e);
-        public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);
     }
 }

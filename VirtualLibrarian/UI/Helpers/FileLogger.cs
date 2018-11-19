@@ -16,9 +16,14 @@ namespace VirtualLibrarian.Helpers
             LogFile = StringConstants.LogFile;
         }
 
+        public FileLogger(string logFilepath):this()
+        {
+            LogFile = logFilepath + LogFile;
+        }
+
         public void Log(string type,string msg)
         {
-            using (StreamWriter streamWriter = new StreamWriter(LogFile))
+            using (StreamWriter streamWriter = File.AppendText(LogFile))
             {
                 streamWriter.WriteLine($"{DateTime.Now} {type}: {msg}");
                 streamWriter.Close();

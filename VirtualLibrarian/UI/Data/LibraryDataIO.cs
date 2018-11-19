@@ -15,8 +15,8 @@ namespace VirtualLibrarian.Data
 {
     public sealed class LibraryDataIO: ILibraryData
     {
-        public string ResourcePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Resources";
-        public string DirectoryPath { get; set; } = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Data";
+        public string ResourcePath { get; set; }
+        public string DataDirPath { get; set; }
         private string bookPath;
         private string usersPath;
         private string authorsPath;
@@ -37,20 +37,22 @@ namespace VirtualLibrarian.Data
 
         private LibraryDataIO() { }
 
-        public void Init(string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
+        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
-            Logger = new FileLogger();
+            Logger = new FileLogger(directory);
             UILogger = new UILogger();
-            this.bookPath = DirectoryPath + bookPath;
-            this.usersPath = DirectoryPath + usersPath;
-            this.authorsPath = DirectoryPath + authorsPath;
-            FacesPath = DirectoryPath + facesPath;
-            FaceLabelsPath = DirectoryPath + faceLabelsPath;
+            ResourcePath = directory + StringConstants.resourcePath;
+            DataDirPath = directory + StringConstants.dataDirPath;
+            this.bookPath = DataDirPath + bookPath;
+            this.usersPath = DataDirPath + usersPath;
+            this.authorsPath = DataDirPath + authorsPath;
+            FacesPath = DataDirPath + facesPath;
+            FaceLabelsPath = DataDirPath + faceLabelsPath;
             PicturesPerUser = picturesPerUser;
             settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         }
 
-        public void SerializeData()
+        public void SerializeAllData()
         {
             try
             {
@@ -65,11 +67,30 @@ namespace VirtualLibrarian.Data
             }
         }
 
-        public void SerializeAuthors()
+        private void SerializeAuthors()
+        {
+            SerializeData(authorsPath, Authors);
+        }
+
+        private void SerializeBooks()
+        {
+            SerializeData(bookPath, Books);
+        }
+
+        private void SerializeUsers()
+        {
+             SerializeData(usersPath, Users);
+        }
+
+        private void SerializeData<T>(string filePath, T data)
         {
             try
             {
-                new Thread(() => File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings))).Start();
+                new Thread(() => File.WriteAllText(filePath, JsonConvert.SerializeObject(data, Formatting.Indented, settings))).Start();
+            }
+            catch (FileNotFoundException)
+            {
+                Logger.LogError($"Serializing data to {filePath} failed.");
             }
             catch (Exception e)
             {
@@ -77,28 +98,22 @@ namespace VirtualLibrarian.Data
             }
         }
 
-        public void SerializeBooks()
+        private T DeserializeData<T>(string filePath, string warning)
         {
             try
             {
-                new Thread(() => File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings))).Start();
-
-            } 
-            catch (Exception e)
-            {
-                Logger.LogException(e);
+                return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath), settings);
             }
-        }
-
-        public void SerializeUsers()
-        {
-            try
+            catch (FileNotFoundException)
             {
-                new Thread(() => File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings))).Start();
+                Logger.LogError($"Deserializing data from {filePath} failed.");
+                return default(T);
             }
             catch (Exception e)
             {
                 Logger.LogException(e);
+                UILogger.LogWarning(warning);
+                return default(T);
             }
         }
 
@@ -115,17 +130,10 @@ namespace VirtualLibrarian.Data
                 UILogger.LogError(StringConstants.loadError);
                 Environment.Exit(0);
             }
-            try
-            {
-                Authors = JsonConvert.DeserializeObject<List<Author>>(File.ReadAllText(authorsPath),settings);
-                Books = JsonConvert.DeserializeObject<List<IBookModel>>(File.ReadAllText(bookPath), settings);
-                Users = JsonConvert.DeserializeObject<List<IUserModel>>(File.ReadAllText(usersPath), settings); 
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e);
-                UILogger.LogWarning(StringConstants.noDataWarning);
-            }
+
+            Users = DeserializeData<List<IUserModel>>(usersPath, StringConstants.noUsersWarning) ?? new List<IUserModel>();
+            Books = DeserializeData<List<IBookModel>>(bookPath,StringConstants.noBooksWarning) ?? new List<IBookModel>();
+            Authors = DeserializeData<List<Author>>(authorsPath,StringConstants.noAuthorsWarning) ?? new List<Author>();
         }
 
 

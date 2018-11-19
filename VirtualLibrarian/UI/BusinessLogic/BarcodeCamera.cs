@@ -10,8 +10,10 @@ namespace VirtualLibrarian.BusinessLogic
         private Thread captureThread;
         private VideoCapture videoCapture;
 
-        public event EventHandler BarcodeDetected;
-        public event FrameGrabbedEventHandler FrameGrabbed;
+        public event EventHandler<BarcodeDetectedEventArgs> BarcodeDetected;
+        public event EventHandler<FrameGrabbedEventArgs> FrameGrabbed;
+        public delegate void EventHandler<T>(object sender, T e);
+
 
         public void ScanBarcode()
         {
@@ -42,10 +44,6 @@ namespace VirtualLibrarian.BusinessLogic
                 }
             }
         }
-
-        public delegate void EventHandler(object sender, BarcodeDetectedEventArgs e);
-        public delegate void FrameGrabbedEventHandler(object sender, FrameGrabbedEventArgs e);
-        
 
     }
 }

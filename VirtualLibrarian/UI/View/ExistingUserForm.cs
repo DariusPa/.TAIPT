@@ -15,7 +15,7 @@ namespace VirtualLibrarian
         public ExistingUserForm()
         {
             InitializeComponent();
-            faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height);
+            faceCam = new FaceCamera(loginPicBox.Width, loginPicBox.Height, new FaceRecognition());
             faceCam.FrameGrabbed += OnFrameGrabbed;
             faceCam.ExistingUserRecognised += OnExistingUserRecognised;
         }

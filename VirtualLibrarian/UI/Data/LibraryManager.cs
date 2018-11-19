@@ -9,28 +9,45 @@ namespace VirtualLibrarian.Data
 {
     public static class LibraryManager
     {
-        public static bool IssueBookToReader(IUserModel reader, IBookModel book)
+        /*Reader cannot keep more than 5 books*/
+        private static int maxBookAmount = 5;
+
+        public static void IssueBookToReader(IUserModel reader, IBookModel book)
         {
-            if (book.Status == Status.Available)
-            {
-                book.Issue(reader);
-                reader.TakeBook(book);
-                LibraryDataIO.Instance.SerializeData();
-                return true;
-            }
-            else return false;
+            book.Issue(reader);
+            reader.TakeBook(book);
+            LibraryDataIO.Instance.SerializeAllData();
         }
 
-        public static bool ReturnBook(IUserModel reader, IBookModel book)
+        public static void ReturnBook(IUserModel reader, IBookModel book)
         {
-            if (reader.TakenBooks.Contains(book.ID) && book.ReaderID == reader.ID)
+            book.Return();
+            reader.ReturnBook(book);
+            LibraryDataIO.Instance.SerializeAllData();
+        }
+
+        public static bool  ValidateIssuing(IUserModel reader, IBookModel book)
+        {
+            if(book?.Status == Status.Available && reader?.TakenBooks.Count < maxBookAmount)
             {
-                book.Return();
-                reader.ReturnBook(book);
-                LibraryDataIO.Instance.SerializeData();
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool ValidateReturning(IUserModel reader, IBookModel book)
+        {
+            if (reader != null && reader.TakenBooks.Contains(book.ID) && book?.ReaderID == reader.ID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
