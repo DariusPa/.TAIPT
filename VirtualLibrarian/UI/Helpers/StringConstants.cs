@@ -68,5 +68,10 @@ namespace VirtualLibrarian.Helpers
         {
             return "User is already registered as " + name + " " + surname + "!";
         }
+
+        public static string BookRegistered (string name, string ISBN)
+        {
+            return "Book " + name + " with ISBN: " + ISBN + " was registered.";
+        }
     }
 }

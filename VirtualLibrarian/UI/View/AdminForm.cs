@@ -58,7 +58,7 @@ namespace VirtualLibrarian
 
                     NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
                 }
-
+                MessageBox.Show(StringConstants.BookRegistered(titleBox.Text, isbnBox.Text));
             }
             else
             {
