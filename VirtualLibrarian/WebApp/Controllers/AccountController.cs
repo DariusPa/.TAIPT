@@ -13,11 +13,23 @@ using WebApp.Models;
 using VirtualLibrarian.BusinessLogic;
 using System.Drawing;
 using System.IO;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using Emgu.CV.CvEnum;
+using VirtualLibrarian.Data;
 
 namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private IFaceRecognition faceRecognition;
+
+        public AccountController()
+        {
+            faceRecognition = new FaceRecognition();
+            faceRecognition.LoadRecognizer();
+            faceRecognition.TrainRecognizer();
+        }
         public ActionResult Index()
         {
             return View();
@@ -36,9 +48,36 @@ namespace WebApp.Controllers
         public JsonResult Bitmap(FormCollection imageData)
         {
             string imageSource = imageData["name"];
-
+            
+            Bitmap bmp;
+            Mat mat;
+            Image<Gray, Byte> img;
             string base64 = imageSource.Substring(imageSource.IndexOf(',') + 1);
             byte[] data = Convert.FromBase64String(base64);
+
+            using (MemoryStream ms = new MemoryStream(data))
+            {
+                bmp = (Bitmap)Image.FromStream(ms);
+            }
+            img = new Image<Gray, byte>(bmp);
+            mat = img.Mat;
+
+            CvInvoke.EqualizeHist(mat, mat);
+
+            mat.Save($"{LibraryDataIO.Instance.FacesPath}\\test.bmp");
+
+            Rectangle[] facesDetected = faceRecognition.DetectFaces(mat);
+
+            foreach (Rectangle face in facesDetected)
+            {
+                var grayFace = new Mat(mat, face);
+                img = grayFace.ToImage<Gray, byte>();
+                mat.Dispose();
+                CvInvoke.Resize(img, img, new Size(100, 100), 0, 0, Inter.Cubic);
+
+                    var label = faceRecognition.Recognize(img);
+                    
+            }
 
             return Json(new { response = "Response" });
         }
