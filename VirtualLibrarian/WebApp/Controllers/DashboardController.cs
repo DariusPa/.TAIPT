@@ -12,12 +12,21 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Model;
 using WebApp.Models;
 
 namespace WebApp.Controllers
 {
     public class DashboardController : Controller
     {
+        public IUserModel ActiveUser { get; set; }
+
+        public DashboardController()
+        {
+            //TODO: get actual user (with label returned from recognition)"
+            ActiveUser = LibraryDataIO.Instance.FindUser("1");
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -53,7 +62,33 @@ namespace WebApp.Controllers
 
         public ActionResult History()
         {
-            return View();
+            //TODO: remove this when user validation logic is implemented for the whole dashboard
+            if (ActiveUser == null) return View(new DataTable());
+
+            var takenBooks = ActiveUser.TakenBooks
+            .Join(LibraryDataIO.Instance.Books,
+                  takenBook => takenBook,
+                  libraryBook => libraryBook.ID,
+                  (takenBook, libraryBook) => new {
+                      libraryBook.Title,
+                      Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
+                      Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
+                      Returned = StringConstants.currentlyTakenString
+                  });
+
+            var bookHistory = ActiveUser.History
+                .Join(LibraryDataIO.Instance.Books,
+                      readBook => readBook.BookID,
+                      libraryBook => libraryBook.ID,
+                      (readBook, libraryBook) => new {
+                          libraryBook.Title,
+                          Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
+                          Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
+                          Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
+                      });
+
+            var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(bookHistory).ToList());
+            return View(dtHistory);
         }
 
         public ActionResult Settings()
