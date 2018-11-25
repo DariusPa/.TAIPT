@@ -40,13 +40,13 @@ namespace VirtualLibrarian.Presenter
             TakeBook.Instance.HideScanner();
             if (LibraryManager.ValidateIssuing(ActiveUser, book))
             {
-                ui.Speaker.TellUser(StringConstants.aiWorking);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiWorking);
                 LibraryManager.IssueBookToReader(ActiveUser, book);
-                ui.Speaker.TellUser(StringConstants.aiIssued);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiIssued);
             }
             else
             {
-                ui.Speaker.TellUser(StringConstants.aiIssuingFailed);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiIssuingFailed);
             }
         }
 
@@ -56,13 +56,13 @@ namespace VirtualLibrarian.Presenter
             ReturnBook.Instance.HideScanner();
             if (LibraryManager.ValidateReturning(ActiveUser, book))
             {
-                ui.Speaker.TellUser(StringConstants.aiWorking);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiWorking);
                 LibraryManager.ReturnBook(ActiveUser, book);
-                ui.Speaker.TellUser(StringConstants.aiReturnedBook);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiReturnedBook);
             }
             else
             {
-                ui.Speaker.TellUser(StringConstants.aiReturnFailed);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiReturnFailed);
             }
             
         }
@@ -137,12 +137,12 @@ namespace VirtualLibrarian.Presenter
         {
             if (LibraryDataIO.Instance.ChangeUserInfo(ActiveUser, args.UserName, args.UserSurname, args.UserEmail))
             {
-                ui.Speaker.TellUser(StringConstants.aiChangesSaved);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiChangesSaved);
                 ui.UpdateUser();
             }
             else
             {
-                ui.Speaker.TellUser(StringConstants.aiSaveChangesFailed);
+                ui.Speaker.SpeakAndWrite(StringConstants.aiSaveChangesFailed);
             }
         }
 

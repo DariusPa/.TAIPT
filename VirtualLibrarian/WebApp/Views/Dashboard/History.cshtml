@@ -3,37 +3,27 @@
     ViewBag.PageTitle = "History";
 }
 
-<table class="table table-bordered">
+@model System.Data.DataTable
+@using System.Data;
+
+<table id="history" class="table" style="width:100%">
     <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Author</th>
-            <th scope="col">Title</th>
-            <th scope="col">Taken</th>
-            <th scope="col">Returned</th>
+            @foreach (DataColumn col in Model.Columns)
+            {
+                <th scope="col">@col.ColumnName</th>
+            }
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Larry the Bird</td>
-            <td>Mark</td>
-            <td>2018-10-05</td>
-            <td>2018-11-05</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Larry the Bird</td>
-            <td>2018-10-05</td>
-            <td>2018-11-05</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry the Bird</td>
-            <td>Jacob</td>
-            <td>2018-10-05</td>
-            <td>2018-11-05</td>
-        </tr>
+        @foreach (DataRow row in Model.Rows)
+        {
+            <tr>
+                @foreach (DataColumn col in Model.Columns)
+                {
+                    <td>@row[col.ColumnName]</td>
+                }
+            </tr>
+        }
     </tbody>
 </table>
