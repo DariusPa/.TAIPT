@@ -33,7 +33,23 @@ namespace VirtualLibrarian.BusinessLogic
             synthesizer.Rate = rate;
         }
 
-        public void TellUser(string msg)
+        public SpeakingAI(bool soundEnabled = true, int volume = 100, int rate = -2)
+        {
+            SoundEnabled = soundEnabled;
+            synthesizer.Volume = volume;
+            synthesizer.Rate = rate;
+        }
+
+        public void Speak(string msg)
+        {
+            if (SoundEnabled)
+            {
+                synthesizer.SpeakAsyncCancelAll();
+                synthesizer.SpeakAsync(msg);
+            }
+        }
+
+        public void SpeakAndWrite(string msg)
         {
             lbl = TextControl.guideLabel;
             t = new Thread(new ThreadStart(WriteSlowly));

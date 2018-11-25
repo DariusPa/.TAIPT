@@ -53,7 +53,7 @@ namespace VirtualLibrarian
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiSearchLibraryGreeting);
+            Speaker.SpeakAndWrite(StringConstants.aiSearchLibraryGreeting);
             if (!containerPanel.Controls.Contains(Search.Instance))
             {
                 containerPanel.Controls.Add(Search.Instance);
@@ -65,7 +65,7 @@ namespace VirtualLibrarian
 
         private void TakeBookButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiScanBookQRString);
+            Speaker.SpeakAndWrite(StringConstants.aiScanBookQRString);
             if (!containerPanel.Controls.Contains(TakeBook.Instance))
             {
                 containerPanel.Controls.Add(TakeBook.Instance);
@@ -76,7 +76,7 @@ namespace VirtualLibrarian
 
         private void ReturnButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiReturnBookString);
+            Speaker.SpeakAndWrite(StringConstants.aiReturnBookString);
             if (!containerPanel.Controls.Contains(ReturnBook.Instance))
             {
                 containerPanel.Controls.Add(ReturnBook.Instance);
@@ -88,7 +88,7 @@ namespace VirtualLibrarian
 
         private void HistoryButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiReadingHistoryGreeting);
+            Speaker.SpeakAndWrite(StringConstants.aiReadingHistoryGreeting);
             if (!containerPanel.Controls.Contains(History.Instance))
             {
                 containerPanel.Controls.Add(History.Instance);
@@ -100,7 +100,7 @@ namespace VirtualLibrarian
 
         private void SettingsButton_Click(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.aiAccountSettingsGreeting);
+            Speaker.SpeakAndWrite(StringConstants.aiAccountSettingsGreeting);
             if (!containerPanel.Controls.Contains(Settings.Instance))
             {
                 containerPanel.Controls.Add(Settings.Instance);
@@ -130,7 +130,7 @@ namespace VirtualLibrarian
 
         private void UI_Shown(object sender, EventArgs e)
         {
-            Speaker.TellUser(StringConstants.AIGreeting(User.Name));
+            Speaker.SpeakAndWrite(StringConstants.AIGreeting(User.Name));
         }
 
         private void UI_FormClosed(object sender, FormClosedEventArgs e)
@@ -142,7 +142,7 @@ namespace VirtualLibrarian
         private void UI_FormClosing(object sender, FormClosingEventArgs e)
         {
             AutomaticFormPosition.SaveFormStatus(this);
-            Speaker.TellUser(StringConstants.aiGoodbye);
+            Speaker.SpeakAndWrite(StringConstants.aiGoodbye);
             this.Controls.Clear();
         }
 

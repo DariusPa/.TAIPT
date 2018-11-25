@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
@@ -20,18 +21,21 @@ namespace WebApp.Controllers
     public class DashboardController : Controller
     {
         public IUserModel ActiveUser { get; set; }
+        private SpeakingAI speaker;
 
         public DashboardController()
         {
             //TODO: get actual user (with label returned from recognition)"
             ActiveUser = LibraryDataIO.Instance.FindUser("1");
+            //TODO: check why it stops the page from loading
+            //speaker = new SpeakingAI();
+
         }
 
         public ActionResult Index()
         {
             return View();
         }
-
         
         public ActionResult Search()
         {
@@ -47,16 +51,19 @@ namespace WebApp.Controllers
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
 
+            //speaker.Speak(StringConstants.aiSearchLibraryGreeting);
             return View(dtLibraryBook);
         }
 
         public ActionResult Take()
         {
+            //speaker.Speak(StringConstants.aiScanBookQRString);
             return View();
         }
 
         public ActionResult Return()
         {
+            //speaker.Speak(StringConstants.aiReturnBookString);
             return View();
         }
 
@@ -88,16 +95,19 @@ namespace WebApp.Controllers
                       });
 
             var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(bookHistory).ToList());
+            //speaker.Speak(StringConstants.aiReadingHistoryGreeting);
             return View(dtHistory);
         }
 
         public ActionResult Settings()
         {
+            //speaker.Speak(StringConstants.aiAccountSettingsGreeting);
             return View();
         }
 
         public ActionResult Logout()
         {
+            //speaker.Speak(StringConstants.aiGoodbye);
             return RedirectToAction("Index", "Account");
         }
     }
