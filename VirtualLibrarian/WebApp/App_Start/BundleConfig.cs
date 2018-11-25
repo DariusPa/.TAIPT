@@ -35,6 +35,12 @@ namespace WebApplication1
             bundles.Add(new ScriptBundle("~/bundles/webcam").Include(
                 "~/Scripts/jquery.webcam.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/trackingjs").Include(
+                "~/Scripts/tracking/tracking-min.js",
+                "~/Scripts/tracking/face-min.js",
+                "~/Scripts/tracking/dat.gui.min.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
                 "~/Scripts/datatables.js"));
 
@@ -44,7 +50,8 @@ namespace WebApplication1
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/hover-min.css",
-                 "~/Content/Site.css"));
+                 "~/Content/Site.css",
+                "~/Scripts/tracking/demo.css"));
         }
     }
 }

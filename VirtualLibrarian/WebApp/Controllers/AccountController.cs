@@ -83,10 +83,31 @@ namespace WebApp.Controllers
         }
 
         // 
+        // POST: /Account/LoginBitmap 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult LoginBitmap(FormCollection imageData)
+        {
+	    // is login gaunamas face bmp masyvas jsonu
+            return Json(new { response = "valid" });
+        }
+
+        // 
+        // POST: /Account/RegisterBitmap
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult RegisterBitmap(FormCollection imageData)
+        {
+	    // is register gaunamas face bmp masyvas jsonu
+            return Json(new { response = "Response" });
+        }
+
+        // 
         // GET: /Account/Register 
         [AllowAnonymous]
         public ActionResult Register(string Name, string Surname, string Email)
         {
+            ViewBag.Name = Name;
             return View();
         }
 

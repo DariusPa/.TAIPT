@@ -1,48 +1,76 @@
 
+
 @section Styles {
     <style>
         body {
             background: black !important;
         }
+
+        video, canvas {
+            margin-left: 230px;
+            margin-top: 120px;
+            position: absolute;
+        }
     </style>
 }
 
-<div class="w-100 mt-5">
-    <div class="container text-center" style="position:relative;">
-        <img src="~/Content/FaceFrame.png" class="mx-auto" style="width: 500px;height: 450px;position: absolute;top:0;left:0;right:0;" />
-        <div id="camera" class="mx-auto"></div>
-        <form>
-            <button id="snapshot" type="button" onClick="take_snapshot();">Take Snapshot</button>
-        </form>
+    <div class="demo-frame">
+        <div class="demo-container">
+            <video id="video" width="320" height="240" preload autoplay loop muted></video>
+            <canvas id="canvas" width="320" height="240"></canvas>
+        </div>
+        <div class="message"></div>
     </div>
-</div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/webcam")
+    @Scripts.Render("~/bundles/trackingjs")
+        
+    <script>
+    window.onload = function() {
+      var video = document.getElementById('video');
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var tracker = new tracking.ObjectTracker('face');
+    var stopRequestAnimationFrame = false;
+      tracker.setInitialScale(5.6);
+      tracker.setStepSize(3.5);
+      tracker.setEdgesDensity(0.1);
+    const trackingTask = tracking.track('#video', tracker, { camera: true });
+    trackingTask.run();
+    var faces = [];
+    var i = 0;
+      tracker.on('track', function(event) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        event.data.forEach(function(rect) {
+            if(stopRequestAnimationFrame == false) {
 
-    <script language="JavaScript">
-        Webcam.set({
-            width: 500,
-            height: 525,
-            image_format: 'bmp',
-            jpeg_quality: 90
-        });
-        Webcam.attach( '#camera' );
-    </script>
+                var dataURI = canvas.toDataURL('image/bmp');
 
-    <script language="JavaScript">
-        function take_snapshot() {
-            var photos = 0;
-            jQuery("#snapshot").hide();
-            Webcam.snap( function(data_uri) {
-                $.post( '/Account/Bitmap', { name: data_uri })
-                  .done(function( data ) {
-                    alert(data.response);
-                  })
-                  .fail(function() {
-                    alert( "error" );
-                  });
-            });
-        }
+                stopRequestAnimationFrame = true;
+                faces.push(dataURI);
+
+                $.ajax({
+                  url: "/Account/LoginBitmap",
+                  data: JSON.stringify(faces),
+                  type: 'post',
+                  success: function(data) {
+                    if(data.response == "valid") {
+                        $('.message').text('successfully logged in');
+                        alert("Logged in");
+                        window.location.href='/Dashboard';
+                    } else {
+                        stopRequestAnimationFrame = false;
+                        trackingTask.run();
+                    }
+                  },
+                  error: function() {
+                    alert('error');
+                  }
+                });
+            }
+            trackingTask.stop();
+      });
+    });
+    };
     </script>
 }
