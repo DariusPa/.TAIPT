@@ -1,7 +1,11 @@
-﻿@{
+@{
     if (Context.Request.Path.StartsWith("/Dashboard", StringComparison.OrdinalIgnoreCase))
     {
         Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+    }
+    else if (Context.Request.Path.StartsWith("/Admin", StringComparison.OrdinalIgnoreCase))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
     }
     else
     {
