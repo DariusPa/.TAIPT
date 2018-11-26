@@ -1,4 +1,4 @@
-﻿
+
 
 @section Styles {
     <style>
@@ -17,7 +17,8 @@
     <div class="demo-frame">
         <div class="demo-container">
             <video id="video" width="320" height="240" preload autoplay loop muted></video>
-            <canvas id="canvas" width="320" height="240"></canvas>
+        <canvas id="snapCanvas" width="320" height="240" style="visibility: hidden;"></canvas>
+        <canvas id="canvas" width="320" height="240" style="position:relative;z-index:2;"></canvas>
         </div>
         <div class="message"></div>
     </div>
@@ -29,7 +30,9 @@
     window.onload = function() {
       var video = document.getElementById('video');
       var canvas = document.getElementById('canvas');
+      var snapCanvas = document.getElementById('snapCanvas');
       var context = canvas.getContext('2d');
+      var snapContext = snapCanvas.getContext('2d');
       var tracker = new tracking.ObjectTracker('face');
     var stopRequestAnimationFrame = false;
   tracker.setInitialScale(6);
@@ -44,8 +47,8 @@
         event.data.forEach(function(rect) {
             if(stopRequestAnimationFrame == false) {
 
-                  context.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
-                  dataURI = canvas.toDataURL('image/png');
+                  snapContext.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
+                  dataURI = snapCanvas.toDataURL('image/png');
 
                 stopRequestAnimationFrame = true;
 
