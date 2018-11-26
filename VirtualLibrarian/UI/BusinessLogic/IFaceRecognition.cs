@@ -19,5 +19,6 @@ namespace VirtualLibrarian.BusinessLogic
         event EventHandler FacePhotoSaved;
 
         string Recognize(Image<Gray, Byte> detectedFace);
+        string Recognize(List<Image<Gray, Byte>> detectedFace);
     }
 }

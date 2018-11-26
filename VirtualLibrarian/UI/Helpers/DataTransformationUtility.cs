@@ -1,9 +1,15 @@
-﻿using System;
+﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VirtualLibrarian.Data;
 
@@ -11,12 +17,14 @@ namespace VirtualLibrarian.Helpers
 {
     public static class DataTransformationUtility
     {
+
+
         public static DataTable ToDataTable<T>(List<T> items)
         {
             DataTable dataTable = new DataTable(typeof(T).Name);
 
             //Get all the properties
-            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance );
+            PropertyInfo[] Props = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             foreach (PropertyInfo prop in Props)
             {
                 //Enums are converted to strings
@@ -41,17 +49,17 @@ namespace VirtualLibrarian.Helpers
         public static DataTable RemoveUnusedColumns(DataTable dt, string[] columns)
         {
             var newDt = new DataTable();
-            foreach(DataColumn col in dt.Columns)
+            foreach (DataColumn col in dt.Columns)
             {
                 if (columns.Contains(col.ColumnName))
                 {
                     newDt.Columns.Add(col.ColumnName);
                 }
             }
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 var newRow = newDt.NewRow();
-                foreach(string column in columns)
+                foreach (string column in columns)
                 {
                     newRow[column] = row[column];
                 }
@@ -68,7 +76,7 @@ namespace VirtualLibrarian.Helpers
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 StringBuilder sb = new StringBuilder();
-                foreach(string column in filteredColumns)
+                foreach (string column in filteredColumns)
                 {
                     sb.Append(dataRow[column].ToString());
                     sb.Append("\t");
@@ -86,6 +94,48 @@ namespace VirtualLibrarian.Helpers
                           lbAuthor => lbAuthor.ID,
                           (author, lbAuthor) => lbAuthor.FullName));
         }
+
+        public static List<Bitmap> StringToBitmapList(List<string> stringList)
+        {
+            var byteArrays = new List<byte[]>();
+            var bitmaps = new List<Bitmap>();
+            foreach (string element in stringList)
+            {
+                var base64Data = Regex.Match(element, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                var binData = Convert.FromBase64String(base64Data);
+
+                using (var stream = new MemoryStream(binData))
+                {
+                    byteArrays.Add(stream.ToArray());
+                }
+            }
+            foreach (byte[] b in byteArrays)
+            {
+                using (var stream = new MemoryStream(b))
+                {
+                    var bmp = new Bitmap(stream);
+                    bitmaps.Add(bmp);
+                }
+            }
+            return bitmaps;
+        }
+
+        public static List<Image<Gray,byte>> BitmapToGrayImage(List<Bitmap> bitmaps)
+        {
+            var images = new List<Image<Gray, byte>>();
+
+            foreach (Bitmap bmp in bitmaps)
+            {
+                var grayImg = new Image<Gray, byte>(bmp);
+                CvInvoke.Resize(grayImg, grayImg, new Size(100, 100), 0, 0, Inter.Cubic);
+                CvInvoke.EqualizeHist(grayImg, grayImg);
+                images.Add(grayImg);
+            }
+
+            return images;
+
+        }
+
 
     }
 }

@@ -1,82 +1,89 @@
 
 @section Styles {
-    <style>
-        body {
-            background: black !important;
-        }
+<style>
+  body {
+    background: black !important;
+  }
 
-        video, canvas {
-            margin-left: 230px;
-            margin-top: 120px;
-            position: absolute;
-        }
-    </style>
+  video, canvas {
+    margin-left: 180px;
+    margin-top: 0px;
+    position: absolute;
+  }
+</style>
 }
 <div class="demo-frame">
-    <div class="demo-container">
-        <video id="video" width="320" height="240" preload autoplay loop muted></video>
-        <canvas id="snapCanvas" width="320" height="240" style="visibility: hidden;"></canvas>
-        <canvas id="canvas" width="320" height="240" style="position:relative;z-index:2;"></canvas>
-    </div>
+  <div class="demo-container">
+    <video id="video" width="400" height="400" preload autoplay loop muted></video>
+    <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
+    <canvas id="canvas" width="300" height="300" style="position:relative;z-index:2;"></canvas>
+  </div>
 </div>
 @section Scripts {
-    @Scripts.Render("~/bundles/trackingjs")
+@Scripts.Render("~/bundles/trackingjs")
 <script>
-window.onload = function() {
-      var video = document.getElementById('video');
-      var canvas = document.getElementById('canvas');
-      var snapCanvas = document.getElementById('snapCanvas');
-      var context = canvas.getContext('2d');
-      var snapContext = snapCanvas.getContext('2d');
-      var tracker = new tracking.ObjectTracker('face');
+  window.onload = function() {
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var snapCanvas = document.getElementById('snapCanvas');
+    var context = canvas.getContext('2d');
+    var snapContext = snapCanvas.getContext('2d');
+    var tracker = new tracking.ObjectTracker('face');
     var stopRequestAnimationFrame = false;
-  tracker.setInitialScale(6);
-  tracker.setStepSize(2);
-  tracker.setEdgesDensity(0.1);
+    tracker.setInitialScale(4);
+    tracker.setStepSize(3);
+    tracker.setEdgesDensity(0.1);
     const trackingTask = tracking.track('#video', tracker, { camera: true });
     trackingTask.run();
     var dataURI = "";
 
-        var stringArray = new Array();
-        var i = 0;
+    var stringArray = new Array();
+    var i = 0;
 
-      tracker.on('track', function(event) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        event.data.forEach(function(rect) {
-            if(stopRequestAnimationFrame == false) {
-        
-                  snapContext.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
-                  dataURI = snapCanvas.toDataURL('image/png');
+    tracker.on('track', function(event) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      event.data.forEach(function(rect) {
+        context.strokeStyle = '#a64ceb';
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        context.font = '11px Helvetica';
+        context.fillStyle = "#fff";
+        context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+        context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+        if(stopRequestAnimationFrame == false) {
 
-                if(i > 8) {
-                var postData = { values: stringArray };
+          snapContext.drawImage(video, rect.x + 80, rect.y, 300, 300, 0, 0, 300, 300);
+          dataURI = snapCanvas.toDataURL('image/png');
 
-                    stopRequestAnimationFrame = true;
-                    $.ajax({
-                      url: "/Account/RegisterBitmap",
-                      data: postData,
-                      traditional: true,
-                      type: 'post',
-                      success: function(data) {
+          if(i > 9) {
+            var postData = { values: stringArray, name: '@ViewBag.Name', surname: '@ViewBag.Surname', email: '@ViewBag.Email' };
 
-                        alert("@ViewBag.Name Camera trained. Registered.");
-                        @*window.location.href='/Account';*@
-                      },
-                      error: function() {
-                        alert('error');
-                      }
-                    });
-                } else {
-                    stringArray[i] = dataURI;
-                    i++;
-                    setTimeout(function () {
-                        trackingTask.stop();
-                        trackingTask.run();
-                    }, 50);
+            stopRequestAnimationFrame = true;
+            $.ajax({
+              url: "/Account/RegisterBitmap",
+              data: postData,
+              traditional: true,
+              type: 'post',
+              success: function(data) {
+
+                alert("@ViewBag.Name Camera trained. Registered.");
+                @*window.location.href='/Account';*@
+              },
+                error: function() {
+                  alert('error');
                 }
-            }
-            trackingTask.stop();
+              });
+            } else {
+                   stringArray[i] = dataURI;
+                   i++;
+                   setTimeout(function () {
+              trackingTask.stop();
+              trackingTask.run();
+            }, 50);
+          }
+        }
+        trackingTask.stop();
       });
     });
-    };</script>
+  };
+</script>
 }
