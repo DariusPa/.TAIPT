@@ -1,0 +1,84 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    @Styles.Render("~/Content/datatables")
+    @Styles.Render("~/Content/tabler")
+}
+<div class="page">
+    <div class="page-main">
+        <div class="header py-4">
+            <div class="container">
+                <a href="#" class="float-right header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+                    <span class="header-toggler-icon"></span>
+                </a>
+                <h3 class="my-2">.TAIPT ADMIN</h3>
+            </div>
+        </div>
+        <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg order-lg-first">
+                        <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                            <li class="nav-item">
+                                <a href="/Admin" class="nav-link active"><i class="fe fe-home"></i> Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Admin/Users" class="nav-link"><i class="fe fe-user"></i> Users</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="/Admin/Books" class="nav-link"><i class="fe fe-book"></i> Books list</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="javascript:void(0)" class="nav-link" data-toggle="dropdown"><i class="fe fe-plus"></i> Add</a>
+                                <div class="dropdown-menu dropdown-menu-arrow">
+                                    <a href="/Admin/AddBook" class="dropdown-item ">Add a book</a>
+                                    <a href="/Admin/AddAuthor" class="dropdown-item ">Add an author</a>
+                                    <a href="/Admin/AddPublisher" class="dropdown-item ">Add a publisher</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="my-3 my-md-5">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">
+                        @ViewBag.Title
+                    </h1>
+                </div>
+
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Content/js/vendors/selectize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#select-countries').selectize({
+                render: {
+                    option: function (data, escape) {
+                        return '<div>' +
+                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                            '<span class="title">' + escape(data.text) + '</span>' +
+                            '</div>';
+                    },
+                    item: function (data, escape) {
+                        return '<div>' +
+                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                            escape(data.text) +
+                            '</div>';
+                    }
+                }
+            });
+        });
+    </script>
+
+    @Scripts.Render("~/bundles/app")
+    @Scripts.Render("~/bundles/datatables")
+}

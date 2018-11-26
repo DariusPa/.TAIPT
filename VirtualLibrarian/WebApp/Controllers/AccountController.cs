@@ -96,10 +96,26 @@ namespace WebApp.Controllers
         // POST: /Account/RegisterBitmap
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult RegisterBitmap(FormCollection imageData)
+        public JsonResult RegisterBitmap(List<String> values)
         {
-	    // is register gaunamas face bmp masyvas jsonu
-            return Json(new { response = "Response" });
+            byte[][] faces = new byte[10][];
+
+            int i = 0;
+            foreach (string element in values)
+            {
+                var base64Data = Regex.Match(element, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+                var binData = Convert.FromBase64String(base64Data);
+
+                using (var stream = new MemoryStream(binData))
+                {
+                    faces[i] = stream.ToArray();
+                }
+                i++;
+            }
+
+            //faces = array of 10 images binary data
+
+            return Json(new { response = 1 });
         }
 
         // 

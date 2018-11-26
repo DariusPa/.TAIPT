@@ -1,4 +1,4 @@
-
+﻿
 
 @section Styles {
     <style>
@@ -32,26 +32,26 @@
       var context = canvas.getContext('2d');
       var tracker = new tracking.ObjectTracker('face');
     var stopRequestAnimationFrame = false;
-      tracker.setInitialScale(5.6);
-      tracker.setStepSize(3.5);
-      tracker.setEdgesDensity(0.1);
+  tracker.setInitialScale(6);
+  tracker.setStepSize(2);
+  tracker.setEdgesDensity(0.1);
     const trackingTask = tracking.track('#video', tracker, { camera: true });
     trackingTask.run();
-    var faces = [];
-    var i = 0;
+    var dataURI = "";
+
       tracker.on('track', function(event) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         event.data.forEach(function(rect) {
             if(stopRequestAnimationFrame == false) {
 
-                var dataURI = canvas.toDataURL('image/bmp');
+                  context.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
+                  dataURI = canvas.toDataURL('image/png');
 
                 stopRequestAnimationFrame = true;
-                faces.push(dataURI);
 
                 $.ajax({
                   url: "/Account/LoginBitmap",
-                  data: JSON.stringify(faces),
+                  data: { values: dataURI },
                   type: 'post',
                   success: function(data) {
                     if(data.response == "valid") {

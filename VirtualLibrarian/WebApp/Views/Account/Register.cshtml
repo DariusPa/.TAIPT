@@ -1,4 +1,4 @@
-
+﻿
 @section Styles {
     <style>
         body {
@@ -20,43 +20,51 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/trackingjs")
-
-    <script>window.onload = function() {
+<script>
+window.onload = function() {
       var video = document.getElementById('video');
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
       var tracker = new tracking.ObjectTracker('face');
     var stopRequestAnimationFrame = false;
-      tracker.setInitialScale(5.6);
-      tracker.setStepSize(3.5);
-      tracker.setEdgesDensity(0.1);
+  tracker.setInitialScale(6);
+  tracker.setStepSize(2);
+  tracker.setEdgesDensity(0.1);
     const trackingTask = tracking.track('#video', tracker, { camera: true });
     trackingTask.run();
-    var faces = [];
-    var i = 0;
+    var dataURI = "";
+
+        var stringArray = new Array();
+        var i = 0;
+
       tracker.on('track', function(event) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         event.data.forEach(function(rect) {
             if(stopRequestAnimationFrame == false) {
-
-                var dataURI = canvas.toDataURL('image/bmp');
+        
+                  context.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
+                  dataURI = canvas.toDataURL('image/png');
 
                 if(i > 8) {
+                var postData = { values: stringArray };
+
                     stopRequestAnimationFrame = true;
                     $.ajax({
                       url: "/Account/RegisterBitmap",
-                      data: JSON.stringify(faces),
+                      data: postData,
+                      traditional: true,
                       type: 'post',
                       success: function(data) {
+
                         alert("@ViewBag.Name Camera trained. Registered.");
-                        window.location.href='/Account';
+                        @*window.location.href='/Account';*@
                       },
                       error: function() {
                         alert('error');
                       }
                     });
                 } else {
-                    faces.push(dataURI);
+                    stringArray[i] = dataURI;
                     i++;
                     setTimeout(function () {
                         trackingTask.stop();
