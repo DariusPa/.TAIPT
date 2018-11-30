@@ -16,64 +16,93 @@
 
     <div class="demo-frame">
         <div class="demo-container">
-            <video id="video" width="320" height="240" preload autoplay loop muted></video>
-        <canvas id="snapCanvas" width="320" height="240" style="visibility: hidden;"></canvas>
-        <canvas id="canvas" width="320" height="240" style="position:relative;z-index:2;"></canvas>
+            <video id="video" width="400" height="400" preload autoplay loop muted></video>
+            <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
+            <canvas id="canvas" width="300" height="300" style="position:relative;z-index:2;"></canvas>
         </div>
-        <div class="message"></div>
     </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/trackingjs")
-        
     <script>
-    window.onload = function() {
-      var video = document.getElementById('video');
-      var canvas = document.getElementById('canvas');
-      var snapCanvas = document.getElementById('snapCanvas');
-      var context = canvas.getContext('2d');
-      var snapContext = snapCanvas.getContext('2d');
-      var tracker = new tracking.ObjectTracker('face');
+  window.onload = function() {
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var snapCanvas = document.getElementById('snapCanvas');
+    var context = canvas.getContext('2d');
+    var snapContext = snapCanvas.getContext('2d');
+    var tracker = new tracking.ObjectTracker('face');
     var stopRequestAnimationFrame = false;
-  tracker.setInitialScale(6);
-  tracker.setStepSize(2);
-  tracker.setEdgesDensity(0.1);
+    tracker.setInitialScale(4);
+    tracker.setStepSize(3);
+    tracker.setEdgesDensity(0.1);
     const trackingTask = tracking.track('#video', tracker, { camera: true });
     trackingTask.run();
     var dataURI = "";
 
-      tracker.on('track', function(event) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        event.data.forEach(function(rect) {
-            if(stopRequestAnimationFrame == false) {
+    var stringArray = new Array();
+    var i = 0;
+      var attempt = 0;
+      var error = 0;
 
-                  snapContext.drawImage(video, rect.x + 15, rect.y, video.width + rect.x + 11, video.height + rect.y + 22, 0, 0, video.width, video.height);
-                  dataURI = snapCanvas.toDataURL('image/png');
+    tracker.on('track', function(event) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      event.data.forEach(function(rect) {
+        context.strokeStyle = '#a64ceb';
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        context.font = '11px Helvetica';
+        context.fillStyle = "#fff";
+        context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+        context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+        if(stopRequestAnimationFrame == false && attempt<=3) {
 
-                stopRequestAnimationFrame = true;
+          snapContext.drawImage(video, rect.x + 80, rect.y, 300, 300, 0, 0, 300, 300);
+          dataURI = snapCanvas.toDataURL('image/png');
 
-                $.ajax({
-                  url: "/Account/LoginBitmap",
-                  data: { values: dataURI },
-                  type: 'post',
-                  success: function(data) {
-                    if(data.response == "valid") {
-                        $('.message').text('successfully logged in');
-                        alert("Logged in");
-                        window.location.href='/Dashboard';
-                    } else {
-                        stopRequestAnimationFrame = false;
-                        trackingTask.run();
+          if(i > 9) {
+            var postData = { values: stringArray};
+            $.ajax({
+              url: "/Account/LoginBitmap",
+              data: postData,
+              traditional: true,
+              type: 'post',
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = '/Dashboard';
+                        stopRequestAnimationFrame = true;
+                    } else if (response.err = 1) {
+                        stopRequestAnimationFrame = true;
+                        error = 1;
                     }
-                  },
-                  error: function() {
-                    alert('error');
-                  }
-                });
-            }
-            trackingTask.stop();
+                    else{
+                        i = 0;
+                        attempt++;
+                    }
+              },
+                error: function() {
+                }
+              });
+          } else {
+
+              stringArray[i] = dataURI;
+              i++;
+              setTimeout(function () {
+              trackingTask.stop();
+              trackingTask.run();
+            },2000 );
+          }
+        }
+          trackingTask.stop();
+
+          if (attempt > 3 || error!=0) {
+              window.location.href = '/Account';
+              alert("User could not be recognised.");
+              return;
+          }
+        });
+
       });
-    });
-    };
+
+  };
     </script>
 }

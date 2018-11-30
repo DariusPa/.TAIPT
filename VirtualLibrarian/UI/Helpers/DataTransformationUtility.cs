@@ -101,39 +101,41 @@ namespace VirtualLibrarian.Helpers
             var bitmaps = new List<Bitmap>();
             foreach (string element in stringList)
             {
-                var base64Data = Regex.Match(element, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
-                var binData = Convert.FromBase64String(base64Data);
-
-                using (var stream = new MemoryStream(binData))
-                {
-                    byteArrays.Add(stream.ToArray());
-                }
-            }
-            foreach (byte[] b in byteArrays)
-            {
-                using (var stream = new MemoryStream(b))
-                {
-                    var bmp = new Bitmap(stream);
-                    bitmaps.Add(bmp);
-                }
+                bitmaps.Add(StringToBitmap(element));
             }
             return bitmaps;
         }
 
-        public static List<Image<Gray,byte>> BitmapToGrayImage(List<Bitmap> bitmaps)
+        public static Bitmap StringToBitmap(string stringValue)
+        {
+            var base64Data = Regex.Match(stringValue, @"data:image/(?<type>.+?),(?<data>.+)").Groups["data"].Value;
+            var binData = Convert.FromBase64String(base64Data);
+            using (var stream = new MemoryStream(binData))
+            {
+                var byteArray = stream.ToArray();
+                using(var byteStream = new MemoryStream(byteArray))
+                {
+                    return new Bitmap(stream);
+                }
+            }
+        }
+
+        public static Image<Gray,byte> BitmapToGrayImage(Bitmap bitmap)
+        {
+            var grayImg = new Image<Gray, byte>(bitmap);
+            CvInvoke.Resize(grayImg, grayImg, new Size(100, 100), 0, 0, Inter.Cubic);
+            CvInvoke.EqualizeHist(grayImg, grayImg);
+            return grayImg;
+        }
+
+        public static List<Image<Gray,byte>> BitmapToGrayImageList(List<Bitmap> bitmaps)
         {
             var images = new List<Image<Gray, byte>>();
-
             foreach (Bitmap bmp in bitmaps)
             {
-                var grayImg = new Image<Gray, byte>(bmp);
-                CvInvoke.Resize(grayImg, grayImg, new Size(100, 100), 0, 0, Inter.Cubic);
-                CvInvoke.EqualizeHist(grayImg, grayImg);
-                images.Add(grayImg);
+                images.Add(BitmapToGrayImage(bmp));
             }
-
             return images;
-
         }
 
 

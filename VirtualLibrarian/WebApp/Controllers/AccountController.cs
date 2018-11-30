@@ -24,6 +24,16 @@ namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
+        private FaceRecognition recognizer;
+        private bool isRecognizerTrained; 
+
+        public AccountController()
+        {
+            recognizer = new FaceRecognition();
+            recognizer.LoadRecognizer();
+            isRecognizerTrained = recognizer.TrainRecognizer();
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -50,10 +60,18 @@ namespace WebApp.Controllers
         // POST: /Account/LoginBitmap 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult LoginBitmap(FormCollection imageData)
+        public JsonResult LoginBitmap(List<string> values)
         {
-	    // is login gaunamas face bmp masyvas jsonu
-            return Json(new { response = "valid" });
+            var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
+            var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
+
+            if (!isRecognizerTrained)
+            {
+                return Json(new { success = false, err = 1});
+            }
+            var label = recognizer.Recognize(grayImages);
+
+            return label=="" ? Json(new { success = false}) : Json(new { success = true, user = label });
         }
 
         // 
@@ -63,23 +81,19 @@ namespace WebApp.Controllers
         public JsonResult RegisterBitmap(List<string> values, string name, string surname, string email)
         {
             var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
-            var grayImages = DataTransformationUtility.BitmapToGrayImage(originalBitmaps);
+            var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
 
-            var faceRecognition = new FaceRecognition();
-            faceRecognition.LoadRecognizer();
-            var trained = faceRecognition.TrainRecognizer();
-
-            if (trained && faceRecognition.Recognize(grayImages) != "")
+            if (isRecognizerTrained &&  recognizer.Recognize(grayImages) != "")
             {
                 /*user exists*/
-                return Json(false);
+                return Json(new { success = false });
             }
             else
             {
                 var newUser = new User(name, surname, email);
-                faceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
+                recognizer.StoreNewFace(grayImages, newUser.ID.ToString());
                 LibraryDataIO.Instance.AddUser(newUser);
-                return Json(true);
+                return Json(new { success = true });
             }
         }
 

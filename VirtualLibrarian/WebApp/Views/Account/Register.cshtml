@@ -1,27 +1,28 @@
 
 @section Styles {
-<style>
-  body {
-    background: black !important;
-  }
+    <style>
+        body {
+            background: black !important;
+        }
 
-  video, canvas {
-    margin-left: 180px;
-    margin-top: 0px;
-    position: absolute;
-  }
-</style>
+        video, canvas {
+            margin-left: 180px;
+            margin-top: 0px;
+            position: absolute;
+        }
+    </style>
 }
 <div class="demo-frame">
-  <div class="demo-container">
-    <video id="video" width="400" height="400" preload autoplay loop muted></video>
-    <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
-    <canvas id="canvas" width="300" height="300" style="position:relative;z-index:2;"></canvas>
-  </div>
+    <div class="demo-container">
+        <video id="video" width="400" height="400" preload autoplay loop muted></video>
+        <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
+        <canvas id="canvas" width="300" height="300" style="position:relative;z-index:2;"></canvas>
+    </div>
 </div>
+
 @section Scripts {
-@Scripts.Render("~/bundles/trackingjs")
-<script>
+    @Scripts.Render("~/bundles/trackingjs")
+    <script>
   window.onload = function() {
     var video = document.getElementById('video');
     var canvas = document.getElementById('canvas');
@@ -63,27 +64,29 @@
               data: postData,
               traditional: true,
               type: 'post',
-              success: function(data) {
-
-                alert("@ViewBag.Name Camera trained. Registered.");
-                @*window.location.href='/Account';*@
+                success: function (response) {
+                    if (response.success) {
+                        alert("Registration succeeded. You can log in now.");
+                    } else alert("Registration failed. User is already registered.")
+                window.location.href='/Account';
               },
                 error: function() {
                   alert('error');
                 }
               });
-            } else {
-                   stringArray[i] = dataURI;
-                   i++;
-                   setTimeout(function () {
+          } else {
+
+              stringArray[i] = dataURI;
+              i++;
+              setTimeout(function () {
               trackingTask.stop();
               trackingTask.run();
-            }, 50);
+            },2000 );
           }
         }
         trackingTask.stop();
       });
     });
   };
-</script>
+    </script>
 }
