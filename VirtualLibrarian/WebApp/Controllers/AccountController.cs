@@ -29,7 +29,7 @@ namespace WebApp.Controllers
 
         public AccountController()
         {
-            recognizer = new FaceRecognition();
+            recognizer = new FaceRecognition(1500);
             recognizer.LoadRecognizer();
             isRecognizerTrained = recognizer.TrainRecognizer();
         }
@@ -60,18 +60,18 @@ namespace WebApp.Controllers
         // POST: /Account/LoginBitmap 
         [HttpPost]
         [AllowAnonymous]
-        public JsonResult LoginBitmap(List<string> values)
+        public JsonResult LoginBitmap(string value)
         {
-            var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
-            var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
+            var originalBitmap = DataTransformationUtility.StringToBitmap(value);
+            var grayImage = DataTransformationUtility.BitmapToGrayImage(originalBitmap);
 
             if (!isRecognizerTrained)
             {
                 return Json(new { success = false, err = 1});
             }
-            var label = recognizer.Recognize(grayImages);
+            var label = recognizer.Recognize(grayImage);
 
-            return label=="" ? Json(new { success = false}) : Json(new { success = true, user = label });
+            return label==null ? Json(new { success = false}) : Json(new { success = true, user = label });
         }
 
         // 
@@ -83,7 +83,7 @@ namespace WebApp.Controllers
             var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
             var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
 
-            if (isRecognizerTrained &&  recognizer.Recognize(grayImages) != "")
+            if (isRecognizerTrained &&  recognizer.Recognize(grayImages)!=null)
             {
                 /*user exists*/
                 return Json(new { success = false });

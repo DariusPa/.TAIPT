@@ -48,11 +48,9 @@
         context.strokeRect(rect.x, rect.y, rect.width, rect.height);
         context.font = '11px Helvetica';
         context.fillStyle = "#fff";
-        context.fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
-        context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
         if(stopRequestAnimationFrame == false) {
 
-          snapContext.drawImage(video, rect.x + 80, rect.y, 300, 300, 0, 0, 300, 300);
+          snapContext.drawImage(video, rect.x + 80, rect.y, 250, 250, 0, 0, 300, 300);
           dataURI = snapCanvas.toDataURL('image/png');
 
           if(i > 9) {
@@ -81,7 +79,7 @@
               setTimeout(function () {
               trackingTask.stop();
               trackingTask.run();
-            },2000 );
+            },50 );
           }
         }
         trackingTask.stop();

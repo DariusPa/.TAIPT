@@ -75,9 +75,9 @@ namespace VirtualLibrarian.BusinessLogic
             foreach(var face in detectedFaces)
             {
                 var result = Recognize(face);
-                if (result != "") return result;
+                if (result!=null) return result;
             }
-            return "";
+            return null;
         }
 
         /*Returns the person's name if recognized.*/
@@ -89,7 +89,7 @@ namespace VirtualLibrarian.BusinessLogic
             {
                 return faceLabels[result.Label];
             }
-            else return "";
+            else return null;
         }
 
         public Rectangle [] DetectFaces(Mat gray)

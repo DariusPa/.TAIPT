@@ -112,11 +112,7 @@ namespace VirtualLibrarian.Helpers
             var binData = Convert.FromBase64String(base64Data);
             using (var stream = new MemoryStream(binData))
             {
-                var byteArray = stream.ToArray();
-                using(var byteStream = new MemoryStream(byteArray))
-                {
-                    return new Bitmap(stream);
-                }
+                 return new Bitmap(stream);
             }
         }
 
