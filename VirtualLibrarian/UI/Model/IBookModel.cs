@@ -20,6 +20,7 @@ namespace VirtualLibrarian.Model
         DateTime IssueDate { get; set; }
         DateTime ReturnDate { get; set; }
         int LendingMonths { get; set; }
+        int Pages { get; set; }
 
         void Issue(IUserModel reader);
         void Return();

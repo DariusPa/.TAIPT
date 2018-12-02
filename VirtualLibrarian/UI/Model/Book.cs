@@ -26,6 +26,7 @@ namespace VirtualLibrarian.Model
         public DateTime IssueDate {get;set; }
         public DateTime ReturnDate { get; set; }
         public int LendingMonths { get; set; }
+        public int Pages { get; set; }
 
 
 
@@ -35,7 +36,7 @@ namespace VirtualLibrarian.Model
             Status = Status.Available;
         }
 
-        public Book(string title, List<int> authorID, int publisherID, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
+        public Book(string title, List<int> authorID, int publisherID, BookGenre genre, string isbn, int pages, string description, int lendingMonths = 1) : this()
         {
             Title = title;
             AuthorID = authorID;
@@ -44,6 +45,7 @@ namespace VirtualLibrarian.Model
             Description = description;
             Genre = genre;
             LendingMonths = lendingMonths;
+            Pages = pages;
         }
 
         public void Issue(IUserModel reader)
@@ -71,6 +73,7 @@ namespace VirtualLibrarian.Model
             book.ISBN = ISBN;
             book.Description = Description;
             book.Genre = Genre;
+            book.Pages = Pages;
             book.Status = Status.Available;
             return book;
         }

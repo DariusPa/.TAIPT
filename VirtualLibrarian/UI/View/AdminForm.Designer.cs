@@ -44,6 +44,8 @@
             this.qtyBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.publisherListBox = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.pagesBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // titleLabel
@@ -178,7 +180,7 @@
             // 
             // qtyBox
             // 
-            this.qtyBox.Location = new System.Drawing.Point(235, 1017);
+            this.qtyBox.Location = new System.Drawing.Point(235, 1087);
             this.qtyBox.Name = "qtyBox";
             this.qtyBox.Size = new System.Drawing.Size(147, 38);
             this.qtyBox.TabIndex = 16;
@@ -187,7 +189,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 1020);
+            this.label1.Location = new System.Drawing.Point(53, 1090);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(122, 32);
             this.label1.TabIndex = 17;
@@ -203,12 +205,30 @@
             this.publisherListBox.Size = new System.Drawing.Size(724, 190);
             this.publisherListBox.TabIndex = 18;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(56, 1025);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(96, 32);
+            this.label2.TabIndex = 20;
+            this.label2.Text = "Pages";
+            // 
+            // pagesBox
+            // 
+            this.pagesBox.Location = new System.Drawing.Point(238, 1022);
+            this.pagesBox.Name = "pagesBox";
+            this.pagesBox.Size = new System.Drawing.Size(147, 38);
+            this.pagesBox.TabIndex = 19;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1071, 1419);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pagesBox);
             this.Controls.Add(this.publisherListBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.qtyBox);
@@ -252,5 +272,7 @@
         private System.Windows.Forms.TextBox qtyBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox publisherListBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox pagesBox;
     }
 }

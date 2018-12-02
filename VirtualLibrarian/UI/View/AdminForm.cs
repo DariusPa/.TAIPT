@@ -37,11 +37,12 @@ namespace VirtualLibrarian
         {
             if (!string.IsNullOrWhiteSpace(titleBox.Text) && !string.IsNullOrWhiteSpace(isbnBox.Text)
                 && !string.IsNullOrWhiteSpace(publisherListBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
-                && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text))
+                && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text) && !string.IsNullOrWhiteSpace(pagesBox.Text))
             {
                 BookGenre genres = new BookGenre();
                 List<int> authors = new List<int>();
                 int.TryParse(qtyBox.Text, out int qty);
+                int.TryParse(pagesBox.Text, out int pages);
 
                 foreach (var genre in genreBox.CheckedItems)
                 {
@@ -57,7 +58,7 @@ namespace VirtualLibrarian
                 for (int i = 0; i < qty; i++)
                 {
                     Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors,
-                                        publisherID: publisher, genre: genres, description: descriptionBox.Text);
+                                        publisherID: publisher, genre: genres, description: descriptionBox.Text, pages: pages);
 
                     NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
                 }

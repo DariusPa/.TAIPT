@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
@@ -14,17 +15,26 @@ namespace WebApp.Controllers
 {
     public class AdminController : Controller
     {
+        private BarcodeGenerator barcodeGenerator;
 
-        SelectList AuthorsList = new SelectList(new List<SelectListItem>
+        public AdminController()
         {
-            new SelectListItem { Text = "Author1", Value = "1"},
-            new SelectListItem { Text = "Author2", Value = "2"},
-        }, "Value", "Text");
-        SelectList PublishersList = new SelectList(new List<SelectListItem>
-        {
-            new SelectListItem { Text = "Publisher1", Value = "1"},
-            new SelectListItem { Text = "Publisher2", Value = "2"},
-        }, "Value", "Text");
+            barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DataDirPath + @"Barcodes");
+        }
+
+        SelectList AuthorsList = new SelectList(LibraryDataIO.Instance.Authors.Select(author =>
+                        new SelectListItem
+                        {
+                            Value = author.ID.ToString(),
+                            Text = author.FullName
+                        }).ToList(), "Value", "Text");
+
+        SelectList PublishersList = new SelectList(LibraryDataIO.Instance.Publishers.Select(publisher =>
+                        new SelectListItem
+                        {
+                            Value = publisher.ID.ToString(),
+                            Text = publisher.Name
+                        }).ToList(), "Value", "Text");
 
         public ActionResult Index()
         {
@@ -57,7 +67,7 @@ namespace WebApp.Controllers
         {
             ViewBag.myAuthors = AuthorsList;
             ViewBag.myPublishers = PublishersList;
-
+            ViewBag.genres = Enum.GetValues(typeof(BookGenre));
             return View();
         }
 
@@ -69,13 +79,37 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                BookGenre genres = new BookGenre();
+                List<int> authors = new List<int>();
+
+                int.TryParse(model.Qty, out int qty);
+                int.TryParse(model.Pages, out int pages);
+                var publisher = int.Parse(model.Publisher);
+
+                foreach (var genre in model.Genre)
+                {
+                    genres = genres | (BookGenre)Enum.Parse(typeof(BookGenre), genre.ToString());
+                }
+
+                /*TODO: fix front, so that author list would be returned*/
+                //foreach (Author author in model.Author)
+                //{
+                //    authors.Add(author.ID);
+                //}
+                authors.Add(int.Parse(model.Author));
+
+                for (int i = 0; i < qty; i++)
+                {
+                    var newBook = new Book(title: model.Title, isbn: model.ISBN, authorID: authors,
+                                        publisherID: publisher, genre: genres, description: model.Description, pages: pages);
+                    LibraryDataIO.Instance.AddBook(newBook);
+
+                    //TODO: pass barcodes to frontend so they would be displayed
+                    var barcode = barcodeGenerator.GenerateBarcode(newBook.ID);
+                }
                 TempData["Success"] = model.Title + " added successfully!";
-                //data: model.Name and etc.
                 return RedirectToAction("AddBook");
             }
-
-            ViewBag.myAuthors = AuthorsList;
-            ViewBag.myPublishers = PublishersList;
             return View("AddBook");
         }
 
