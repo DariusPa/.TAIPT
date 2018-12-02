@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace VirtualLibrarian.Model
 {
-    class User : IUserModel
+    public class User : IUserModel
     {
         private static int count;
         [JsonProperty]

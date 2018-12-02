@@ -1,47 +1,90 @@
+
 @section Styles {
     <style>
         body {
             background: black !important;
         }
+
+        video, canvas {
+            margin-left: 180px;
+            margin-top: 0px;
+            position: absolute;
+        }
     </style>
 }
-
-<div class="w-100 mt-5">
-    <div class="container text-center" style="position:relative;">
-        <img src="~/Content/FaceFrame.png" class="mx-auto" style="width: 500px;height: 450px;position: absolute;top:0;left:0;right:0;" />
-        <div id="camera" class="mx-auto"></div>
-        <form>
-            <button id="snapshot" type="button" onClick="take_snapshot();">Start</button>
-        </form>
+<div class="demo-frame">
+    <div class="demo-container">
+        <video id="video" width="400" height="400" preload autoplay loop muted></video>
+        <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
+        <canvas id="canvas" width="300" height="300" style="position:relative;z-index:2;"></canvas>
     </div>
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/webcam")
+    @Scripts.Render("~/bundles/trackingjs")
+    <script>
+  window.onload = function() {
+    var video = document.getElementById('video');
+    var canvas = document.getElementById('canvas');
+    var snapCanvas = document.getElementById('snapCanvas');
+    var context = canvas.getContext('2d');
+    var snapContext = snapCanvas.getContext('2d');
+    var tracker = new tracking.ObjectTracker('face');
+    var stopRequestAnimationFrame = false;
+    tracker.setInitialScale(4);
+    tracker.setStepSize(3);
+    tracker.setEdgesDensity(0.1);
+    const trackingTask = tracking.track('#video', tracker, { camera: true });
+    trackingTask.run();
+    var dataURI = "";
 
-    <script language="JavaScript">
-        Webcam.set({
-            width: 500,
-            height: 525,
-            image_format: 'bmp',
-            jpeg_quality: 90
-        });
-        Webcam.attach( '#camera' );
-    </script>
+    var stringArray = new Array();
+    var i = 0;
 
-    <script language="JavaScript">
-        function take_snapshot() {
-            var photos = 0;
-            jQuery("#snapshot").hide();
-            Webcam.snap( function(data_uri) {
-                $.post( '/Account/Bitmap', { name: data_uri })
-                  .done(function( data ) {
-                    alert(data.response);
-                  })
-                  .fail(function() {
-                    alert( "error" );
-                  });
-            });
+    tracker.on('track', function(event) {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      event.data.forEach(function(rect) {
+        context.strokeStyle = '#a64ceb';
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        context.font = '11px Helvetica';
+        context.fillStyle = "#fff";
+        if(stopRequestAnimationFrame == false) {
+
+          snapContext.drawImage(video, rect.x + 80, rect.y, 250, 250, 0, 0, 300, 300);
+          dataURI = snapCanvas.toDataURL('image/png');
+
+          if(i > 9) {
+            var postData = { values: stringArray, name: '@ViewBag.Name', surname: '@ViewBag.Surname', email: '@ViewBag.Email' };
+
+            stopRequestAnimationFrame = true;
+            $.ajax({
+              url: "/Account/RegisterBitmap",
+              data: postData,
+              traditional: true,
+              type: 'post',
+                success: function (response) {
+                    if (response.success) {
+                        alert("Registration succeeded. You can log in now.");
+                    } else alert("Registration failed. User is already registered.")
+                window.location.href='/Account';
+              },
+                error: function() {
+                  alert('error');
+                }
+              });
+          } else {
+
+              stringArray[i] = dataURI;
+              i++;
+              setTimeout(function () {
+              trackingTask.stop();
+              trackingTask.run();
+            },50 );
+          }
         }
+        trackingTask.stop();
+      });
+    });
+  };
     </script>
 }

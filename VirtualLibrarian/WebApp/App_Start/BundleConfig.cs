@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Optimization;
@@ -30,10 +30,16 @@ namespace WebApplication1
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js"));
+                "~/Scripts/bootstrap.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/webcam").Include(
                 "~/Scripts/jquery.webcam.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/trackingjs").Include(
+                "~/Scripts/tracking/tracking-min.js",
+                "~/Scripts/tracking/face-min.js",
+                "~/Scripts/tracking/dat.gui.min.js"
+            ));
 
             bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
                 "~/Scripts/datatables.js"));
@@ -44,7 +50,12 @@ namespace WebApplication1
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/hover-min.css",
-                 "~/Content/Site.css"));
+                 "~/Content/Site.css",
+                "~/Scripts/tracking/demo.css"));
+
+            bundles.Add(new StyleBundle("~/Content/tabler").Include(
+                 "~/Content/css/dashboard.css",
+                 "~/Content/css/tabler.css"));
         }
     }
 }

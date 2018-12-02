@@ -17,19 +17,23 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Model;
 
 namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private IFaceRecognition faceRecognition;
+        private FaceRecognition recognizer;
+        private bool isRecognizerTrained; 
 
         public AccountController()
         {
-            faceRecognition = new FaceRecognition();
-            faceRecognition.LoadRecognizer();
-            faceRecognition.TrainRecognizer();
+            recognizer = new FaceRecognition(1500);
+            recognizer.LoadRecognizer();
+            isRecognizerTrained = recognizer.TrainRecognizer();
         }
+
         public ActionResult Index()
         {
             return View();
@@ -48,46 +52,49 @@ namespace WebApp.Controllers
         public JsonResult Bitmap(FormCollection imageData)
         {
             string imageSource = imageData["name"];
-            
-            Bitmap bmp;
-            Mat mat;
-            Image<Gray, Byte> img;
-            string base64 = imageSource.Substring(imageSource.IndexOf(',') + 1);
-            byte[] data = Convert.FromBase64String(base64);
-
-            using (MemoryStream ms = new MemoryStream(data))
-            {
-                bmp = (Bitmap)Image.FromStream(ms);
-            }
-            img = new Image<Gray, byte>(bmp);
-            mat = img.Mat;
-
-            CvInvoke.EqualizeHist(mat, mat);
-
-            mat.Save($"{LibraryDataIO.Instance.FacesPath}\\test.bmp");
-
-            Rectangle[] facesDetected = faceRecognition.DetectFaces(mat);
-
-            foreach (Rectangle face in facesDetected)
-            {
-                var grayFace = new Mat(mat, face);
-                img = grayFace.ToImage<Gray, byte>();
-                mat.Dispose();
-                CvInvoke.Resize(img, img, new Size(100, 100), 0, 0, Inter.Cubic);
-
-                    var label = faceRecognition.Recognize(img);
-                    
-            }
 
             return Json(new { response = "Response" });
         }
 
         // 
-        // GET: /Account/Register 
+        // POST: /Account/LoginBitmap 
+        [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(string Name, string Surname, string Email)
+        public JsonResult LoginBitmap(string value)
         {
-            return View();
+            var originalBitmap = DataTransformationUtility.StringToBitmap(value);
+            var grayImage = DataTransformationUtility.BitmapToGrayImage(originalBitmap);
+
+            if (!isRecognizerTrained)
+            {
+                return Json(new { success = false, err = 1});
+            }
+            var label = recognizer.Recognize(grayImage);
+
+            return label==null ? Json(new { success = false}) : Json(new { success = true, user = label });
+        }
+
+        // 
+        // POST: /Account/RegisterBitmap
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult RegisterBitmap(List<string> values, string name, string surname, string email)
+        {
+            var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
+            var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
+
+            if (isRecognizerTrained &&  recognizer.Recognize(grayImages)!=null)
+            {
+                /*user exists*/
+                return Json(new { success = false });
+            }
+            else
+            {
+                var newUser = new User(name, surname, email);
+                recognizer.StoreNewFace(grayImages, newUser.ID.ToString());
+                LibraryDataIO.Instance.AddUser(newUser);
+                return Json(new { success = true });
+            }
         }
 
         // 
@@ -101,6 +108,17 @@ namespace WebApp.Controllers
                 return RedirectToAction("Register", new { name = model.Name, surname = model.Surname, email = model.Email });
             }
             return View("Index");
+        }
+
+        // 
+        // GET: /Account/Register 
+        [AllowAnonymous]
+        public ActionResult Register(string Name, string Surname, string Email)
+        {
+            ViewBag.Name = Name;
+            ViewBag.Surname = Surname;
+            ViewBag.Email = Email;
+            return View();
         }
     }
 }

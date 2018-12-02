@@ -120,7 +120,7 @@ namespace VirtualLibrarian.BusinessLogic
                     if (isTrained)
                     {
                         var label = faceRecognition.Recognize(detectedFace);
-                        if (label != "")
+                        if (label != null)
                         {
                             tokenSource.Cancel();
                             ExistingUserRecognised?.Invoke(this, new FaceRecognisedEventArgs { Label = label });

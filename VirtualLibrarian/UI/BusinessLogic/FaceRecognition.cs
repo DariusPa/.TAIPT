@@ -70,6 +70,16 @@ namespace VirtualLibrarian.BusinessLogic
 
         }
 
+        public string Recognize(List<Image<Gray, byte>> detectedFaces)
+        {
+            foreach(var face in detectedFaces)
+            {
+                var result = Recognize(face);
+                if (result!=null) return result;
+            }
+            return null;
+        }
+
         /*Returns the person's name if recognized.*/
         public string Recognize(Image<Gray, Byte> detectedFace)
         {
@@ -79,7 +89,7 @@ namespace VirtualLibrarian.BusinessLogic
             {
                 return faceLabels[result.Label];
             }
-            else return "";
+            else return null;
         }
 
         public Rectangle [] DetectFaces(Mat gray)
@@ -87,13 +97,13 @@ namespace VirtualLibrarian.BusinessLogic
             return cascadeClassifier.DetectMultiScale(gray, 1.4, 4, new Size(20, 20));
         }
 
-        public void StoreNewFace(List<Image<Gray, byte>> trainedFacesTemp, List<String> faceLabelsTemp, List<int> faceIDTemp, string label)
+        public void StoreNewFace(List<Image<Gray, byte>> trainedFacesTemp, string label)
         {
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser; i++)
             {
                 LibraryDataIO.Instance.AddNewFace(trainedFacesTemp[i], label, FaceCount);
                 trainedFaces.Add(trainedFacesTemp[i]);
-                faceLabels.Add(faceLabelsTemp[i]);
+                faceLabels.Add(label);
                 faceID.Add(++FaceCount);
             }
         }
@@ -101,18 +111,12 @@ namespace VirtualLibrarian.BusinessLogic
         public bool SaveNewFace(string label, ref Image<Gray, Byte> detectedFace, CancellationToken token)
         {
             var trainedFacesTemp = new List<Image<Gray, byte>>();
-            var faceLabelsTemp = new List<String>();
-            var faceIDTemp = new List<int>();
-            int faceCountTemp = FaceCount;
-
 
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser && !token.IsCancellationRequested;)
             {
                 if (detectedFace != null)
                 {
                     trainedFacesTemp.Add(detectedFace);
-                    faceLabelsTemp.Add(label);
-                    faceIDTemp.Add(++faceCountTemp);
                     FacePhotoSaved?.Invoke(this, EventArgs.Empty);
                     i++;
                     Thread.Sleep(500);
@@ -121,7 +125,7 @@ namespace VirtualLibrarian.BusinessLogic
 
             if (!token.IsCancellationRequested)
             {
-                StoreNewFace(trainedFacesTemp, faceLabelsTemp, faceIDTemp, label);
+                StoreNewFace(trainedFacesTemp, label);
                 return true;
             }
             return false;
