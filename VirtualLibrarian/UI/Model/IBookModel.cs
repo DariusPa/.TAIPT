@@ -10,7 +10,7 @@ namespace VirtualLibrarian.Model
     {
         string Title { get; set; }
         List<int> AuthorID { get; set; }
-        string Publisher { get; set; }
+        int PublisherID { get; set; }
         string ISBN { get; set; }
         string Description { get; set; }
         int ID { get; }

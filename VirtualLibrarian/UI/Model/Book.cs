@@ -13,7 +13,7 @@ namespace VirtualLibrarian.Model
         private static int count;
         public string Title { get; set; }
         public List<int> AuthorID { get; set; } = new List<int>();
-        public string Publisher { get; set; }
+        public int PublisherID { get; set; }
         public string ISBN { get; set; }
         public string Description { get; set; }
         public BookGenre Genre { get; set; }
@@ -35,11 +35,11 @@ namespace VirtualLibrarian.Model
             Status = Status.Available;
         }
 
-        public Book(string title, List<int> authorID, string publisher, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
+        public Book(string title, List<int> authorID, int publisherID, BookGenre genre, string isbn, string description, int lendingMonths = 1) : this()
         {
             Title = title;
             AuthorID = authorID;
-            Publisher = publisher;
+            PublisherID = publisherID;
             ISBN = isbn;
             Description = description;
             Genre = genre;
@@ -67,7 +67,7 @@ namespace VirtualLibrarian.Model
             Book book = new Book();
             book.Title = Title;
             book.AuthorID = AuthorID;
-            book.Publisher = Publisher;
+            book.PublisherID = PublisherID;
             book.ISBN = ISBN;
             book.Description = Description;
             book.Genre = Genre;

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using VirtualLibrarian.Data;
+using VirtualLibrarian.Helpers;
+using VirtualLibrarian.Model;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -34,7 +38,19 @@ namespace WebApp.Controllers
 
         public ActionResult Books()
         {
-            return View();
+            string[] columns = { "ISBN", "Author", "Title", "Status" };
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+
+            //prepare column with authors' full names
+            dtLibraryBook.Columns.Add("Author");
+            foreach (DataRow row in dtLibraryBook.Rows)
+            {
+                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
+            }
+
+            dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
+
+            return View(dtLibraryBook);
         }
 
         public ActionResult AddBook()
@@ -76,9 +92,17 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempData["Success"] = model.Name + " added successfully!";
-                //data: model.Name and etc.
-                return RedirectToAction("AddAuthor");
+                var newAuthor = new Author(model.Name, model.Surname, model.Country, model.Description);
+                if (!LibraryDataIO.Instance.Authors.Any(author => author.FullName == newAuthor.FullName))
+                {
+                    LibraryDataIO.Instance.AddAuthor(newAuthor);
+                    TempData["Success"] = model.Name + " added successfully!";
+                    return RedirectToAction("AddAuthor");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = StringConstants.authorExists;
+                }
             }
             return View("AddAuthor");
         }
@@ -96,8 +120,17 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempData["Success"] = model.Name + " added successfully!";
-                //data: model.Name and etc.
+                var newPublisher = new Publisher(model.Name, model.Country, model.Description);
+                if(!LibraryDataIO.Instance.Publishers.Any(publisher => publisher.Name == newPublisher.Name))
+                {
+                    LibraryDataIO.Instance.AddPublisher(newPublisher);
+                    TempData["Success"] = model.Name + " added successfully!";
+                    return RedirectToAction("AddPublisher");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = StringConstants.publisherExists;
+                }
                 return RedirectToAction("AddPublisher");
             }
             return View("AddPublisher");

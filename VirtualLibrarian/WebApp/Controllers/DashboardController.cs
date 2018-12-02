@@ -23,6 +23,7 @@ namespace WebApp.Controllers
         public IUserModel ActiveUser { get; set; }
         private SpeakingAI speaker;
 
+
         public DashboardController()
         {
             //TODO: get actual user (with label returned from recognition)"
@@ -44,9 +45,11 @@ namespace WebApp.Controllers
 
             //prepare column with authors' full names
             dtLibraryBook.Columns.Add("Author");
+            dtLibraryBook.Columns.Add("Publisher");
             foreach (DataRow row in dtLibraryBook.Rows)
             {
                 row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
+                row["Publisher"] = LibraryDataIO.Instance.Publishers.Find(publisher => publisher.ID == (int)row["PublisherID"]).Name;
             }
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);

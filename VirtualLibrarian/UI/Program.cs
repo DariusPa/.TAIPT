@@ -18,7 +18,7 @@ namespace VirtualLibrarian
         static void Main()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-            LibraryDataIO.Instance.Init(StringConstants.directory,@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", 
+            LibraryDataIO.Instance.Init(StringConstants.directory,@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", @"JSON\publishers.json", 
                                             @"Faces", @"Faces\TrainedLabels.txt");
             LibraryDataIO.Instance.LoadData();
             Application.EnableVisualStyles();

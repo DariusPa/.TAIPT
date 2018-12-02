@@ -69,7 +69,7 @@ namespace VirtualLibrarian.Presenter
 
             } else
             {
-                MessageBox.Show("Author already exists!");
+                MessageBox.Show(StringConstants.authorExists);
             }
 
         }

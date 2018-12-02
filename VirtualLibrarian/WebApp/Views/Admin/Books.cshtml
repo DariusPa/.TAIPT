@@ -2,150 +2,40 @@
 @{
     ViewBag.Title = "Books";
 }
+
+@model System.Data.DataTable
+@using System.Data;
+
 <div class="col-12">
     <div class="card">
         <div class="table-responsive">
             <table class="table card-table table-vcenter text-nowrap">
                 <thead>
                     <tr>
-                        <th class="w-1">No.</th>
-                        <th>Book</th>
-                        <th>Author</th>
-                        <th>ISBN</th>
-                        <th>Status updated</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            <th scope="col">@col.ColumnName</th>
+                        }
+                        <th scope="col">Update</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><span class="text-muted">001401</span></td>
-                        <td><a href="invoice.html" class="text-inherit">Design Works</a></td>
-                        <td>
-                            Carlson Limited
-                        </td>
-                        <td>
-                            87956621
-                        </td>
-                        <td>
-                            15 Dec 2017
-                        </td>
-                        <td>
-                            <span class="status-icon bg-danger"></span> Taken
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-muted">001402</span></td>
-                        <td><a href="invoice.html" class="text-inherit">UX Wireframes</a></td>
-                        <td>
-                            Adobe
-                        </td>
-                        <td>
-                            87956421
-                        </td>
-                        <td>
-                            12 Apr 2017
-                        </td>
-                        <td>
-                            <span class="status-icon bg-success"></span> Available
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-muted">001403</span></td>
-                        <td><a href="invoice.html" class="text-inherit">New Dashboard</a></td>
-                        <td>
-                            Bluewolf
-                        </td>
-                        <td>
-                            87952621
-                        </td>
-                        <td>
-                            23 Oct 2017
-                        </td>
-                        <td>
-                            <span class="status-icon bg-warning"></span> Reserved
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-muted">001404</span></td>
-                        <td><a href="invoice.html" class="text-inherit">Landing Page</a></td>
-                        <td>
-                            Salesforce
-                        </td>
-                        <td>
-                            87953421
-                        </td>
-                        <td>
-                            2 Sep 2017
-                        </td>
-                        <td>
-                            <span class="status-icon bg-success"></span> Available
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-muted">001405</span></td>
-                        <td><a href="invoice.html" class="text-inherit">Marketing Templates</a></td>
-                        <td>
-                            Printic
-                        </td>
-                        <td>
-                            87956621
-                        </td>
-                        <td>
-                            29 Jan 2018
-                        </td>
-                        <td>
-                            <span class="status-icon bg-danger"></span> Taken
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="text-muted">001406</span></td>
-                        <td><a href="invoice.html" class="text-inherit">Sales Presentation</a></td>
-                        <td>
-                            Tabdaq
-                        </td>
-                        <td>
-                            87956621
-                        </td>
-                        <td>
-                            4 Feb 2018
-                        </td>
-                        <td>
-                            <span class="status-icon bg-warning"></span> Reserved
-                        </td>
-                        <td class="text-right">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
-                            </div>
-                        </td>
-                    </tr>
+                        @foreach (DataRow row in Model.Rows)
+                        {
+                            <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                <td>@row[col.ColumnName]</td>
+                            }
+                            <td class="text-right">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
+                                </div>
+                            </td>
+                            </tr>
+                        }
+
                 </tbody>
-            </table>
+</table>
         </div>
     </div>
 </div>

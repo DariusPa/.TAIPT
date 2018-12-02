@@ -29,12 +29,14 @@ namespace VirtualLibrarian
             authorListBox.DataSource = authorSource;
             authorListBox.DisplayMember = StringConstants.fullNameString;
             genreBox.DataSource = Enum.GetValues(typeof(BookGenre));
+            publisherListBox.DataSource = LibraryDataIO.Instance.Publishers;
+            publisherListBox.DisplayMember = "Name";
         }
 
         private void OnSaveBook(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(titleBox.Text) && !string.IsNullOrWhiteSpace(isbnBox.Text)
-                && !string.IsNullOrWhiteSpace(publisherBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
+                && !string.IsNullOrWhiteSpace(publisherListBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
                 && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text))
             {
                 BookGenre genres = new BookGenre();
@@ -51,10 +53,11 @@ namespace VirtualLibrarian
                     authors.Add(author.ID);
                 }
 
+                var publisher = ((Publisher)publisherListBox.SelectedItem).ID;
                 for (int i = 0; i < qty; i++)
                 {
                     Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors,
-                                        publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
+                                        publisherID: publisher, genre: genres, description: descriptionBox.Text);
 
                     NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
                 }

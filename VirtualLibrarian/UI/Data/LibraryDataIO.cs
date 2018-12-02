@@ -20,6 +20,7 @@ namespace VirtualLibrarian.Data
         private string bookPath;
         private string usersPath;
         private string authorsPath;
+        private string publishersPath;
         public string FacesPath { get; set; }
         public string FaceLabelsPath { get; set; }
         private JsonSerializerSettings settings;
@@ -28,6 +29,7 @@ namespace VirtualLibrarian.Data
         public List<IBookModel> Books { get; set; } = new List<IBookModel>();
         public List<IUserModel> Users { get; set; } = new List<IUserModel>();
         public List<Author> Authors { get; set; } = new List<Author>();
+        public List<Publisher> Publishers { get; set; } = new List<Publisher>();
         public static LibraryDataIO Instance { get { return library.Value; } }
 
         public int PicturesPerUser { get; private set; }
@@ -37,7 +39,8 @@ namespace VirtualLibrarian.Data
 
         private LibraryDataIO() { }
 
-        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
+        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string publishersPath, 
+                            string facesPath, string faceLabelsPath, int picturesPerUser=10)
         {
             Logger = new FileLogger(directory);
             UILogger = new UILogger();
@@ -46,6 +49,7 @@ namespace VirtualLibrarian.Data
             this.bookPath = DataDirPath + bookPath;
             this.usersPath = DataDirPath + usersPath;
             this.authorsPath = DataDirPath + authorsPath;
+            this.publishersPath = DataDirPath + publishersPath;
             FacesPath = DataDirPath + facesPath;
             FaceLabelsPath = DataDirPath + faceLabelsPath;
             PicturesPerUser = picturesPerUser;
@@ -59,6 +63,7 @@ namespace VirtualLibrarian.Data
                 File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings));
                 File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
                 File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
+                File.WriteAllText(publishersPath, JsonConvert.SerializeObject(Publishers, Formatting.Indented, settings));
             }
             catch (Exception e)
             {
@@ -80,6 +85,11 @@ namespace VirtualLibrarian.Data
         private void SerializeUsers()
         {
              SerializeData(usersPath, Users);
+        }
+
+        private void SerializePublishers()
+        {
+            SerializeData(publishersPath, Publishers);
         }
 
         private void SerializeData<T>(string filePath, T data)
@@ -134,6 +144,7 @@ namespace VirtualLibrarian.Data
             Users = DeserializeData<List<IUserModel>>(usersPath, StringConstants.noUsersWarning) ?? new List<IUserModel>();
             Books = DeserializeData<List<IBookModel>>(bookPath,StringConstants.noBooksWarning) ?? new List<IBookModel>();
             Authors = DeserializeData<List<Author>>(authorsPath,StringConstants.noAuthorsWarning) ?? new List<Author>();
+            Publishers = DeserializeData<List<Publisher>>(publishersPath, StringConstants.noPublishersWarning) ?? new List<Publisher>();
         }
 
 
@@ -187,6 +198,18 @@ namespace VirtualLibrarian.Data
         {
             Authors.Remove(author);
             SerializeAuthors();
+        }
+
+        public void AddPublisher(Publisher publisher)
+        {
+            Publishers.Add(publisher);
+            SerializePublishers();
+        }
+
+        public void RemovePublisher(Publisher publisher)
+        {
+            Publishers.Remove(publisher);
+            SerializePublishers();
         }
 
         public IUserModel FindUser(string label)

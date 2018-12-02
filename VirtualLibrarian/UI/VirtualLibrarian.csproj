@@ -103,6 +103,7 @@
     <Compile Include="Helpers\DataTransformationUtility.cs" />
     <Compile Include="Helpers\UILogger.cs" />
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\Publisher.cs" />
     <Compile Include="Model\ReadingHistory.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
