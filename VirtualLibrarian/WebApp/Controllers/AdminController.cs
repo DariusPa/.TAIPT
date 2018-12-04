@@ -20,6 +20,10 @@ namespace WebApp.Controllers
         public AdminController()
         {
             barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DataDirPath + @"Barcodes");
+            ViewBag.myAuthors = AuthorsList;
+            ViewBag.myPublishers = PublishersList;
+            ViewBag.genres = Enum.GetValues(typeof(BookGenre));
+
         }
 
         SelectList AuthorsList = new SelectList(LibraryDataIO.Instance.Authors.Select(author =>
@@ -43,7 +47,19 @@ namespace WebApp.Controllers
 
         public ActionResult Users()
         {
-            return View();
+            string[] columns = { "Name", "Surname", "Email", "PhoneNr","Books Taken" };
+            var dtUsers = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Users);
+            dtUsers.Columns.Add("Books Taken");
+            foreach(DataRow row in dtUsers.Rows)
+            {
+                row["Books Taken"] = DataTransformationUtility.GetBookTitles((List<int>)row["TakenBooks"]);
+            }
+
+            dtUsers = DataTransformationUtility.RemoveUnusedColumns(dtUsers, columns);
+            //TODO: temp
+            dtUsers.Columns["PhoneNr"].ColumnName = "Phone number";
+
+            return View(dtUsers);
         }
 
         public ActionResult Books()
@@ -65,9 +81,6 @@ namespace WebApp.Controllers
 
         public ActionResult AddBook()
         {
-            ViewBag.myAuthors = AuthorsList;
-            ViewBag.myPublishers = PublishersList;
-            ViewBag.genres = Enum.GetValues(typeof(BookGenre));
             return View();
         }
 

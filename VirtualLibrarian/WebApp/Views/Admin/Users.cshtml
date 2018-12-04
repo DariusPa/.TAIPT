@@ -2,6 +2,34 @@
 @{
     ViewBag.Title = "Users";
 }
-<div class="col-md-12">
-    HELLO
+
+@model System.Data.DataTable
+@using System.Data;
+
+<div class="col-12">
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table card-table table-vcenter text-nowrap">
+                <thead>
+                    <tr>
+                        @foreach (DataColumn col in Model.Columns)
+                        {
+                            <th scope="col">@col.ColumnName</th>
+                        }
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.Rows)
+                    {
+                        <tr>
+                            @foreach (DataColumn col in Model.Columns)
+                            {
+                                <td>@row[col.ColumnName]</td>
+                            }
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

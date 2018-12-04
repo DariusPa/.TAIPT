@@ -23,6 +23,7 @@ namespace WebApp.Models
         [Display(Name = "Pages")]
         public string Pages { get; set; }
 
+        [Required(ErrorMessage = "Genre is required")]
         public string[] Genre { get; set; }
 
         //public IEnumerable<SelectListItem> Author { get; set; }

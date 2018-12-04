@@ -95,6 +95,15 @@ namespace VirtualLibrarian.Helpers
                           (author, lbAuthor) => lbAuthor.FullName));
         }
 
+        public static string GetBookTitles(List<int> bookID)
+        {
+            return string.Join(",", bookID
+                            .Join(LibraryDataIO.Instance.Books,
+                            book => book,
+                            lbBook => lbBook.ID,
+                            (book, lbBook) => lbBook.Title));
+        }
+
         public static List<Bitmap> StringToBitmapList(List<string> stringList)
         {
             var byteArrays = new List<byte[]>();
