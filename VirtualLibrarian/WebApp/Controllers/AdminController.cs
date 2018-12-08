@@ -47,7 +47,7 @@ namespace WebApp.Controllers
 
         public ActionResult Users()
         {
-            string[] columns = { "Name", "Surname", "Email", "PhoneNr","Books Taken" };
+            string[] columns = {"ID", "Name", "Surname", "Email", "PhoneNr","Books Taken" };
             var dtUsers = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Users);
             dtUsers.Columns.Add("Books Taken");
             foreach(DataRow row in dtUsers.Rows)
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
 
         public ActionResult Books()
         {
-            string[] columns = { "ISBN", "Author", "Title", "Status" };
+            string[] columns = { "ID","ISBN", "Author", "Title", "Status" };
             DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
 
             //prepare column with authors' full names

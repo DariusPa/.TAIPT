@@ -29,7 +29,7 @@ namespace WebApp.Controllers
 
         public AccountController()
         {
-            recognizer = new FaceRecognition(1500);
+            recognizer = new FaceRecognition(2000);
             recognizer.LoadRecognizer();
             isRecognizerTrained = recognizer.TrainRecognizer();
         }

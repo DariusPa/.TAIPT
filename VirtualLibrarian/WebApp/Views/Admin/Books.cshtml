@@ -12,19 +12,27 @@
             <table class="table card-table table-vcenter text-nowrap">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         @foreach (DataColumn col in Model.Columns)
                         {
-                            <th scope="col">@col.ColumnName</th>
+                            if (col.ColumnName != "ID")
+                            {
+                                <th scope="col">@col.ColumnName</th>
+                            }
                         }
                         <th scope="col">Update</th>
-                </thead>
+</thead>
                 <tbody>
                         @foreach (DataRow row in Model.Rows)
                         {
                             <tr>
+                                <td>@row["ID"]</td>
                             @foreach (DataColumn col in Model.Columns)
                             {
+                                if (col.ColumnName != "ID")
+                                {
                                 <td>@row[col.ColumnName]</td>
+                                }
                             }
                             <td class="text-right">
                                 <div class="dropdown">
