@@ -100,9 +100,11 @@
     <Compile Include="BusinessLogic\BarcodeGenerator.cs" />
     <Compile Include="BusinessLogic\FaceRecognition.cs" />
     <Compile Include="BusinessLogic\IFaceRecognition.cs" />
+    <Compile Include="BusinessLogic\Speaker.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
     <Compile Include="Data\LibraryContext.cs" />
     <Compile Include="Data\LibraryManager.cs" />
+    <Compile Include="Data\SharedResources.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\ILogger.cs" />
     <Compile Include="Helpers\LibraryEventArgs.cs" />
@@ -270,7 +272,9 @@
     <EmbeddedResource Include="View\UserInformation.resx">
       <DependentUpon>UserInformation.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -282,7 +286,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

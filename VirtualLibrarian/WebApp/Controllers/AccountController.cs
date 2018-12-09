@@ -55,13 +55,19 @@ namespace WebApp.Controllers
             var originalBitmap = DataTransformationUtility.StringToBitmap(value);
             var grayImage = DataTransformationUtility.BitmapToGrayImage(originalBitmap);
 
-            if (!LibraryDataIO.Instance.IsRecogniserTrained)
+            if (!SharedResources.Instance.IsRecogniserTrained)
             {
                 return Json(new { success = false, err = 1});
             }
-            var label = LibraryDataIO.Instance.FaceRecognition.Recognize(grayImage);
+            var label = SharedResources.Instance.FaceRecognition.Recognize(grayImage);
 
-            return label==null ? Json(new { success = false}) : Json(new { success = true, user = label });
+            if (label != null)
+            {
+                //SharedResources.Instance.ActiveUser = LibraryDataIO.Instance.FindUser(int.Parse(label));
+                SharedResources.Instance.ID = int.Parse(label);
+                return Json(new { success = true });
+            }
+            else return Json(new { success = false });
         }
 
         // 
@@ -73,7 +79,7 @@ namespace WebApp.Controllers
             var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
             var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
 
-            if (LibraryDataIO.Instance.IsRecogniserTrained &&  LibraryDataIO.Instance.FaceRecognition.Recognize(grayImages)!=null)
+            if (SharedResources.Instance.IsRecogniserTrained &&  SharedResources.Instance.FaceRecognition.Recognize(grayImages)!=null)
             {
                 /*user exists*/
                 return Json(new { success = false });
@@ -82,7 +88,7 @@ namespace WebApp.Controllers
             {
                 var newUser = new User(name, surname, email);
                 LibraryDataIO.Instance.AddUser(newUser);
-                LibraryDataIO.Instance.FaceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
+                SharedResources.Instance.FaceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
                 return Json(new { success = true });
             }
         }

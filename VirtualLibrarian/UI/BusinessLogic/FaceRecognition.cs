@@ -48,7 +48,6 @@ namespace VirtualLibrarian.BusinessLogic
             }
             catch (Exception e)
             {
-                LibraryDataIO.Instance.Logger.LogException(e);
                 trainedFaces.Clear();
                 faceLabels.Clear();
                 faceID.Clear();

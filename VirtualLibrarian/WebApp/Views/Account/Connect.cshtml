@@ -7,8 +7,8 @@
         }
 
         video, canvas {
-            margin-left: 230px;
-            margin-top: 120px;
+            margin-left: 180px;
+            margin-top: 0px;
             position: absolute;
         }
     </style>
@@ -52,7 +52,7 @@
                     context.fillStyle = "#fff";
                     if (stopRequestAnimationFrame == false && attempt <= 100) {
 
-                        snapContext.drawImage(video, rect.x + 80, rect.y, 300, 300, 0, 0, 300, 300);
+                        snapContext.drawImage(video, rect.x + 80, rect.y, 250, 250, 0, 0, 300, 300);
                         dataURI = snapCanvas.toDataURL('image/png');
                         $.ajax({
                             url: "/Account/LoginBitmap",
@@ -77,7 +77,7 @@
                         setTimeout(function () {
                             trackingTask.stop();
                             trackingTask.run();
-                        }, 50);
+                        }, 100);
                     }
                     trackingTask.stop();
 

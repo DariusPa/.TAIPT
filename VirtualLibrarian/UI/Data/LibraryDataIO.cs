@@ -28,11 +28,7 @@ namespace VirtualLibrarian.Data
         public ILogger Logger { get; set; }
         public UILogger UILogger { get; set; }
 
-        public String ConnectionString { get; set; }
-
-        //TODO: Create class for common global resources
-        public FaceRecognition FaceRecognition { get; set; }
-        public bool IsRecogniserTrained { get; set; }
+        public string ConnectionString { get; set; }
 
         private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
         public static LibraryDataIO Instance { get { return library.Value; } }
@@ -52,11 +48,6 @@ namespace VirtualLibrarian.Data
 
             Logger = new FileLogger(directory);
             UILogger = new UILogger();
-
-            //TODO: move to common global resource class
-            FaceRecognition = new FaceRecognition();
-            FaceRecognition.LoadRecognizer();
-            IsRecogniserTrained = FaceRecognition.TrainRecognizer();
         }
 
         public void AddPublisher(string name, string country, string description)
@@ -116,6 +107,20 @@ namespace VirtualLibrarian.Data
             SaveChanges();
         }
 
+        public void RemoveBook(Book book)
+        {
+            using(var cn = new SqlConnection(ConnectionString))
+            {
+                var cmd = new SqlCommand("DELETE FROM Books WHERE ID = @id",cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@id",book.ID);
+
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
+        }
+
         public void AddFace(Image<Gray, byte> face, string label, int faceCount)
         {
             try
@@ -152,6 +157,24 @@ namespace VirtualLibrarian.Data
         public Publisher FindPublisher(int ID)
         {
             return Context.Publishers.Where(p => p.ID == ID).Single();
+        }
+
+        public void ChangeUserInfo(int ID, string name, string surname, string email, string phone)
+        {
+            using(var cn = new SqlConnection(ConnectionString))
+            {
+                var cmd = new SqlCommand("UPDATE Users SET Name = @N, Surname = @S, Email = @E, PhoneNr = @P WHERE ID = @id", cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@N", name);
+                cmd.Parameters.AddWithValue("@S", surname);
+                cmd.Parameters.AddWithValue("@E", email);
+                cmd.Parameters.AddWithValue("@P", phone);
+                cmd.Parameters.AddWithValue("@id", ID);
+
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
         }
 
         //TODO: logic for verifying changes

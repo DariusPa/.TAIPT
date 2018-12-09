@@ -21,20 +21,20 @@ namespace WebApp.Controllers
     public class DashboardController : Controller
     {
         public User ActiveUser { get; set; }
-        private SpeakingAI speaker;
-
 
         public DashboardController()
         {
-            //TODO: get actual user (with label returned from recognition)"
-            ActiveUser = LibraryDataIO.Instance.FindUser(1);
-            //TODO: check why it stops the page from loading
-            //speaker = new SpeakingAI();
+            if (SharedResources.Instance.ID != 0)
+            {
+               ActiveUser = LibraryDataIO.Instance.FindUser(SharedResources.Instance.ID);
+            }
+            RedirectToAction("Index", "Account");
 
         }
 
         public ActionResult Index()
         {
+            SharedResources.Instance.Speaker.Speak(StringConstants.AIGreeting(ActiveUser?.Name));
             return View();
         }
 
@@ -57,26 +57,24 @@ namespace WebApp.Controllers
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
 
-            //speaker.Speak(StringConstants.aiSearchLibraryGreeting);
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiSearchLibraryGreeting);
             return View(dtLibraryBook);
         }
 
         public ActionResult Take()
         {
-            //speaker.Speak(StringConstants.aiScanBookQRString);
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiScanBookQRString);
             return View();
         }
 
         public ActionResult Return()
         {
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnBookString);
             return View();
         }
 
         public ActionResult History()
         {
-            //TODO: remove this when user validation logic is implemented for the whole dashboard
-            if (ActiveUser == null) return View(new DataTable());
-
             var takenBooks = LibraryDataIO.Instance.Context.Books
                     .Where(b => b.User.ID == ActiveUser.ID)
                     .AsEnumerable()
@@ -103,18 +101,20 @@ namespace WebApp.Controllers
                        });
 
             var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(historyBooks).ToList());
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiReadingHistoryGreeting);
             return View(dtHistory);
         }
 
         public ActionResult Settings()
         {
-            //speaker.Speak(StringConstants.aiAccountSettingsGreeting);
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiAccountSettingsGreeting);
             return View();
         }
 
         public ActionResult Logout()
         {
-            //speaker.Speak(StringConstants.aiGoodbye);
+            SharedResources.Instance.ID = 0;
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiGoodbye);
             return RedirectToAction("Index", "Account");
         }
     }
