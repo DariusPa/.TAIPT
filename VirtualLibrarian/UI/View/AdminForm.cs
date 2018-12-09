@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using VirtualLibrarian.Data;
 using VirtualLibrarian.Helpers;
@@ -11,7 +12,7 @@ namespace VirtualLibrarian
 {
     public partial class AdminForm : Form
     {
-        public IBookModel Book { get; set; }
+        public Book Book { get; set; }
         private AdministratorPresenter presenter;
         private BindingSource authorSource;
 
@@ -24,22 +25,23 @@ namespace VirtualLibrarian
 
             InitializeComponent();
             this.presenter = presenter;
-            authorSource = new BindingSource();
-            authorSource.DataSource = LibraryDataIO.Instance.Authors;
-            authorListBox.DataSource = authorSource;
-            authorListBox.DisplayMember = StringConstants.fullNameString;
+            RefreshAuthors();
+            authorListBox.DisplayMember = "Name";
             genreBox.DataSource = Enum.GetValues(typeof(BookGenre));
+            publisherListBox.DataSource = LibraryDataIO.Instance.Context.Publishers.ToList();
+            publisherListBox.DisplayMember = "Name";
         }
 
         private void OnSaveBook(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(titleBox.Text) && !string.IsNullOrWhiteSpace(isbnBox.Text)
-                && !string.IsNullOrWhiteSpace(publisherBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
-                && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text))
+                && !string.IsNullOrWhiteSpace(publisherListBox.Text) && !string.IsNullOrWhiteSpace(authorListBox.Text)
+                && !string.IsNullOrWhiteSpace(genreBox.Text) && !string.IsNullOrWhiteSpace(qtyBox.Text) && !string.IsNullOrWhiteSpace(pagesBox.Text))
             {
                 BookGenre genres = new BookGenre();
-                List<int> authors = new List<int>();
+                List<Author> authors = new List<Author>();
                 int.TryParse(qtyBox.Text, out int qty);
+                int.TryParse(pagesBox.Text, out int pages);
 
                 foreach (var genre in genreBox.CheckedItems)
                 {
@@ -48,13 +50,14 @@ namespace VirtualLibrarian
 
                 foreach (Author author in authorListBox.SelectedItems)
                 {
-                    authors.Add(author.ID);
+                    authors.Add(author);
                 }
 
+                var publisher = ((Publisher)publisherListBox.SelectedItem);
                 for (int i = 0; i < qty; i++)
                 {
-                    Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authorID: authors,
-                                        publisher: publisherBox.Text, genre: genres, description: descriptionBox.Text);
+                    Book = new Book(title: titleBox.Text, isbn: isbnBox.Text, authors: authors,
+                                        publisher: publisher, genre: genres, description: descriptionBox.Text, pages: pages);
 
                     NewBook?.Invoke(this, new BookRelatedEventArgs { Book = Book });
                 }
@@ -98,7 +101,7 @@ namespace VirtualLibrarian
 
         public void RefreshAuthors()
         {
-            authorSource.ResetBindings(false);
+            authorListBox.DataSource = LibraryDataIO.Instance.Context.Authors.ToList();
         }
 
         public delegate void NewBookEventHandler(object sender, BookRelatedEventArgs e);

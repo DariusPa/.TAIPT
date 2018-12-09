@@ -1,9 +1,19 @@
 ﻿@using WebApp.Models
+@model PublisherViewModel
 @{
     ViewBag.Title = "Add a publisher";
 }
 <div class="col-md-12">
-    <form class="card">
+    @if (TempData["Success"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert alert-danger" id="errMessage">@TempData["ErrorMessage"]</p>
+    }
+    @using (Html.BeginForm("SubmitPublisher", "Admin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "card", role = "form" }))
+    {
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -12,7 +22,8 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Publisher name</label>
-                                <input type="text" class="form-control" placeholder="Name">
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
@@ -20,7 +31,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="form-label">Country</label>
-                                <select name="country" id="select-countries" class="form-control custom-select">
+                                <select name="Country" id="select-countries" class="form-control custom-select">
                                     <option value="lt" data-data='{"image": "/Content/images/flags/lt.svg"}' selected>Lithuania</option>
                                     <option value="lv" data-data='{"image": "/Content/images/flags/lv.svg"}'>Latvia</option>
                                     <option value="pl" data-data='{"image": "/Content/images/flags/pl.svg"}'>Poland</option>
@@ -30,12 +41,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-label">Website</label>
-                                <input type="text" class="form-control" placeholder="https://">
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -43,7 +48,7 @@
                         <div class="col-md-12">
                             <div class="form-group mb-0">
                                 <label class="form-label">Description</label>
-                                <textarea rows="5" class="form-control"></textarea>
+                                <textarea rows="5" name="Description" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -53,5 +58,5 @@
         <div class="card-footer text-right">
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
-    </form>
+    }
 </div>

@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VirtualLibrarian.Data;
+using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian.Helpers
 {
@@ -85,14 +86,19 @@ namespace VirtualLibrarian.Helpers
             }
         }
 
-        //TODO: might need to move somewhere else
-        public static string GetAuthorNames(List<int> authorID)
+        public static string GetAuthorNames(List<Author> authors)
         {
-            return string.Join(",", authorID
-                          .Join(LibraryDataIO.Instance.Authors,
-                          author => author,
-                          lbAuthor => lbAuthor.ID,
-                          (author, lbAuthor) => lbAuthor.FullName));
+            return authors.Select(x => x.Name + " " + x.Surname)
+                          .Aggregate((current, next) => current + ", " + next);
+        }
+
+        public static string GetBookTitles(List<Book> books)
+        {
+            return string.Join(",", books
+                            .Join(LibraryDataIO.Instance.Context.Books,
+                            book => book.ID,
+                            lbBook => lbBook.ID,
+                            (book, lbBook) => lbBook.Title));
         }
 
         public static List<Bitmap> StringToBitmapList(List<string> stringList)

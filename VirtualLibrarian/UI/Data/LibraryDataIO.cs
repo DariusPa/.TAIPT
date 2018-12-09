@@ -3,146 +3,153 @@ using Emgu.CV.Structure;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VirtualLibrarian.BusinessLogic;
 using VirtualLibrarian.Helpers;
 using VirtualLibrarian.Model;
 
 namespace VirtualLibrarian.Data
 {
-    public sealed class LibraryDataIO: ILibraryData
+    public sealed class LibraryDataIO
     {
-        public string ResourcePath { get; set; }
-        public string DataDirPath { get; set; }
-        private string bookPath;
-        private string usersPath;
-        private string authorsPath;
         public string FacesPath { get; set; }
-        public string FaceLabelsPath { get; set; }
-        private JsonSerializerSettings settings;
+        public string DataDirPath { get; set; }
+        public string ResourcePath { get; set; }
+        public int PicturesPerUser { get; set; }
+
+        public LibraryContext Context { get; private set; }
+
+        public ILogger Logger { get; set; }
+        public UILogger UILogger { get; set; }
+
+        public string ConnectionString { get; set; }
 
         private static readonly Lazy<LibraryDataIO> library = new Lazy<LibraryDataIO>(() => new LibraryDataIO());
-        public List<IBookModel> Books { get; set; } = new List<IBookModel>();
-        public List<IUserModel> Users { get; set; } = new List<IUserModel>();
-        public List<Author> Authors { get; set; } = new List<Author>();
         public static LibraryDataIO Instance { get { return library.Value; } }
-
-        public int PicturesPerUser { get; private set; }
-        public ILogger Logger { get; set; }
-        public ILogger UILogger { get; set; }
-
 
         private LibraryDataIO() { }
 
-        public void Init(string directory, string bookPath, string usersPath, string authorsPath, string facesPath, string faceLabelsPath, int picturesPerUser=10)
+        public void Init(string connectionString, string directory, string facesPath, int picturesPerUser = 10)
         {
+            DataDirPath = directory + StringConstants.dataDirPath;
+            FacesPath = DataDirPath + facesPath;
+            ResourcePath = directory + StringConstants.resourcePath;
+            FacesPath = DataDirPath + facesPath;
+            PicturesPerUser = picturesPerUser;
+
+            ConnectionString = connectionString;
+            Context = new LibraryContext(connectionString);
+
             Logger = new FileLogger(directory);
             UILogger = new UILogger();
-            ResourcePath = directory + StringConstants.resourcePath;
-            DataDirPath = directory + StringConstants.dataDirPath;
-            this.bookPath = DataDirPath + bookPath;
-            this.usersPath = DataDirPath + usersPath;
-            this.authorsPath = DataDirPath + authorsPath;
-            FacesPath = DataDirPath + facesPath;
-            FaceLabelsPath = DataDirPath + faceLabelsPath;
-            PicturesPerUser = picturesPerUser;
-            settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
         }
 
-        public void SerializeAllData()
+        public void AddPublisher(string name, string country, string description)
+        {
+            using (var cn = new SqlConnection(ConnectionString))
+            {
+                cn.Open();
+                var insert = new SqlCommand();
+                insert.Connection = cn;
+                insert.CommandType = CommandType.Text;
+                insert.CommandText = "INSERT INTO Publishers (Name, Country,Description) VALUES(@N,@C,@D)";
+
+                insert.Parameters.Add(new SqlParameter("@N", SqlDbType.NVarChar, 30, "Name"));
+                insert.Parameters.Add(new SqlParameter("@C", SqlDbType.NVarChar, 30, "Country"));
+                insert.Parameters.Add(new SqlParameter("@D", SqlDbType.NVarChar, 30, "Description"));
+
+                var da = new SqlDataAdapter("SELECT ID, Name, Country, Description FROM Publishers", cn);
+                da.InsertCommand = insert;
+
+                var dt = new DataTable();
+                da.Fill(dt);
+
+                var newPublisherRow = dt.NewRow();
+                newPublisherRow["Name"] = name;
+                newPublisherRow["Country"] = country;
+                newPublisherRow["Description"] = description;
+                dt.Rows.Add(newPublisherRow);
+
+                da.Update(dt);
+                cn.Close();
+                da.Dispose();
+            }
+        }
+
+        public void AddAuthor(Author author)
+        {
+            Context.Authors.Add(author);
+            SaveChanges();
+        }
+
+
+        public void AddBook(Book book)
+        {
+            Context.Books.Add(book);
+            SaveChanges();
+        }
+
+        public void AddUser(User user)
+        {
+            Context.Users.Add(user);
+            SaveChanges();
+        }
+
+        public void RemoveUser(User user)
+        {
+            Context.Entry(user).Collection(x => x.Faces).Load();
+            Context.Entry(user).Collection(x => x.ReadingHistories).Load();
+
+            foreach (var face in user.Faces.ToList())
+            {
+                Context.Faces.Remove(face);
+            }
+            foreach (var his in user.ReadingHistories.ToList())
+            {
+                Context.ReadingHistory.Remove(his);
+            }
+            Context.Users.Remove(user);
+            SaveChanges();
+        }
+
+        public void RemoveBook(Book book)
+        {
+            Context.Entry(book).Collection(x => x.ReadingHistories).Load();
+            foreach(var his in book.ReadingHistories.ToList())
+            {
+                Context.ReadingHistory.Remove(his);
+            }
+            SaveChanges();
+
+            using(var cn = new SqlConnection(ConnectionString))
+            {
+                var cmd = new SqlCommand("DELETE FROM Books WHERE ID = @id",cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@id",book.ID);
+
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
+        }
+
+        public void AddFace(Image<Gray, byte> face, string label, int faceCount)
         {
             try
             {
-                File.WriteAllText(authorsPath, JsonConvert.SerializeObject(Authors, Formatting.Indented, settings));
-                File.WriteAllText(bookPath, JsonConvert.SerializeObject(Books, Formatting.Indented, settings));
-                File.WriteAllText(usersPath, JsonConvert.SerializeObject(Users, Formatting.Indented, settings));
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e);
-                UILogger.LogError(StringConstants.serealizationError);
-            }
-        }
-
-        private void SerializeAuthors()
-        {
-            SerializeData(authorsPath, Authors);
-        }
-
-        private void SerializeBooks()
-        {
-            SerializeData(bookPath, Books);
-        }
-
-        private void SerializeUsers()
-        {
-             SerializeData(usersPath, Users);
-        }
-
-        private void SerializeData<T>(string filePath, T data)
-        {
-            try
-            {
-                new Thread(() => File.WriteAllText(filePath, JsonConvert.SerializeObject(data, Formatting.Indented, settings))).Start();
-            }
-            catch (FileNotFoundException)
-            {
-                Logger.LogError($"Serializing data to {filePath} failed.");
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e);
-            }
-        }
-
-        private T DeserializeData<T>(string filePath, string warning)
-        {
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(File.ReadAllText(filePath), settings);
-            }
-            catch (FileNotFoundException)
-            {
-                Logger.LogError($"Deserializing data from {filePath} failed.");
-                return default(T);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e);
-                UILogger.LogWarning(warning);
-                return default(T);
-            }
-        }
-
-        public void LoadData()
-        {
-            try
-            {
-                if (!File.Exists(FaceLabelsPath))
-                    File.Create(FaceLabelsPath).Dispose(); 
-            }
-            catch
-            {
-                Logger.LogError("Failed to open/create face labels file.");
-                UILogger.LogError(StringConstants.loadError);
-                Environment.Exit(0);
-            }
-
-            Users = DeserializeData<List<IUserModel>>(usersPath, StringConstants.noUsersWarning) ?? new List<IUserModel>();
-            Books = DeserializeData<List<IBookModel>>(bookPath,StringConstants.noBooksWarning) ?? new List<IBookModel>();
-            Authors = DeserializeData<List<Author>>(authorsPath,StringConstants.noAuthorsWarning) ?? new List<Author>();
-        }
-
-
-        public void AddNewFace(Image<Gray, byte> face,string label, int faceCount)
-        {
-            try
-            {
-                face.Save($"{FacesPath}\\{faceCount}.bmp");
-                File.AppendAllText(FaceLabelsPath, label + "%");
+                var user = FindUser(int.Parse(label));
+                var path = $"{FacesPath}\\{faceCount}.bmp";
+                face.Save(path);
+                var userFace = new Face(user, path);
+                Context.Faces.Add(userFace);
+                user.Faces.Add(userFace);
+                SaveChanges();
             }
             catch (Exception e)
             {
@@ -152,65 +159,71 @@ namespace VirtualLibrarian.Data
 
         }
 
-        public void AddBook(IBookModel book)
+        public User FindUser(int ID)
         {
-            Books.Add(book);
-            SerializeBooks();
+            return Context.Users.Where(u => u.ID == ID).Single();
         }
 
-        public void RemoveBook(IBookModel book)
+        public Book FindBook(int ID)
         {
-            //TODO logic for taken books here or in the book class
-            Books.Remove(book);
-            SerializeBooks();
+            try
+            {
+                return Context.Books.Where(b => b.ID == ID).Single();
+            }
+            catch(Exception e)
+            {
+                Logger.LogException(e);
+                return null;
+            }
         }
 
-        public void AddUser(IUserModel user)
+        public Author FindAuthor(int ID)
         {
-            Users.Add(user);
-            SerializeUsers();
+            return Context.Authors.Where(a => a.ID == ID).Single();
         }
 
-        public void RemoveUser(IUserModel user)
+        public Publisher FindPublisher(int ID)
         {
-            Users.Remove(user);
-            SerializeUsers();
+            return Context.Publishers.Where(p => p.ID == ID).Single();
         }
 
-        public void AddAuthor(Author author)
+        public void ChangeUserInfo(int ID, string name, string surname, string email, string phone)
         {
-            Authors.Add(author);
-            SerializeAuthors();
-        }
+            using(var cn = new SqlConnection(ConnectionString))
+            {
+                var cmd = new SqlCommand("UPDATE Users SET Name = @N, Surname = @S, Email = @E, PhoneNr = @P WHERE ID = @id", cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@N", name);
+                cmd.Parameters.AddWithValue("@S", surname);
+                cmd.Parameters.AddWithValue("@E", email);
+                cmd.Parameters.AddWithValue("@P", phone);
+                cmd.Parameters.AddWithValue("@id", ID);
 
-        public void RemoveAuthor(Author author)
-        {
-            Authors.Remove(author);
-            SerializeAuthors();
-        }
-
-        public IUserModel FindUser(string label)
-        {
-            return Instance.Users.Find(x => x.ID == int.Parse(label));
-        }
-
-        public IBookModel FindBook(string label)
-        {
-            return Instance.Books.Find(x => x.ID == int.Parse(label));
+                cn.Open();
+                cmd.ExecuteNonQuery();
+                cn.Close();
+            }
         }
 
         //TODO: logic for verifying changes
-        public bool ChangeUserInfo(IUserModel user, string name, string surname, string email)
+        public bool ChangeUserInfo(User user, string name, string surname, string email)
         {
             user.Name = name;
             user.Surname = surname;
             user.Email = email;
-            SerializeUsers();
+            SaveChanges();
             return true;
         }
 
+        public void SaveChanges()
+        {
+            Context.SaveChanges();
+        }
 
-
-
+        public void AddHistoryRecord(User reader, Book book)
+        {
+            Context.ReadingHistory.Add(new ReadingHistory(book, reader, book.IssueDate, book.ReturnDate));
+            SaveChanges();
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace VirtualLibrarian
     public partial class FirstPage : Form
     {
 
-        public IUserModel User { get; set; }
+        public User User { get; set; }
         private FirstPagePresenter firstPagePresenter;
         private AdministratorPresenter adminPresenter;
         

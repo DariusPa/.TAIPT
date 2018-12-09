@@ -11,11 +11,12 @@ namespace VirtualLibrarian
     public partial class RegisterForm : Form
     {
         private FaceCamera faceCam;
-        public IUserModel User;
+        public User User;
 
         public event RegistrationEventHandler RegisterCompleted;
+        public event EventHandler RegisterFailed;
 
-        public RegisterForm(IUserModel user)
+        public RegisterForm(User user)
         {
             User = user;
             InitializeComponent();
@@ -53,8 +54,9 @@ namespace VirtualLibrarian
 
         private void OnExistingUserRecognised(object sender, FaceRecognisedEventArgs e)
         {
-            User = LibraryDataIO.Instance.FindUser(e.Label);
+            User = LibraryDataIO.Instance.FindUser(int.Parse(e.Label));
             MessageBox.Show(StringConstants.ExistingUserErrorString(User.Name, User.Surname));
+            RegisterFailed?.Invoke(this, EventArgs.Empty);
             BeginInvoke(new Action(() => Close()));
         }
 

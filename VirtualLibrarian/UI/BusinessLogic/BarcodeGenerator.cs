@@ -21,7 +21,7 @@ namespace VirtualLibrarian.BusinessLogic
             barcodeWriter.Format = BarcodeFormat.QR_CODE;
         }
 
-        public Image GenerateBarcode(int value)
+        public string GenerateBarcode(int value)
         {
             var filePath = $"{barcodeDir}\\{value}.bmp";
 
@@ -33,7 +33,7 @@ namespace VirtualLibrarian.BusinessLogic
             {
                 LibraryDataIO.Instance.Logger.LogException(e);
             }
-            return Image.FromFile(filePath);
+            return filePath;
 
         }
 

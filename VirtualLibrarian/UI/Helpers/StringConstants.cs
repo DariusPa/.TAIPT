@@ -55,9 +55,12 @@ namespace VirtualLibrarian.Helpers
         public static string loadError = "System is not ready to work. Contact administrators for help.";
         public static string noUsersWarning = $"Library has no data of users. {reachHelp}";
         public static string noAuthorsWarning = $"Library has no data of authors. {reachHelp}";
+        public static string noPublishersWarning = $"Library has no data of publishers. {reachHelp}";
         public static string noBooksWarning = $"Library has no data of books. {reachHelp}";
         public static string saveFaceErrror = "Attempt to save new face failed.";
         public static string reachHelp = "Contact administrators if this is not expected behaviour.";
+        public static string authorExists = "Author already exists!";
+        public static string publisherExists = "Publisher already exists!";
 
         public static string AIGreeting(string name)
         {

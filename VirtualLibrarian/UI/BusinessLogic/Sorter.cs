@@ -23,7 +23,7 @@ namespace VirtualLibrarian
             switch (SortBy)
             {
                 case CompareField.Publisher:
-                    return x.Publisher.CompareTo(y.Publisher);
+                    return x.Publisher.ID.CompareTo(y.Publisher.ID);
                 default:
                     return x.Title.CompareTo(y.Title);
 

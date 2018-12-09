@@ -1,4 +1,37 @@
-﻿@{
+﻿@using WebApp.Models
+@model SettingsViewModel
+@{
     ViewBag.Title = "Settings";
     ViewBag.PageTitle = "Settings";
+}
+
+@using (Html.BeginForm("UpdateSettings", "Dashboard", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form", role = "form" }))
+{
+<div class="row">
+    <div class="col-md-6">
+        @if (TempData["Success"] != null)
+        {
+            <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+        }
+        <h3>Personal information</h3>
+        <div class="form-group">
+            <label class="form-label">Name</label>
+            @Html.TextBoxFor(m => m.Name, new { @Value = @ViewBag.Name, @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label class="form-label">Surname</label>
+            @Html.TextBoxFor(m => m.Surname, new { @Value = @ViewBag.Surname, @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            @Html.TextBoxFor(m => m.Email, new { @Value = @ViewBag.Email, @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</div>
 }

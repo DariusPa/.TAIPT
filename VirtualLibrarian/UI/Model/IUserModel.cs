@@ -13,8 +13,7 @@ namespace VirtualLibrarian.Model
         string Surname { get; set; }
         string Email { get; set; }
         string PhoneNr { get; set; }
-        List<int> TakenBooks { get; }
-        List<ReadingHistory> History { get; }
+        ICollection<Book> TakenBooks { get; set; }
 
         void TakeBook(IBookModel book);
         void ReturnBook(IBookModel book);

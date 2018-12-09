@@ -256,6 +256,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminViewModel.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -800,9 +802,12 @@
     <Content Include="Views\Admin\Users.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Account\Connect.cshtml" />
+    <Content Include="Views\Admin\Authors.cshtml" />
+    <Content Include="Views\Admin\Publishers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Barcodes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

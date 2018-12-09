@@ -10,7 +10,7 @@ namespace VirtualLibrarian.Model
     {
         string Title { get; set; }
         List<int> AuthorID { get; set; }
-        string Publisher { get; set; }
+        int PublisherID { get; set; }
         string ISBN { get; set; }
         string Description { get; set; }
         int ID { get; }
@@ -20,6 +20,7 @@ namespace VirtualLibrarian.Model
         DateTime IssueDate { get; set; }
         DateTime ReturnDate { get; set; }
         int LendingMonths { get; set; }
+        int Pages { get; set; }
 
         void Issue(IUserModel reader);
         void Return();

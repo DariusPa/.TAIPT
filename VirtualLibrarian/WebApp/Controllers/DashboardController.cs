@@ -20,94 +20,194 @@ namespace WebApp.Controllers
 {
     public class DashboardController : Controller
     {
-        public IUserModel ActiveUser { get; set; }
-        private SpeakingAI speaker;
+        public User ActiveUser { get; set; }
 
         public DashboardController()
         {
-            //TODO: get actual user (with label returned from recognition)"
-            ActiveUser = LibraryDataIO.Instance.FindUser("1");
-            //TODO: check why it stops the page from loading
-            //speaker = new SpeakingAI();
+            if (SharedResources.Instance.ID != 0)
+            {
+                ActiveUser = LibraryDataIO.Instance.FindUser(SharedResources.Instance.ID);
+            }
+            RedirectToAction("Index", "Account");
 
         }
 
         public ActionResult Index()
         {
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.AIGreeting(ActiveUser?.Name);
+            SharedResources.Instance.Speaker.Speak(StringConstants.AIGreeting(ActiveUser?.Name));
             return View();
         }
-        
+
         public ActionResult Search()
         {
             string[] columns = { "Title", "Author", "Publisher", "ISBN", "Genre", "Status" };
-            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Books.ToList());
 
             //prepare column with authors' full names
             dtLibraryBook.Columns.Add("Author");
+            //TODO: cleanup!
+            dtLibraryBook.Columns.Remove("Publisher");
+            dtLibraryBook.Columns.Add("Publisher");
+
             foreach (DataRow row in dtLibraryBook.Rows)
             {
-                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
+                row["Author"] = DataTransformationUtility.GetAuthorNames(((HashSet<Author>)row["Authors"]).ToList());
+                row["Publisher"] = LibraryDataIO.Instance.FindPublisher((int)row["PublisherID"]).Name;
             }
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
 
-            //speaker.Speak(StringConstants.aiSearchLibraryGreeting);
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.aiSearchLibraryGreeting;
+
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiSearchLibraryGreeting);
             return View(dtLibraryBook);
         }
 
         public ActionResult Take()
         {
-            //speaker.Speak(StringConstants.aiScanBookQRString);
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.aiScanBookQRString;
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiScanBookQRString);
             return View();
         }
 
         public ActionResult Return()
         {
-            //speaker.Speak(StringConstants.aiReturnBookString);
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.aiReturnBookString;
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnBookString);
             return View();
         }
 
         public ActionResult History()
         {
-            //TODO: remove this when user validation logic is implemented for the whole dashboard
-            if (ActiveUser == null) return View(new DataTable());
+            var takenBooks = LibraryDataIO.Instance.Context.Books
+                    .Where(b => b.User.ID == ActiveUser.ID)
+                    .ToList()
+                     .Select(x => new
+                     {
+                         x.Title,
+                         Author = DataTransformationUtility.GetAuthorNames(x.Authors.ToList()),
+                         Issued = $"{x.IssueDate:yyyy/MM/dd}",
+                         Returned = StringConstants.currentlyTakenString
+                     });
 
-            var takenBooks = ActiveUser.TakenBooks
-            .Join(LibraryDataIO.Instance.Books,
-                  takenBook => takenBook,
-                  libraryBook => libraryBook.ID,
-                  (takenBook, libraryBook) => new {
-                      libraryBook.Title,
-                      Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                      Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
-                      Returned = StringConstants.currentlyTakenString
-                  });
+            var historyBooks = LibraryDataIO.Instance.Context.ReadingHistory
+                .Where(x => x.User.ID == ActiveUser.ID)
+                .ToList()
+                .Join(LibraryDataIO.Instance.Context.Books,
+                       his => his.Book.ID,
+                       book => book.ID,
+                       (his, book) => new
+                       {
+                           book.Title,
+                           Author = DataTransformationUtility.GetAuthorNames(book.Authors.ToList()),
+                           Issued = $"{his.IssueDate:yyyy/MM/dd}",
+                           Returned = $"{his.ReturnDate:yyyy/MM/dd}"
+                       });
 
-            var bookHistory = ActiveUser.History
-                .Join(LibraryDataIO.Instance.Books,
-                      readBook => readBook.BookID,
-                      libraryBook => libraryBook.ID,
-                      (readBook, libraryBook) => new {
-                          libraryBook.Title,
-                          Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                          Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
-                          Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
-                      });
+            var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(historyBooks).ToList());
 
-            var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(bookHistory).ToList());
-            //speaker.Speak(StringConstants.aiReadingHistoryGreeting);
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.aiReadingHistoryGreeting;
+
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiReadingHistoryGreeting);
             return View(dtHistory);
         }
 
         public ActionResult Settings()
         {
-            //speaker.Speak(StringConstants.aiAccountSettingsGreeting);
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = StringConstants.aiAccountSettingsGreeting;
+
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiAccountSettingsGreeting);
+
+            @ViewBag.Name = ActiveUser?.Name;
+            @ViewBag.Surname = ActiveUser?.Surname;
+            @ViewBag.Email = ActiveUser?.Email;
             return View();
+        }
+
+        // 
+        // POST: /Dashboard/UpdateSettings 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> UpdateSettings(SettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                LibraryDataIO.Instance.ChangeUserInfo(ActiveUser, model.Name, model.Surname, model.Email);
+                TempData["Success"] = "Settings updated successfully!";
+                return RedirectToAction("Settings");
+            }
+            @ViewBag.Name = ActiveUser?.Name;
+            @ViewBag.Surname = ActiveUser?.Surname;
+            @ViewBag.Email = ActiveUser?.Email;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
+            @ViewBag.INFOAI = "Settings updated successfully!";
+            return View("Settings");
+        }
+
+        // 
+        // POST: /Dashboard/TakeQR 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult TakeQR(string value)
+        {
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
+            if (book!= null && LibraryManager.ValidateIssuing(ActiveUser, book))
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
+                LibraryManager.IssueBookToReader(ActiveUser, book);
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiIssued);
+                @ViewBag.INFOAI = StringConstants.aiIssued;
+                return Json(new { success = true });
+            }
+            else
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiIssuingFailed);
+                @ViewBag.INFOAI = StringConstants.aiIssuingFailed;
+                return Json(new { success = false });
+            }
+        }
+
+        // 
+        // POST: /Dashboard/ReturnQR 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult ReturnQR(string value)
+        {
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
+            if (book != null && LibraryManager.ValidateReturning(ActiveUser, book))
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
+                LibraryManager.ReturnBook(ActiveUser, book);
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnedBook);
+                @ViewBag.INFOAI = StringConstants.aiReturnedBook;
+                return Json(new { success = true });
+            }
+            else
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnFailed);
+                @ViewBag.INFOAI = StringConstants.aiReturnFailed;
+                return Json(new { success = false });
+            }
         }
 
         public ActionResult Logout()
         {
-            //speaker.Speak(StringConstants.aiGoodbye);
+            SharedResources.Instance.ID = 0;
+            SharedResources.Instance.Speaker.Speak(StringConstants.aiGoodbye);
             return RedirectToAction("Index", "Account");
         }
     }

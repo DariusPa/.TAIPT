@@ -24,23 +24,13 @@ namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private FaceRecognition recognizer;
-        private bool isRecognizerTrained; 
-
-        public AccountController()
-        {
-            recognizer = new FaceRecognition(1500);
-            recognizer.LoadRecognizer();
-            isRecognizerTrained = recognizer.TrainRecognizer();
-        }
-
         public ActionResult Index()
         {
             return View();
         }
 
         [AllowAnonymous]
-        public ActionResult Connect(ConnectToDashboardViewModel model)
+        public ActionResult Connect()
         {
             return View();
         }
@@ -65,13 +55,19 @@ namespace WebApp.Controllers
             var originalBitmap = DataTransformationUtility.StringToBitmap(value);
             var grayImage = DataTransformationUtility.BitmapToGrayImage(originalBitmap);
 
-            if (!isRecognizerTrained)
+            if (!SharedResources.Instance.IsRecogniserTrained)
             {
                 return Json(new { success = false, err = 1});
             }
-            var label = recognizer.Recognize(grayImage);
+            var label = SharedResources.Instance.FaceRecognition.Recognize(grayImage);
 
-            return label==null ? Json(new { success = false}) : Json(new { success = true, user = label });
+            if (label != null)
+            {
+                //SharedResources.Instance.ActiveUser = LibraryDataIO.Instance.FindUser(int.Parse(label));
+                SharedResources.Instance.ID = int.Parse(label);
+                return Json(new { success = true });
+            }
+            else return Json(new { success = false });
         }
 
         // 
@@ -83,7 +79,7 @@ namespace WebApp.Controllers
             var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
             var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
 
-            if (isRecognizerTrained &&  recognizer.Recognize(grayImages)!=null)
+            if (SharedResources.Instance.IsRecogniserTrained &&  SharedResources.Instance.FaceRecognition.Recognize(grayImages)!=null)
             {
                 /*user exists*/
                 return Json(new { success = false });
@@ -91,8 +87,9 @@ namespace WebApp.Controllers
             else
             {
                 var newUser = new User(name, surname, email);
-                recognizer.StoreNewFace(grayImages, newUser.ID.ToString());
                 LibraryDataIO.Instance.AddUser(newUser);
+                SharedResources.Instance.FaceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
+                SharedResources.Instance.Refresh();
                 return Json(new { success = true });
             }
         }

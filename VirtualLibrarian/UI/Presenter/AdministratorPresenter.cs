@@ -21,7 +21,7 @@ namespace VirtualLibrarian.Presenter
         private AdminForm adminForm;
         private BarcodeGenerator barcodeGenerator;
         private NewAuthorForm authorForm;
-        public IBookModel Book;
+        public Book Book;
 
         public AdministratorPresenter(FirstPage firstPage)
         {
@@ -61,7 +61,7 @@ namespace VirtualLibrarian.Presenter
 
         private void AddNewAuthor(object sender, BookRelatedEventArgs e)
         {
-            if (!LibraryDataIO.Instance.Authors.Any(author => author.FullName == e.Author.FullName))
+            if (!LibraryDataIO.Instance.Context.Authors.Any(author => author.Name == e.Author.Name && author.Surname == e.Author.Surname))
             {
                 LibraryDataIO.Instance.AddAuthor(e.Author);
                 authorForm?.Close();
@@ -69,7 +69,7 @@ namespace VirtualLibrarian.Presenter
 
             } else
             {
-                MessageBox.Show("Author already exists!");
+                MessageBox.Show(StringConstants.authorExists);
             }
 
         }

@@ -45,6 +45,7 @@ namespace VirtualLibrarian.BusinessLogic
             videoCapture = new VideoCapture();
             camSize = new Size(camWidth,camHeight);
             faceRecognition.FacePhotoSaved += (object sender,EventArgs e) => FacePhotoSaved?.Invoke(sender, e);
+            faceRecognition.AllPhotosTaken += (object sender, EventArgs e) => NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
             faceRecognition.LoadRecognizer();
         }
 
@@ -130,7 +131,7 @@ namespace VirtualLibrarian.BusinessLogic
 
                     if (saved)
                     {
-                        NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
+                        //NewUserRegistered?.Invoke(this, new FaceRecognisedEventArgs { Label = userLabel });
                         return;
                     }
                     
