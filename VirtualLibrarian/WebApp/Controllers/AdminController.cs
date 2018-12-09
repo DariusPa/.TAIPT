@@ -212,6 +212,14 @@ namespace WebApp.Controllers
                     barcodePaths[i] = barcodePath;
                 }
                 TempData["Success"] = model.Title + " added successfully!";
+                TempData["BookCount"] = 5;
+
+                string[] ImagesList = {
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png",
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"
+                };
+
+                TempData["GeneratedImages"] = ImagesList;
                 return RedirectToAction("AddBook");
             }
             return View("AddBook");
