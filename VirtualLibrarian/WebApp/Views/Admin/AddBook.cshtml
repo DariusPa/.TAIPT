@@ -22,8 +22,13 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label class="form-label">Author</label>
-                        @Html.DropDownListFor(m => m.Author, ViewBag.myAuthors.Items as List<SelectListItem>, htmlAttributes: new { @class = "form-control custom-select" })
-                        @Html.ValidationMessageFor(m => m.Author, "", new { @class = "text-danger" })
+                        <select name="Authors" class="selectpicker form-control" placeholder="" multiple data-live-search="true">
+                            @foreach (var author in ViewBag.myAuthors)
+                            {
+                                <option value="@author.Value">@author.Text</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(m => m.Authors, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-sm-3">

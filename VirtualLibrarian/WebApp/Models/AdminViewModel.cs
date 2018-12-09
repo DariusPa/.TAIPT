@@ -25,10 +25,10 @@ namespace WebApp.Models
 
         [Required(ErrorMessage = "Genre is required")]
         public string[] Genre { get; set; }
+        
+        [Required(ErrorMessage = "Author is required")]
+        public string[] Authors { get; set; }
 
-        //public IEnumerable<SelectListItem> Author { get; set; }
-        //public IEnumerable<SelectListItem> Publisher { get; set; }
-        public string Author { get; set; }
         public string Publisher { get; set; }
 
         public string Description { get; set; }

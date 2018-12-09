@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Connect(ConnectToDashboardViewModel model)
+        public ActionResult Connect()
         {
             return View();
         }

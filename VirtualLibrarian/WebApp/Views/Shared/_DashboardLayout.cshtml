@@ -34,7 +34,7 @@
                                     </button>
                                 </div>
                                 <div class="col-6 col-xs-6 mb-4 buttons">
-                                    <button class="w-100 dashboard hvr-float-shadow" style="background: #493C85;" oncdivck="goToPage('Take');">
+                                    <button class="w-100 dashboard hvr-float-shadow" style="background: #493C85;" onclick="goToPage('Take');">
                                         <i class="fa fa-book"></i><br />
                                         <strong>TAKE</strong><br />
                                         a book
@@ -81,7 +81,10 @@
         </div>
 </div>
 
+
 @section Scripts {
     @Scripts.Render("~/bundles/app")
     @Scripts.Render("~/bundles/datatables")
 }
+@RenderSection("Scripts", required: false)
+

@@ -133,6 +133,22 @@ namespace WebApp.Controllers
         }
 
         // 
+        // GET: /Admin/RemoveBook 
+        public async Task<ActionResult> RemoveBook(string BookId)
+        {
+            // logic
+            return RedirectToAction("Books");
+        }
+
+        // 
+        // GET: /Admin/RemoveUser 
+        public async Task<ActionResult> RemoveUser(string UserId)
+        {
+            // logic
+            return RedirectToAction("Users");
+        }
+
+        // 
         // POST: /Admin/SubmitBook 
         [HttpPost]
         [AllowAnonymous]
