@@ -58,35 +58,16 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label">Genre</label>
+                                @Html.ValidationMessageFor(m => m.Genre, "", new { @class = "text-danger" })
                                 <div class="selectgroup selectgroup-pills">
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Science" class="selectgroup-input">
-                                        <span class="selectgroup-button">Science</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Satire" class="selectgroup-input">
-                                        <span class="selectgroup-button">Satire</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Drama" class="selectgroup-input">
-                                        <span class="selectgroup-button">Drama</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="ActionAdventure" class="selectgroup-input">
-                                        <span class="selectgroup-button">ActionAdventure</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Romance" class="selectgroup-input">
-                                        <span class="selectgroup-button">Romance</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Autobiography" class="selectgroup-input">
-                                        <span class="selectgroup-button">Autobiography</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="checkbox" name="Genre[]" value="Sci-fi" class="selectgroup-input">
-                                        <span class="selectgroup-button">Sci-fi</span>
-                                    </label>
+                                    @foreach (var genre in ViewBag.genres)
+                                    {
+                                        <label class="selectgroup-item">
+                                            <input type="checkbox" name="Genre[]" value=@genre class="selectgroup-input">
+                                            <span class="selectgroup-button">@genre</span>
+                                        </label>
+
+                                    }
                                 </div>
                             </div>
                         </div>
