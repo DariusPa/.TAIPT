@@ -46,12 +46,59 @@ namespace WebApp.Controllers
             return View();
         }
 
+
+
+        //TODO: create view!!!
+        public ActionResult Publishers()
+        {
+            var dtPublisher = new DataTable();
+            dtPublisher.Columns.Add("Publisher");
+            dtPublisher.Columns.Add("Book count");
+            dtPublisher.Columns.Add("Books");
+
+            foreach (var publisher in LibraryDataIO.Instance.Context.Books
+                .GroupBy(book => book.Publisher).AsEnumerable()
+                .Select(group => new
+                {
+                    Publisher = group.Key.Name,
+                    Count = group.Select(x => x.ISBN).Distinct().Count(),
+                    Books = group.Select(x => x.Title).Distinct().Take(5).Aggregate((x, y) => x + ", " + y) + "..."
+                }).OrderByDescending(x => x.Count).ToList())
+            {
+                var row = dtPublisher.NewRow();
+                row[0] = publisher.Publisher;
+                row[1] = publisher.Count;
+                row[2] = publisher.Books;
+                dtPublisher.Rows.Add(row);
+            }
+
+            return View(dtPublisher);
+        }
+
+        //TODO: create view!!!
+        public ActionResult Authors()
+        {
+            using(var cn = new SqlConnection(LibraryDataIO.Instance.ConnectionString))
+            {
+                var cmd = new SqlCommand("SELECT Name, Surname, Country FROM Authors", cn);
+                var da = new SqlDataAdapter();
+                var dt = new DataTable();
+
+                cn.Open();
+                da.SelectCommand = cmd;
+                da.Fill(dt);
+                cn.Close();
+                da.Dispose();
+                return View(dt);
+            }
+        }
+
         public ActionResult Users()
         {
-            string[] columns = {"ID", "Name", "Surname", "Email", "PhoneNr","Books Taken" };
+            string[] columns = { "ID", "Name", "Surname", "Email", "PhoneNr", "Books Taken" };
             var dtUsers = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Users.ToList());
             dtUsers.Columns.Add("Books Taken");
-            foreach(DataRow row in dtUsers.Rows)
+            foreach (DataRow row in dtUsers.Rows)
             {
                 row["Books Taken"] = DataTransformationUtility.GetBookTitles(((HashSet<Book>)row["TakenBooks"]).ToList());
             }
