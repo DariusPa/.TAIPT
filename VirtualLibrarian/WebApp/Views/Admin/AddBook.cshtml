@@ -13,8 +13,8 @@
                 @foreach (string imageUrl in (object[])TempData["GeneratedImages"])
                 {
                     <div class="col-4 col-md-2">
-                        <a href="@imageUrl">
-                            <img src="@imageUrl" class="thumbnail p-3" />
+                        <a href="~/Content/Barcodes/@imageUrl">
+                            <img src="~/Content/Barcodes/@imageUrl" class="thumbnail p-3" />
                         </a>
                     </div>
                 }

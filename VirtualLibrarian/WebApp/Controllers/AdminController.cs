@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,7 +23,7 @@ namespace WebApp.Controllers
 
         public AdminController()
         {
-            barcodeGenerator = new BarcodeGenerator(LibraryDataIO.Instance.DataDirPath + @"Barcodes");
+            barcodeGenerator = new BarcodeGenerator(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName + @"\Content\Barcodes");
             ViewBag.myAuthors = AuthorsList;
             ViewBag.myPublishers = PublishersList;
             ViewBag.genres = Enum.GetValues(typeof(BookGenre));
@@ -209,17 +212,13 @@ namespace WebApp.Controllers
                     LibraryDataIO.Instance.AddBook(newBook);
 
                     var barcodePath = barcodeGenerator.GenerateBarcode(newBook.ID);
+                    barcodePath = @barcodePath.Split('\\').Last();
                     barcodePaths[i] = barcodePath;
                 }
                 TempData["Success"] = model.Title + " added successfully!";
-                TempData["BookCount"] = 5;
+                TempData["BookCount"] = qty;
 
-                string[] ImagesList = {
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png"
-                };
-
-                TempData["GeneratedImages"] = ImagesList;
+                TempData["GeneratedImages"] = barcodePaths;
                 return RedirectToAction("AddBook");
             }
             return View("AddBook");
@@ -280,5 +279,6 @@ namespace WebApp.Controllers
             }
             return View("AddPublisher");
         }
+
     }
 }
