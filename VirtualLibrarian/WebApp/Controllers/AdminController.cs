@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,14 +27,14 @@ namespace WebApp.Controllers
 
         }
 
-        SelectList AuthorsList = new SelectList(LibraryDataIO.Instance.Authors.Select(author =>
+        SelectList AuthorsList = new SelectList(LibraryDataIO.Instance.Context.Authors.AsEnumerable().Select(author =>
                         new SelectListItem
                         {
                             Value = author.ID.ToString(),
-                            Text = author.FullName
+                            Text = $"{author.Name} {author.Surname}"
                         }).ToList(), "Value", "Text");
 
-        SelectList PublishersList = new SelectList(LibraryDataIO.Instance.Publishers.Select(publisher =>
+        SelectList PublishersList = new SelectList(LibraryDataIO.Instance.Context.Publishers.AsEnumerable().Select(publisher =>
                         new SelectListItem
                         {
                             Value = publisher.ID.ToString(),
@@ -48,11 +49,11 @@ namespace WebApp.Controllers
         public ActionResult Users()
         {
             string[] columns = {"ID", "Name", "Surname", "Email", "PhoneNr","Books Taken" };
-            var dtUsers = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Users);
+            var dtUsers = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Users.ToList());
             dtUsers.Columns.Add("Books Taken");
             foreach(DataRow row in dtUsers.Rows)
             {
-                row["Books Taken"] = DataTransformationUtility.GetBookTitles((List<int>)row["TakenBooks"]);
+                row["Books Taken"] = DataTransformationUtility.GetBookTitles(((HashSet<Book>)row["TakenBooks"]).ToList());
             }
 
             dtUsers = DataTransformationUtility.RemoveUnusedColumns(dtUsers, columns);
@@ -65,13 +66,13 @@ namespace WebApp.Controllers
         public ActionResult Books()
         {
             string[] columns = { "ID","ISBN", "Author", "Title", "Status" };
-            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Books.ToList());
 
             //prepare column with authors' full names
             dtLibraryBook.Columns.Add("Author");
             foreach (DataRow row in dtLibraryBook.Rows)
             {
-                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
+                row["Author"] = DataTransformationUtility.GetAuthorNames(((HashSet<Author>)row["Authors"]).ToList());
             }
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
@@ -93,28 +94,27 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 BookGenre genres = new BookGenre();
-                List<int> authors = new List<int>();
+                List<Author> authors = new List<Author>();
 
                 int.TryParse(model.Qty, out int qty);
                 int.TryParse(model.Pages, out int pages);
-                var publisher = int.Parse(model.Publisher);
+                var publisherID = int.Parse(model.Publisher);
+                var publisher = LibraryDataIO.Instance.Context.Publishers.Where(p => p.ID == publisherID).Single();
+
+                //TODO: get author list returned from frontend
+                var authorID = int.Parse(model.Author);
+                authors.Add(LibraryDataIO.Instance.FindAuthor(authorID));
+
 
                 foreach (var genre in model.Genre)
                 {
                     genres = genres | (BookGenre)Enum.Parse(typeof(BookGenre), genre.ToString());
                 }
 
-                /*TODO: fix front, so that author list would be returned*/
-                //foreach (Author author in model.Author)
-                //{
-                //    authors.Add(author.ID);
-                //}
-                authors.Add(int.Parse(model.Author));
-
                 for (int i = 0; i < qty; i++)
                 {
-                    var newBook = new Book(title: model.Title, isbn: model.ISBN, authorID: authors,
-                                        publisherID: publisher, genre: genres, description: model.Description, pages: pages);
+                    var newBook = new Book(title: model.Title, isbn: model.ISBN, authors: authors,
+                                        publisher: publisher, genre: genres, description: model.Description, pages: pages);
                     LibraryDataIO.Instance.AddBook(newBook);
 
                     //TODO: pass barcodes to frontend so they would be displayed
@@ -140,7 +140,7 @@ namespace WebApp.Controllers
             if (ModelState.IsValid)
             {
                 var newAuthor = new Author(model.Name, model.Surname, model.Country, model.Description);
-                if (!LibraryDataIO.Instance.Authors.Any(author => author.FullName == newAuthor.FullName))
+                if (!LibraryDataIO.Instance.Context.Authors.Any(author => author.Name == newAuthor.Name && author.Surname == newAuthor.Surname))
                 {
                     LibraryDataIO.Instance.AddAuthor(newAuthor);
                     TempData["Success"] = model.Name + " added successfully!";
@@ -167,10 +167,9 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newPublisher = new Publisher(model.Name, model.Country, model.Description);
-                if(!LibraryDataIO.Instance.Publishers.Any(publisher => publisher.Name == newPublisher.Name))
+                if(!LibraryDataIO.Instance.Context.Publishers.Any(publisher => publisher.Name == model.Name))
                 {
-                    LibraryDataIO.Instance.AddPublisher(newPublisher);
+                    LibraryDataIO.Instance.AddPublisher(model.Name, model.Country,model.Description);
                     TempData["Success"] = model.Name + " added successfully!";
                     return RedirectToAction("AddPublisher");
                 }

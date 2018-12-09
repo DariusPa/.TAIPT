@@ -11,8 +11,8 @@ namespace VirtualLibrarian.Presenter
         private RegisterForm RegisterForm;
         private ExistingUserForm ExistingUserForm;
         private UIPresenter uiPresenter;
-        public IUserModel User { get; set; }
-        public IUserModel PendingUser { get; set; }
+        public User User { get; set; }
+        public User PendingUser { get; set; }
         
         public FirstPagePresenter(FirstPage firstPage)
         {
@@ -27,8 +27,12 @@ namespace VirtualLibrarian.Presenter
         {
             PendingUser = e.PendingUser;
             User = null;
+
+            LibraryDataIO.Instance.AddUser(PendingUser);
+
             RegisterForm = new RegisterForm(PendingUser);
             RegisterForm.RegisterCompleted += RegisterUser;
+            RegisterForm.RegisterFailed += CancelRegistration;
             RegisterForm.FormClosed += ShowFirstPage;
             RegisterForm.Show();
         }
@@ -50,13 +54,17 @@ namespace VirtualLibrarian.Presenter
 
         private void LogUserIn(object sender, UserRelatedEventArgs e)
         {
-            User = LibraryDataIO.Instance.FindUser(e.UserID);
+            User = LibraryDataIO.Instance.FindUser(int.Parse(e.UserID));
         }
 
         private void RegisterUser(object sender, FaceRecognisedEventArgs e)
         {
             User = PendingUser;
-            LibraryDataIO.Instance.AddUser(User);
+        }
+
+        private void CancelRegistration(object sender, EventArgs e)
+        {
+            LibraryDataIO.Instance.RemoveUser(PendingUser);
         }
 
         private void ShowUI()

@@ -25,7 +25,7 @@ namespace VirtualLibrarian.View
         {
             if(!string.IsNullOrWhiteSpace(authorNameBox.Text) && !string.IsNullOrWhiteSpace(authorSurnameBox.Text))
             {
-                NewAuthor?.Invoke(this, new BookRelatedEventArgs { Author = new Author(authorNameBox.Text, authorSurnameBox.Text) });
+                NewAuthor?.Invoke(this, new BookRelatedEventArgs { Author = new Author(authorNameBox.Text, authorSurnameBox.Text,"") });
             }
             else
             {

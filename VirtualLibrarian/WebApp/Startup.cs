@@ -15,8 +15,7 @@ namespace WebApp
     {
         public void Configuration(IAppBuilder app)
         {
-            LibraryDataIO.Instance.Init(StringConstants.directoryForWeb,@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", @"JSON\publishers.json","Faces", @"Faces\TrainedLabels.txt");
-            LibraryDataIO.Instance.LoadData();
+            LibraryDataIO.Instance.Init(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True",StringConstants.directoryForWeb,"Faces");
             ConfigureAuth(app);
         }
     }

@@ -18,9 +18,7 @@ namespace VirtualLibrarian
         static void Main()
         {
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
-            LibraryDataIO.Instance.Init(StringConstants.directory,@"JSON\books.json", @"JSON\users.json", @"JSON\authors.json", @"JSON\publishers.json", 
-                                            @"Faces", @"Faces\TrainedLabels.txt");
-            LibraryDataIO.Instance.LoadData();
+            LibraryDataIO.Instance.Init(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=Library;Integrated Security=True", StringConstants.directory, "Faces");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FirstPage());
@@ -28,7 +26,7 @@ namespace VirtualLibrarian
 
         static void OnProcessExit(object sender, EventArgs e)
         {
-            LibraryDataIO.Instance.SerializeAllData();
+            LibraryDataIO.Instance.SaveChanges();
         }
     }
 }

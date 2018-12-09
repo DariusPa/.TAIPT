@@ -14,7 +14,7 @@ namespace VirtualLibrarian
 {
     public partial class UI : Form
     {
-        public IUserModel User { get; set; }
+        public User User { get; set; }
 		public SpeakingAI Speaker { get; set; }
         public AI AI { get { return aiOutput; } }
 
@@ -22,7 +22,7 @@ namespace VirtualLibrarian
         public event EventHandler HistoryRequested;
 
 
-        public UI(IUserModel Users) 
+        public UI(User Users) 
         {
             InitializeComponent();
             Speaker = new SpeakingAI(AI);

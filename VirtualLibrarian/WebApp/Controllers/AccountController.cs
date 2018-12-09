@@ -24,16 +24,6 @@ namespace WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        private FaceRecognition recognizer;
-        private bool isRecognizerTrained; 
-
-        public AccountController()
-        {
-            recognizer = new FaceRecognition(2000);
-            recognizer.LoadRecognizer();
-            isRecognizerTrained = recognizer.TrainRecognizer();
-        }
-
         public ActionResult Index()
         {
             return View();
@@ -65,11 +55,11 @@ namespace WebApp.Controllers
             var originalBitmap = DataTransformationUtility.StringToBitmap(value);
             var grayImage = DataTransformationUtility.BitmapToGrayImage(originalBitmap);
 
-            if (!isRecognizerTrained)
+            if (!LibraryDataIO.Instance.IsRecogniserTrained)
             {
                 return Json(new { success = false, err = 1});
             }
-            var label = recognizer.Recognize(grayImage);
+            var label = LibraryDataIO.Instance.FaceRecognition.Recognize(grayImage);
 
             return label==null ? Json(new { success = false}) : Json(new { success = true, user = label });
         }
@@ -83,7 +73,7 @@ namespace WebApp.Controllers
             var originalBitmaps = DataTransformationUtility.StringToBitmapList(values);
             var grayImages = DataTransformationUtility.BitmapToGrayImageList(originalBitmaps);
 
-            if (isRecognizerTrained &&  recognizer.Recognize(grayImages)!=null)
+            if (LibraryDataIO.Instance.IsRecogniserTrained &&  LibraryDataIO.Instance.FaceRecognition.Recognize(grayImages)!=null)
             {
                 /*user exists*/
                 return Json(new { success = false });
@@ -91,8 +81,8 @@ namespace WebApp.Controllers
             else
             {
                 var newUser = new User(name, surname, email);
-                recognizer.StoreNewFace(grayImages, newUser.ID.ToString());
                 LibraryDataIO.Instance.AddUser(newUser);
+                LibraryDataIO.Instance.FaceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
                 return Json(new { success = true });
             }
         }

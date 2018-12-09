@@ -1,29 +1,34 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian.Model
 {
-    public class User : IUserModel
+    public class User
     {
-        private static int count;
-        [JsonProperty]
-        public int ID { get; }
+        [Key]
+        public int ID { get; private set; } 
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public string PhoneNr { get; set; }
-        [JsonProperty]
-        public List<int> TakenBooks { get; private set; } = new List<int>();
-        public List<ReadingHistory> History { get; private set; } = new List<ReadingHistory>();
+
+        public virtual ICollection<Book> TakenBooks { get; set; }
+        public virtual ICollection<Face> Faces { get; set; }
+        public virtual ICollection<ReadingHistory> ReadingHistories { get; set; }
+
 
         public User()
         {
-            ID = Interlocked.Increment(ref count);
+            TakenBooks = new HashSet<Book>();
+            Faces = new HashSet<Face>();
+            ReadingHistories = new HashSet<ReadingHistory>();
         }
 
         public User(string name, string surname, string email) : this()
@@ -33,15 +38,14 @@ namespace VirtualLibrarian.Model
             Email = email;
         }
 
-        public void TakeBook(IBookModel book)
+        public void TakeBook(Book book)
         {
-            TakenBooks.Add(book.ID);
+            TakenBooks.Add(book);
         }
 
-        public void ReturnBook(IBookModel book)
+        public void ReturnBook(Book book)
         {
-            TakenBooks.Remove(book.ID);
-            History.Add(new ReadingHistory(book.ID, book.IssueDate,book.ReturnDate));
+            TakenBooks.Remove(book);
         }
     }
 }

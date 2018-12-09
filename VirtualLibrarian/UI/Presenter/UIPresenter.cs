@@ -12,7 +12,7 @@ namespace VirtualLibrarian.Presenter
     public class UIPresenter
     {
         private UI ui;
-        public IUserModel ActiveUser { get; set; }
+        public User ActiveUser { get; set; }
         public event EventHandler UIClosed;
 
 
@@ -24,7 +24,7 @@ namespace VirtualLibrarian.Presenter
             Settings.Instance.SoundSettingsChanged += OnSoundSettingsChanged;
         }
 
-        public void PrepareUI(IUserModel activeUser)
+        public void PrepareUI(User activeUser)
         {
             ActiveUser = activeUser;
             ui = new UI(ActiveUser);
@@ -36,7 +36,7 @@ namespace VirtualLibrarian.Presenter
 
         private void OnBookDetected(object sender, BarcodeDetectedEventArgs e)
         {
-            var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(e.DecodedText));
             TakeBook.Instance.HideScanner();
             if (LibraryManager.ValidateIssuing(ActiveUser, book))
             {
@@ -52,7 +52,7 @@ namespace VirtualLibrarian.Presenter
 
         private void OnBookReturn(object sender, BarcodeDetectedEventArgs e)
         {
-            var book = LibraryDataIO.Instance.FindBook(e.DecodedText);
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(e.DecodedText));
             ReturnBook.Instance.HideScanner();
             if (LibraryManager.ValidateReturning(ActiveUser, book))
             {
@@ -70,13 +70,13 @@ namespace VirtualLibrarian.Presenter
         private void OnSearchRequested(object sender, EventArgs e)
         {
             string[] columns = { "Title", "Author", "ISBN", "Genre", "Status"};
-            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Books.ToList());
 
             //prepare column with authors' full names
             dtLibraryBook.Columns.Add("Author");
             foreach(DataRow row in dtLibraryBook.Rows)
             {
-                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
+                row["Author"] = DataTransformationUtility.GetAuthorNames(((HashSet<Author>)row["Authors"]).ToList());
             }
             DataTransformationUtility.EnableFiltering(dtLibraryBook, columns);
             Search.Instance.libraryGrid.DataSource = dtLibraryBook;
@@ -101,29 +101,32 @@ namespace VirtualLibrarian.Presenter
 
         private void OnHistoryRequested(object sender, EventArgs e)
         {
-            var takenBooks = ActiveUser.TakenBooks
-            .Join(LibraryDataIO.Instance.Books,
-                  takenBook => takenBook,
-                  libraryBook => libraryBook.ID,
-                  (takenBook, libraryBook) => new {
-                      libraryBook.Title,
-                      Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                      Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
-                      Returned = StringConstants.currentlyTakenString
-                  });
+            var takenBooks = LibraryDataIO.Instance.Context.Books
+                    .Where(b => b.User.ID == ActiveUser.ID)
+                    .AsEnumerable()
+                     .Select(x => new
+                     {
+                         x.Title,
+                         Author = DataTransformationUtility.GetAuthorNames(x.Authors.ToList()),
+                         Issued = $"{x.IssueDate:yyyy/MM/dd}",
+                         Returned = StringConstants.currentlyTakenString
+                     });
 
-            var bookHistory = ActiveUser.History
-                .Join(LibraryDataIO.Instance.Books,
-                      readBook => readBook.BookID,
-                      libraryBook => libraryBook.ID,
-                      (readBook, libraryBook) => new {
-                          libraryBook.Title,
-                          Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                          Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
-                          Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
-                      });
+            var historyBooks = LibraryDataIO.Instance.Context.ReadingHistory
+                .Where(x => x.User.ID == ActiveUser.ID)
+                .AsEnumerable()
+                .Join(LibraryDataIO.Instance.Context.Books,
+                       his => his.Book.ID,
+                       book => book.ID,
+                       (his, book) => new
+                       {
+                           book.Title,
+                           Author = DataTransformationUtility.GetAuthorNames(book.Authors.ToList()),
+                           Issued = $"{his.IssueDate:yyyy/MM/dd}",
+                           Returned = $"{his.ReturnDate:yyyy/MM/dd}"
+                       });
 
-            var history = takenBooks.Concat(bookHistory);
+            var history = takenBooks.Concat(historyBooks);
             History.Instance.historyGrid.DataSource = history.ToList();
         }
 

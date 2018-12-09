@@ -24,6 +24,7 @@ namespace VirtualLibrarian.BusinessLogic
         private List<int> faceID = new List<int>();
 
         public event EventHandler FacePhotoSaved;
+        public event EventHandler AllPhotosTaken;
 
         public FaceRecognition(int eigenThresh=2000)
         {
@@ -35,20 +36,19 @@ namespace VirtualLibrarian.BusinessLogic
         /*Loads the recognizer with faces and their labels*/
         public void LoadRecognizer()
         {
-            string[] labels = File.ReadAllText(LibraryDataIO.Instance.FaceLabelsPath).Split('%');
-            FaceCount = labels.Length - 1;
-
             try
             {
-                for (int j = 0; j < FaceCount; j++)
+                foreach (var face in LibraryDataIO.Instance.Context.Faces.ToList())
                 {
-                    trainedFaces.Add(new Image<Gray, byte>($@"{LibraryDataIO.Instance.FacesPath}\{j}.bmp"));
-                    faceLabels.Add(labels[j]);
-                    faceID.Add(j);
+                    FaceCount++;
+                    trainedFaces.Add(new Image<Gray, byte>(@face.Path));
+                    faceLabels.Add(face.User.ID.ToString());
+                    faceID.Add(face.User.ID);
                 }
             }
             catch (Exception e)
             {
+                LibraryDataIO.Instance.Logger.LogException(e);
                 trainedFaces.Clear();
                 faceLabels.Clear();
                 faceID.Clear();
@@ -101,7 +101,7 @@ namespace VirtualLibrarian.BusinessLogic
         {
             for (int i = 0; i < LibraryDataIO.Instance.PicturesPerUser; i++)
             {
-                LibraryDataIO.Instance.AddNewFace(trainedFacesTemp[i], label, FaceCount);
+                LibraryDataIO.Instance.AddFace(trainedFacesTemp[i], label, FaceCount);
                 trainedFaces.Add(trainedFacesTemp[i]);
                 faceLabels.Add(label);
                 faceID.Add(++FaceCount);
@@ -125,6 +125,7 @@ namespace VirtualLibrarian.BusinessLogic
 
             if (!token.IsCancellationRequested)
             {
+                AllPhotosTaken?.Invoke(this,EventArgs.Empty);
                 StoreNewFace(trainedFacesTemp, label);
                 return true;
             }

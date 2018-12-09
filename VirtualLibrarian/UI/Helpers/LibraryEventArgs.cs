@@ -6,14 +6,14 @@ namespace VirtualLibrarian.Helpers
 {
     public class BookRelatedEventArgs : EventArgs
     {
-        public IBookModel Book { get; set; }
+        public Book Book { get; set; }
         public Author Author { get; set; }
     }
 
     public class UserRelatedEventArgs : EventArgs
     {
         public string UserID { get; set; }
-        public IUserModel PendingUser { get; set; }
+        public User PendingUser { get; set; }
         public string UserName { get; set; }
         public string UserSurname { get; set; }
         public string UserEmail { get; set; }

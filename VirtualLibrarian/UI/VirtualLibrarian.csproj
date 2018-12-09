@@ -57,6 +57,12 @@
     <Reference Include="Emgu.CV.World, Version=3.4.3.3016, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EMGU.CV.3.4.3.3016\lib\net35\Emgu.CV.World.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,6 +72,7 @@
     <Reference Include="System">
       <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1\System.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
@@ -94,6 +101,7 @@
     <Compile Include="BusinessLogic\FaceRecognition.cs" />
     <Compile Include="BusinessLogic\IFaceRecognition.cs" />
     <Compile Include="BusinessLogic\SpeakingAI.cs" />
+    <Compile Include="Data\LibraryContext.cs" />
     <Compile Include="Data\LibraryManager.cs" />
     <Compile Include="Helpers\AutomaticFormPosition.cs" />
     <Compile Include="Helpers\ILogger.cs" />
@@ -103,8 +111,12 @@
     <Compile Include="Helpers\DataTransformationUtility.cs" />
     <Compile Include="Helpers\UILogger.cs" />
     <Compile Include="Model\Author.cs" />
+    <Compile Include="Model\Face.cs" />
+    <Compile Include="Model\IBookModel.cs" />
+    <Compile Include="Model\IUserModel.cs" />
     <Compile Include="Model\Publisher.cs" />
     <Compile Include="Model\ReadingHistory.cs" />
+    <Compile Include="Model\Status.cs" />
     <Compile Include="Presenter\AdministratorPresenter.cs" />
     <Compile Include="Presenter\UIPresenter.cs" />
     <Compile Include="RegexUtilities.cs" />
@@ -134,8 +146,6 @@
     <Compile Include="BusinessLogic\FaceCamera.cs" />
     <Compile Include="Model\Book.cs" />
     <Compile Include="Model\BookGenre.cs" />
-    <Compile Include="Model\IBookModel.cs" />
-    <Compile Include="Model\IUserModel.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Presenter\FirstPagePresenter.cs" />
     <Compile Include="View\FirstPage.cs">

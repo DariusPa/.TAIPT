@@ -20,14 +20,14 @@ namespace WebApp.Controllers
 {
     public class DashboardController : Controller
     {
-        public IUserModel ActiveUser { get; set; }
+        public User ActiveUser { get; set; }
         private SpeakingAI speaker;
 
 
         public DashboardController()
         {
             //TODO: get actual user (with label returned from recognition)"
-            ActiveUser = LibraryDataIO.Instance.FindUser("1");
+            ActiveUser = LibraryDataIO.Instance.FindUser(1);
             //TODO: check why it stops the page from loading
             //speaker = new SpeakingAI();
 
@@ -37,19 +37,22 @@ namespace WebApp.Controllers
         {
             return View();
         }
-        
+
         public ActionResult Search()
         {
             string[] columns = { "Title", "Author", "Publisher", "ISBN", "Genre", "Status" };
-            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Books);
+            DataTable dtLibraryBook = DataTransformationUtility.ToDataTable(LibraryDataIO.Instance.Context.Books.ToList());
 
             //prepare column with authors' full names
             dtLibraryBook.Columns.Add("Author");
+            //TODO: cleanup!
+            dtLibraryBook.Columns.Remove("Publisher");
             dtLibraryBook.Columns.Add("Publisher");
+
             foreach (DataRow row in dtLibraryBook.Rows)
             {
-                row["Author"] = DataTransformationUtility.GetAuthorNames((List<int>)row["AuthorID"]);
-                row["Publisher"] = LibraryDataIO.Instance.Publishers.Find(publisher => publisher.ID == (int)row["PublisherID"]).Name;
+                row["Author"] = DataTransformationUtility.GetAuthorNames(((HashSet<Author>)row["Authors"]).ToList());
+                row["Publisher"] = LibraryDataIO.Instance.FindPublisher((int)row["PublisherID"]).Name;
             }
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
@@ -66,7 +69,6 @@ namespace WebApp.Controllers
 
         public ActionResult Return()
         {
-            //speaker.Speak(StringConstants.aiReturnBookString);
             return View();
         }
 
@@ -75,30 +77,32 @@ namespace WebApp.Controllers
             //TODO: remove this when user validation logic is implemented for the whole dashboard
             if (ActiveUser == null) return View(new DataTable());
 
-            var takenBooks = ActiveUser.TakenBooks
-            .Join(LibraryDataIO.Instance.Books,
-                  takenBook => takenBook,
-                  libraryBook => libraryBook.ID,
-                  (takenBook, libraryBook) => new {
-                      libraryBook.Title,
-                      Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                      Issued = $"{libraryBook.IssueDate:yyyy/MM/dd}",
-                      Returned = StringConstants.currentlyTakenString
-                  });
+            var takenBooks = LibraryDataIO.Instance.Context.Books
+                    .Where(b => b.User.ID == ActiveUser.ID)
+                    .AsEnumerable()
+                     .Select(x => new
+                     {
+                         x.Title,
+                         Author = DataTransformationUtility.GetAuthorNames(x.Authors.ToList()),
+                         Issued = $"{x.IssueDate:yyyy/MM/dd}",
+                         Returned = StringConstants.currentlyTakenString
+                     });
 
-            var bookHistory = ActiveUser.History
-                .Join(LibraryDataIO.Instance.Books,
-                      readBook => readBook.BookID,
-                      libraryBook => libraryBook.ID,
-                      (readBook, libraryBook) => new {
-                          libraryBook.Title,
-                          Author = DataTransformationUtility.GetAuthorNames(libraryBook.AuthorID),
-                          Issued = $"{readBook.IssueDate:yyyy/MM/dd}",
-                          Returned = $"{readBook.ReturnDate:yyyy/MM/dd}"
-                      });
+            var historyBooks = LibraryDataIO.Instance.Context.ReadingHistory
+                .Where(x => x.User.ID == ActiveUser.ID)
+                .AsEnumerable()
+                .Join(LibraryDataIO.Instance.Context.Books,
+                       his => his.Book.ID,
+                       book => book.ID,
+                       (his, book) => new
+                       {
+                           book.Title,
+                           Author = DataTransformationUtility.GetAuthorNames(book.Authors.ToList()),
+                           Issued = $"{his.IssueDate:yyyy/MM/dd}",
+                           Returned = $"{his.ReturnDate:yyyy/MM/dd}"
+                       });
 
-            var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(bookHistory).ToList());
-            //speaker.Speak(StringConstants.aiReadingHistoryGreeting);
+            var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(historyBooks).ToList());
             return View(dtHistory);
         }
 

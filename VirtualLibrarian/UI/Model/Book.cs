@@ -1,46 +1,52 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using VirtualLibrarian.Data;
 
 namespace VirtualLibrarian.Model
 {
-    public class Book: IBookModel , ICloneable
+    public class Book:ICloneable
     {
-        private static int count;
+        [Key]
+        public int ID { get; private set; }
         public string Title { get; set; }
-        public List<int> AuthorID { get; set; } = new List<int>();
-        public int PublisherID { get; set; }
         public string ISBN { get; set; }
         public string Description { get; set; }
         public BookGenre Genre { get; set; }
-        [JsonProperty]
-        public int ID { get; }
-        [JsonProperty]
         public Status Status { get; private set; }
-        [JsonProperty]
-        public int ReaderID { get; private set; }
-        public DateTime IssueDate {get;set; }
-        public DateTime ReturnDate { get; set; }
+        public DateTime? IssueDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
         public int LendingMonths { get; set; }
         public int Pages { get; set; }
+        public int PublisherID { get; set; }
+        public int? UserID { get; set; }
+
+        public virtual ICollection<Author> Authors { get; set; }
+        public virtual ICollection<ReadingHistory> ReadingHistories { get; set; }
+        public virtual Publisher Publisher { get; set; }
+        public virtual User User { get; private set; }
 
 
 
         public Book()
         {
-            ID = Interlocked.Increment(ref count);
-            Status = Status.Available;
+            Authors = new HashSet<Author>();
+            ReadingHistories = new HashSet<ReadingHistory>();
         }
 
-        public Book(string title, List<int> authorID, int publisherID, BookGenre genre, string isbn, int pages, string description, int lendingMonths = 1) : this()
+        public Book(string title, List<Author> authors, Publisher publisher, BookGenre genre, string isbn, int pages, string description, int lendingMonths = 1) : this()
         {
             Title = title;
-            AuthorID = authorID;
-            PublisherID = publisherID;
+            foreach (var author in authors)
+            {
+                Authors.Add(author);
+            }
+            Publisher = publisher;
             ISBN = isbn;
             Description = description;
             Genre = genre;
@@ -48,18 +54,18 @@ namespace VirtualLibrarian.Model
             Pages = pages;
         }
 
-        public void Issue(IUserModel reader)
+        public void Issue(User reader)
         {
             Status = Status.Taken;
-            ReaderID = reader.ID;
+            User = reader;
             IssueDate = DateTime.Now;
-            ReturnDate = IssueDate.AddMonths(LendingMonths);
+            ReturnDate = IssueDate.Value.AddMonths(LendingMonths);
         }
 
         public void Return()
         {
             Status = Status.Available;
-            ReaderID = -1;
+            User = null;
             ReturnDate = DateTime.Now;
 
         }
@@ -68,8 +74,8 @@ namespace VirtualLibrarian.Model
         {
             Book book = new Book();
             book.Title = Title;
-            book.AuthorID = AuthorID;
-            book.PublisherID = PublisherID;
+            book.Authors = Authors;
+            book.Publisher = Publisher;
             book.ISBN = ISBN;
             book.Description = Description;
             book.Genre = Genre;
@@ -79,12 +85,5 @@ namespace VirtualLibrarian.Model
         }
     }
 
-    public enum Status
-    {
-        Available,
-        Reserved,
-        Taken
-    }
 
-    
 }

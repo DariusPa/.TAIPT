@@ -17,6 +17,7 @@ namespace VirtualLibrarian.BusinessLogic
         void LoadRecognizer();
         Rectangle[] DetectFaces(Mat gray);
         event EventHandler FacePhotoSaved;
+        event EventHandler AllPhotosTaken;
 
         string Recognize(Image<Gray, Byte> detectedFace);
         string Recognize(List<Image<Gray, Byte>> detectedFace);
