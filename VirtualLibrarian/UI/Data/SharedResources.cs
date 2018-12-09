@@ -22,9 +22,14 @@ namespace VirtualLibrarian.Data
         private SharedResources()
         {
             FaceRecognition = new FaceRecognition(2500);
+            Refresh();
+            Speaker = new Speaker();
+        }
+
+        public void Refresh()
+        {
             FaceRecognition.LoadRecognizer();
             IsRecogniserTrained = FaceRecognition.TrainRecognizer();
-            Speaker = new Speaker();
         }
 
     }

@@ -19,9 +19,9 @@ namespace VirtualLibrarian.BusinessLogic
         private int eigenThresh;
         public int FaceCount { get; private set; }
         private FaceRecognizer faceRecognizer;
-        private List<Image<Gray, byte>> trainedFaces = new List<Image<Gray, byte>>();
-        private List<String> faceLabels = new List<String>();
-        private List<int> faceID = new List<int>();
+        private List<Image<Gray, byte>> trainedFaces;
+        private List<String> faceLabels;
+        private List<int> faceID;
 
         public event EventHandler FacePhotoSaved;
         public event EventHandler AllPhotosTaken;
@@ -36,6 +36,11 @@ namespace VirtualLibrarian.BusinessLogic
         /*Loads the recognizer with faces and their labels*/
         public void LoadRecognizer()
         {
+            FaceCount = 0;
+            trainedFaces = new List<Image<Gray, byte>>();
+            faceLabels = new List<string>();
+            faceID = new List<int>();
+
             try
             {
                 foreach (var face in LibraryDataIO.Instance.Context.Faces.ToList())
@@ -86,7 +91,7 @@ namespace VirtualLibrarian.BusinessLogic
             var result = faceRecognizer.Predict(detectedFace);
             if (result.Label != -1 && result.Distance < eigenThresh)
             {
-                return faceLabels[result.Label];
+                return result.Label.ToString();
             }
             else return null;
         }
