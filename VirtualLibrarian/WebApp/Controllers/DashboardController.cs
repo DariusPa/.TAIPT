@@ -29,12 +29,14 @@ namespace WebApp.Controllers
                ActiveUser = LibraryDataIO.Instance.FindUser(SharedResources.Instance.ID);
             }
             RedirectToAction("Index", "Account");
-
         }
 
         public ActionResult Index()
         {
             SharedResources.Instance.Speaker.Speak(StringConstants.AIGreeting(ActiveUser?.Name));
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.AIGreeting(ActiveUser?.Name);
             return View();
         }
 
@@ -58,18 +60,28 @@ namespace WebApp.Controllers
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
 
             SharedResources.Instance.Speaker.Speak(StringConstants.aiSearchLibraryGreeting);
+
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.aiSearchLibraryGreeting;
             return View(dtLibraryBook);
         }
 
         public ActionResult Take()
         {
             SharedResources.Instance.Speaker.Speak(StringConstants.aiScanBookQRString);
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.aiScanBookQRString;
             return View();
         }
 
         public ActionResult Return()
         {
             SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnBookString);
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.aiReturnBookString;
             return View();
         }
 
@@ -102,6 +114,9 @@ namespace WebApp.Controllers
 
             var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(historyBooks).ToList());
             SharedResources.Instance.Speaker.Speak(StringConstants.aiReadingHistoryGreeting);
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.aiReadingHistoryGreeting;
             return View(dtHistory);
         }
 
@@ -111,6 +126,9 @@ namespace WebApp.Controllers
             @ViewBag.Name = "Vardas";
             @ViewBag.Surname = "Pavarde";
             @ViewBag.Email = "Elpastas";
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = StringConstants.aiAccountSettingsGreeting;
             return View();
         }
 
@@ -128,6 +146,9 @@ namespace WebApp.Controllers
             @ViewBag.Name = "Vardas";
             @ViewBag.Surname = "Pavarde";
             @ViewBag.Email = "Elpastas";
+            @ViewBag.INFOUserName = ActiveUser.Name;
+            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOAI = "Settings updated successfully!";
             return View("Settings");
         }
 

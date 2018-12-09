@@ -9,14 +9,14 @@
 <div class="container-fluid">
     <div class="col-12 mt-3 d-block d-lg-none">
         <div class="ai">
-            AI text
+            @ViewBag.INFOAI
         </div>
     </div>
     <div class="row p-5 mt-0 mt-lg-5">
         <div class="col-12 col-md-12 col-lg-4 px-0 px-sm-0 px-md-0 px-lg-0 px-xl-5">
             <div class="userInfo text-center">
                 LOGGED IN AS:<br />
-                <strong>VARDENIS PAVARDENIS</strong><br />
+                <strong>@ViewBag.INFOUserName @ViewBag.INFOSurName</strong><br />
                 <i class="far fa-user-circle"></i>
             </div>
                 <div class="row mt-3">
@@ -73,7 +73,7 @@
             </div>
             <div class="col-12 col-md-12 col-lg-8">
                 <div class="ai d-none d-lg-block w-75 mx-auto">
-                    AI text
+                    @ViewBag.INFOAI
                 </div>
                 <h1 class="mt-4 text-center mb-5">@ViewBag.PageTitle</h1>
                 @RenderBody()
