@@ -4,7 +4,6 @@
 }
 
 <div class="col-md-12 text-center">
-    <h3>Scan QR code to take a book</h3>
     <video style="width:300px;" id="previewTake"></video>
 </div>
 
@@ -31,12 +30,7 @@
             data: { value: content },
             traditional: true,
             type: 'post',
-            success: function (response) {
-                if (response.success) {
-                    alert("OK!");
-                } else
-                    alert("Issuing failed!");
-                },
+            success: function (response) { },
             error: function () {
                 alert("Could not recognize a given QR code.");
             }

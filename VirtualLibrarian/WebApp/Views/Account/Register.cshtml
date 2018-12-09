@@ -89,13 +89,15 @@
                       data: postData,
                       traditional: true,
                       type: 'post',
-                      success: function(data) {
-                        alert("@ViewBag.Name Camera trained. Registered. Please login now.");
-                        window.location.href='/Account';
-                      },
-                      error: function() {
-                        alert('error');
-                      }
+                        success: function (response) {
+                            if (response.success) {
+                                alert("@ViewBag.Name registered. Please login now.");
+                            } else {
+                                alert("User is already registered!");
+                            }
+                            window.location.href = '/Account';
+
+                        },
                     });
                 } else {
                     stringArray[i] = dataURI;

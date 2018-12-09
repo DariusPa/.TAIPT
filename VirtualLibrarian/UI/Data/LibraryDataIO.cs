@@ -166,7 +166,15 @@ namespace VirtualLibrarian.Data
 
         public Book FindBook(int ID)
         {
-            return Context.Books.Where(b => b.ID == ID).Single();
+            try
+            {
+                return Context.Books.Where(b => b.ID == ID).Single();
+            }
+            catch(Exception e)
+            {
+                Logger.LogException(e);
+                return null;
+            }
         }
 
         public Author FindAuthor(int ID)

@@ -34,8 +34,8 @@ namespace WebApp.Controllers
 
         public ActionResult Index()
         {
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.AIGreeting(ActiveUser?.Name);
             SharedResources.Instance.Speaker.Speak(StringConstants.AIGreeting(ActiveUser?.Name));
             return View();
@@ -60,8 +60,8 @@ namespace WebApp.Controllers
 
             dtLibraryBook = DataTransformationUtility.RemoveUnusedColumns(dtLibraryBook, columns);
 
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.aiSearchLibraryGreeting;
 
             SharedResources.Instance.Speaker.Speak(StringConstants.aiSearchLibraryGreeting);
@@ -70,8 +70,8 @@ namespace WebApp.Controllers
 
         public ActionResult Take()
         {
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.aiScanBookQRString;
             SharedResources.Instance.Speaker.Speak(StringConstants.aiScanBookQRString);
             return View();
@@ -79,8 +79,8 @@ namespace WebApp.Controllers
 
         public ActionResult Return()
         {
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.aiReturnBookString;
             SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnBookString);
             return View();
@@ -115,8 +115,8 @@ namespace WebApp.Controllers
 
             var dtHistory = DataTransformationUtility.ToDataTable(takenBooks.Concat(historyBooks).ToList());
 
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.aiReadingHistoryGreeting;
 
             SharedResources.Instance.Speaker.Speak(StringConstants.aiReadingHistoryGreeting);
@@ -125,15 +125,15 @@ namespace WebApp.Controllers
 
         public ActionResult Settings()
         {
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = StringConstants.aiAccountSettingsGreeting;
 
             SharedResources.Instance.Speaker.Speak(StringConstants.aiAccountSettingsGreeting);
 
-            @ViewBag.Name = ActiveUser.Name;
-            @ViewBag.Surname = ActiveUser.Surname;
-            @ViewBag.Email = ActiveUser.Email;
+            @ViewBag.Name = ActiveUser?.Name;
+            @ViewBag.Surname = ActiveUser?.Surname;
+            @ViewBag.Email = ActiveUser?.Email;
             return View();
         }
 
@@ -149,11 +149,11 @@ namespace WebApp.Controllers
                 TempData["Success"] = "Settings updated successfully!";
                 return RedirectToAction("Settings");
             }
-            @ViewBag.Name = ActiveUser.Name;
-            @ViewBag.Surname = ActiveUser.Surname;
-            @ViewBag.Email = ActiveUser.Email;
-            @ViewBag.INFOUserName = ActiveUser.Name;
-            @ViewBag.INFOSurName = ActiveUser.Surname;
+            @ViewBag.Name = ActiveUser?.Name;
+            @ViewBag.Surname = ActiveUser?.Surname;
+            @ViewBag.Email = ActiveUser?.Email;
+            @ViewBag.INFOUserName = ActiveUser?.Name;
+            @ViewBag.INFOSurName = ActiveUser?.Surname;
             @ViewBag.INFOAI = "Settings updated successfully!";
             return View("Settings");
         }
@@ -165,16 +165,18 @@ namespace WebApp.Controllers
         public JsonResult TakeQR(string value)
         {
             var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
-            if (LibraryManager.ValidateIssuing(ActiveUser, book))
+            if (book!= null && LibraryManager.ValidateIssuing(ActiveUser, book))
             {
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
                 LibraryManager.IssueBookToReader(ActiveUser, book);
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiIssued);
+                @ViewBag.INFOAI = StringConstants.aiIssued;
                 return Json(new { success = true });
             }
             else
             {
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiIssuingFailed);
+                @ViewBag.INFOAI = StringConstants.aiIssuingFailed;
                 return Json(new { success = false });
             }
         }
@@ -186,16 +188,18 @@ namespace WebApp.Controllers
         public JsonResult ReturnQR(string value)
         {
             var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
-            if (LibraryManager.ValidateReturning(ActiveUser, book))
+            if (book != null && LibraryManager.ValidateReturning(ActiveUser, book))
             {
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
                 LibraryManager.ReturnBook(ActiveUser, book);
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnedBook);
+                @ViewBag.INFOAI = StringConstants.aiReturnedBook;
                 return Json(new { success = true });
             }
             else
             {
                 SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnFailed);
+                @ViewBag.INFOAI = StringConstants.aiReturnFailed;
                 return Json(new { success = false });
             }
         }
