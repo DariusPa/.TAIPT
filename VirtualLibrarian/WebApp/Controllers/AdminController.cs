@@ -46,12 +46,10 @@ namespace WebApp.Controllers
             return View();
         }
 
-
-
-        //TODO: create view!!!
         public ActionResult Publishers()
         {
             var dtPublisher = new DataTable();
+            dtPublisher.Columns.Add("ID");
             dtPublisher.Columns.Add("Publisher");
             dtPublisher.Columns.Add("Book count");
             dtPublisher.Columns.Add("Books");
@@ -60,15 +58,17 @@ namespace WebApp.Controllers
                 .GroupBy(book => book.Publisher).AsEnumerable()
                 .Select(group => new
                 {
+                    ID = group.Key.ID,
                     Publisher = group.Key.Name,
                     Count = group.Select(x => x.ISBN).Distinct().Count(),
                     Books = group.Select(x => x.Title).Distinct().Take(5).Aggregate((x, y) => x + ", " + y) + "..."
                 }).OrderByDescending(x => x.Count).ToList())
             {
                 var row = dtPublisher.NewRow();
-                row[0] = publisher.Publisher;
-                row[1] = publisher.Count;
-                row[2] = publisher.Books;
+                row[0] = publisher.ID;
+                row[1] = publisher.Publisher;
+                row[2] = publisher.Count;
+                row[3] = publisher.Books;
                 dtPublisher.Rows.Add(row);
             }
 
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         {
             using(var cn = new SqlConnection(LibraryDataIO.Instance.ConnectionString))
             {
-                var cmd = new SqlCommand("SELECT Name, Surname, Country FROM Authors", cn);
+                var cmd = new SqlCommand("SELECT ID, Name, Surname, Country FROM Authors", cn);
                 var da = new SqlDataAdapter();
                 var dt = new DataTable();
 
@@ -128,14 +128,6 @@ namespace WebApp.Controllers
         }
 
         public ActionResult AddBook()
-        {
-            return View();
-        }
-        public ActionResult Authors()
-        {
-            return View();
-        }
-        public ActionResult Publishers()
         {
             return View();
         }
@@ -193,6 +185,9 @@ namespace WebApp.Controllers
 
                 int.TryParse(model.Qty, out int qty);
                 int.TryParse(model.Pages, out int pages);
+
+                string[] barcodePaths = new string[qty];
+
                 var publisherID = int.Parse(model.Publisher);
                 var publisher = LibraryDataIO.Instance.Context.Publishers.Where(p => p.ID == publisherID).Single();
 
@@ -213,8 +208,8 @@ namespace WebApp.Controllers
                                         publisher: publisher, genre: genres, description: model.Description, pages: pages);
                     LibraryDataIO.Instance.AddBook(newBook);
 
-                    //TODO: pass barcodes to frontend so they would be displayed
-                    var barcode = barcodeGenerator.GenerateBarcode(newBook.ID);
+                    var barcodePath = barcodeGenerator.GenerateBarcode(newBook.ID);
+                    barcodePaths[i] = barcodePath;
                 }
                 TempData["Success"] = model.Title + " added successfully!";
                 return RedirectToAction("AddBook");

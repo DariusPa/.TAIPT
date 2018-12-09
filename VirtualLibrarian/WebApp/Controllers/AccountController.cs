@@ -88,6 +88,7 @@ namespace WebApp.Controllers
             {
                 var newUser = new User(name, surname, email);
                 LibraryDataIO.Instance.AddUser(newUser);
+                SharedResources.Instance.FaceRecognition.StoreNewFace(grayImages, newUser.ID.ToString());
                 SharedResources.Instance.Refresh();
                 return Json(new { success = true });
             }
