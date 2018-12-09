@@ -108,7 +108,45 @@ namespace WebApp.Controllers
         public ActionResult Settings()
         {
             SharedResources.Instance.Speaker.Speak(StringConstants.aiAccountSettingsGreeting);
+            @ViewBag.Name = "Vardas";
+            @ViewBag.Surname = "Pavarde";
+            @ViewBag.Email = "Elpastas";
             return View();
+        }
+
+        // 
+        // POST: /Dashboard/UpdateSettings 
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> UpdateSettings(SettingsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["Success"] = "Settings updated successfully!";
+                return RedirectToAction("Settings");
+            }
+            @ViewBag.Name = "Vardas";
+            @ViewBag.Surname = "Pavarde";
+            @ViewBag.Email = "Elpastas";
+            return View("Settings");
+        }
+
+        // 
+        // POST: /Dashboard/TakeQR 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult TakeQR(string value)
+        {
+            return Json(true);
+        }
+
+        // 
+        // POST: /Dashboard/ReturnQR 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult ReturnQR(string value)
+        {
+            return Json(true);
         }
 
         public ActionResult Logout()

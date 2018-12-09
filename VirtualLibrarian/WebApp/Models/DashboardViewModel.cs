@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace WebApp.Models
 {
-    public class RegisterViewModel
+    public class SettingsViewModel
     {
         [Required(ErrorMessage = "The name is required")]
         [Display(Name = "Name")]
-
         public string Name { get; set; }
 
         [Required(ErrorMessage = "The surname is required")]
