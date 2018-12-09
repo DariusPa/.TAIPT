@@ -136,7 +136,11 @@ namespace WebApp.Controllers
         // GET: /Admin/RemoveBook 
         public async Task<ActionResult> RemoveBook(string BookId)
         {
-            // logic
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(BookId));
+            if (LibraryManager.ValidateBookDelete(book))
+            {
+                LibraryDataIO.Instance.RemoveBook(book);
+            }
             return RedirectToAction("Books");
         }
 
@@ -144,7 +148,11 @@ namespace WebApp.Controllers
         // GET: /Admin/RemoveUser 
         public async Task<ActionResult> RemoveUser(string UserId)
         {
-            // logic
+            var user = LibraryDataIO.Instance.FindUser(int.Parse(UserId));
+            if (LibraryManager.ValidateUserDelete(user))
+            {
+                LibraryDataIO.Instance.RemoveUser(user);
+            }
             return RedirectToAction("Users");
         }
 
@@ -165,9 +173,10 @@ namespace WebApp.Controllers
                 var publisher = LibraryDataIO.Instance.Context.Publishers.Where(p => p.ID == publisherID).Single();
 
                 //TODO: get author list returned from frontend
-                var authorID = int.Parse(model.Author);
-                authors.Add(LibraryDataIO.Instance.FindAuthor(authorID));
-
+                foreach(var author in model.Authors)
+                {
+                    authors.Add(LibraryDataIO.Instance.FindAuthor(int.Parse(author)));
+                }
 
                 foreach (var genre in model.Genre)
                 {

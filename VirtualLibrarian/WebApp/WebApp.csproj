@@ -257,6 +257,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AdminViewModel.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Models\AccountViewModel.cs" />
     <Compile Include="Controllers\DashboardController.cs" />

@@ -103,12 +103,30 @@ namespace VirtualLibrarian.Data
 
         public void RemoveUser(User user)
         {
+            Context.Entry(user).Collection(x => x.Faces).Load();
+            Context.Entry(user).Collection(x => x.ReadingHistories).Load();
+
+            foreach (var face in user.Faces.ToList())
+            {
+                Context.Faces.Remove(face);
+            }
+            foreach (var his in user.ReadingHistories.ToList())
+            {
+                Context.ReadingHistory.Remove(his);
+            }
             Context.Users.Remove(user);
             SaveChanges();
         }
 
         public void RemoveBook(Book book)
         {
+            Context.Entry(book).Collection(x => x.ReadingHistories).Load();
+            foreach(var his in book.ReadingHistories.ToList())
+            {
+                Context.ReadingHistory.Remove(his);
+            }
+            SaveChanges();
+
             using(var cn = new SqlConnection(ConnectionString))
             {
                 var cmd = new SqlCommand("DELETE FROM Books WHERE ID = @id",cn);
@@ -128,7 +146,9 @@ namespace VirtualLibrarian.Data
                 var user = FindUser(int.Parse(label));
                 var path = $"{FacesPath}\\{faceCount}.bmp";
                 face.Save(path);
-                Context.Faces.Add(new Face(user, path));
+                var userFace = new Face(user, path);
+                Context.Faces.Add(userFace);
+                user.Faces.Add(userFace);
                 SaveChanges();
             }
             catch (Exception e)

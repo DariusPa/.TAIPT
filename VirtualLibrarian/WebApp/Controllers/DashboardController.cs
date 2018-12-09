@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         {
             if (SharedResources.Instance.ID != 0)
             {
-               ActiveUser = LibraryDataIO.Instance.FindUser(SharedResources.Instance.ID);
+                ActiveUser = LibraryDataIO.Instance.FindUser(SharedResources.Instance.ID);
             }
             RedirectToAction("Index", "Account");
 
@@ -77,7 +77,7 @@ namespace WebApp.Controllers
         {
             var takenBooks = LibraryDataIO.Instance.Context.Books
                     .Where(b => b.User.ID == ActiveUser.ID)
-                    .AsEnumerable()
+                    .ToList()
                      .Select(x => new
                      {
                          x.Title,
@@ -88,7 +88,7 @@ namespace WebApp.Controllers
 
             var historyBooks = LibraryDataIO.Instance.Context.ReadingHistory
                 .Where(x => x.User.ID == ActiveUser.ID)
-                .AsEnumerable()
+                .ToList()
                 .Join(LibraryDataIO.Instance.Context.Books,
                        his => his.Book.ID,
                        book => book.ID,
@@ -108,9 +108,9 @@ namespace WebApp.Controllers
         public ActionResult Settings()
         {
             SharedResources.Instance.Speaker.Speak(StringConstants.aiAccountSettingsGreeting);
-            @ViewBag.Name = "Vardas";
-            @ViewBag.Surname = "Pavarde";
-            @ViewBag.Email = "Elpastas";
+            @ViewBag.Name = ActiveUser.Name;
+            @ViewBag.Surname = ActiveUser.Surname;
+            @ViewBag.Email = ActiveUser.Email;
             return View();
         }
 
@@ -122,12 +122,13 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                LibraryDataIO.Instance.ChangeUserInfo(ActiveUser, model.Name, model.Surname, model.Email);
                 TempData["Success"] = "Settings updated successfully!";
                 return RedirectToAction("Settings");
             }
-            @ViewBag.Name = "Vardas";
-            @ViewBag.Surname = "Pavarde";
-            @ViewBag.Email = "Elpastas";
+            @ViewBag.Name = ActiveUser.Name;
+            @ViewBag.Surname = ActiveUser.Surname;
+            @ViewBag.Email = ActiveUser.Email;
             return View("Settings");
         }
 
@@ -137,7 +138,19 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public JsonResult TakeQR(string value)
         {
-            return Json(true);
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
+            if (LibraryManager.ValidateIssuing(ActiveUser, book))
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
+                LibraryManager.IssueBookToReader(ActiveUser, book);
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiIssued);
+                return Json(new { success = true });
+            }
+            else
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiIssuingFailed);
+                return Json(new { success = false });
+            }
         }
 
         // 
@@ -146,7 +159,19 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public JsonResult ReturnQR(string value)
         {
-            return Json(true);
+            var book = LibraryDataIO.Instance.FindBook(int.Parse(value));
+            if (LibraryManager.ValidateReturning(ActiveUser, book))
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiWorking);
+                LibraryManager.ReturnBook(ActiveUser, book);
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnedBook);
+                return Json(new { success = true });
+            }
+            else
+            {
+                SharedResources.Instance.Speaker.Speak(StringConstants.aiReturnFailed);
+                return Json(new { success = false });
+            }
         }
 
         public ActionResult Logout()

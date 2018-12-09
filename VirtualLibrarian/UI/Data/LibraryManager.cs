@@ -51,5 +51,15 @@ namespace VirtualLibrarian.Data
                 return false;
             }
         }
+
+        public static bool ValidateBookDelete(Book book)
+        {
+            return book.Status != Status.Taken && book.User == null;
+        }
+
+        public static bool ValidateUserDelete(User user)
+        {
+            return user.TakenBooks.Count() == 0;
+        }
     }
 }
