@@ -131,6 +131,30 @@ namespace WebApp.Controllers
         {
             return View();
         }
+        public ActionResult Authors()
+        {
+            return View();
+        }
+        public ActionResult Publishers()
+        {
+            return View();
+        }
+
+        // 
+        // GET: /Admin/RemoveAuthor
+        public async Task<ActionResult> RemoveAuthor(string AuthorId)
+        {
+            // logic
+            return RedirectToAction("Authors");
+        }
+
+        // 
+        // GET: /Admin/RemovePublisher 
+        public async Task<ActionResult> RemovePublisher(string PublisherId)
+        {
+            // logic
+            return RedirectToAction("Publishers");
+        }
 
         // 
         // GET: /Admin/RemoveBook 
