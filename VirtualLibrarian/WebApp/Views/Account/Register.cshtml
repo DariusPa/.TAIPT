@@ -1,39 +1,54 @@
 @section Styles {
     <style>
+        html {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+        }
         body {
-            background: black !important;
-        }
-
-        video, canvas {
-            margin-left: 230px;
-            margin-top: 30px;
-            position: absolute;
-            width: 400px !important;
-            height: 400px !important;
-        }
-
-        #video,
-        #canvas {
-            -moz-transform: scale(-1, 1);
-            -o-transform: scale(-1, 1);
-            -webkit-transform: scale(-1, 1);
-            transform: scale(-1, 1);
-            filter: FlipH;
+            background-image: url(https://typeset-beta.imgix.net/lovelace/uploads/1712/e5a819d0-9e09-0134-1931-060e3e89e053.gif) !important;
+            background-repeat: no-repeat !important;
+            background-position: top center !important;
+            background-size: cover !important;
         }
 
         .message {
-            color: white;
+            color: black;
+            position: relative;
+            top: 20%;
+            font-size: 20px;
+        }
+
+        .cont {
+            position: relative;
+            height: 400px;
+        }
+
+        video#previewTake {
+            margin: 0 auto;
+            position: absolute;
+            top: 60%;
+            left: 0px;
+            right: 0px;
+            background: white;
+            height: auto;
+            padding: 7px;
+            border-radius: 7px;
         }
     </style>
 }
-<div class="demo-frame">
-    <div class="demo-container">
-        <video id="previewTake" width="400" height="400"></video>
-        <canvas id="snapCanvas" width="300" height="300" style="visibility:hidden;"></canvas>
-        <canvas id="canvas" width="300" height="300"></canvas>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center message"></div>
+                <div class="cont">
+                    <video id="previewTake" width="400" height="400"></video>
+                </div>
+                <canvas id="snapCanvas" width="300" height="300" style="visibility: hidden;"></canvas>
+                <canvas id="canvas" width="300" height="300"></canvas>
+            </div>
+        </div>
     </div>
-    <div class="text-center message"></div>
-</div>
 @section Scripts {
     @Scripts.Render("~/bundles/trackingjs")
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
