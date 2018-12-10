@@ -122,10 +122,10 @@
             }
             trackingTask.stop();
 
-            //TODO: fix bug of alert message being shown several times
-            if (attempt > 100 || error!=0 ) {
+            if (attempt > 100 || error != 0) {
                 window.location.href = '/Account';
                 alert("User could not be recognised.");
+                preventDefault();
                 return;
             }
         });

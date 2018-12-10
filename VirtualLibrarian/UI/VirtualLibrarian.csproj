@@ -136,7 +136,6 @@
       <DependentUpon>AI.cs</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\BarcodeCamera.cs" />
-    <Compile Include="DAL.cs" />
     <Compile Include="Data\ILibraryData.cs" />
     <Compile Include="Data\LibraryDataIO.cs" />
     <Compile Include="View\ExistingUserForm.cs">
