@@ -64,7 +64,7 @@ namespace VirtualLibrarian.Helpers
 
         public static string AIGreeting(string name)
         {
-            return "Welcome " + name + "!";
+            return "Welcome " + name + ", Happy Holidays!";
         }
 
         public static string ExistingUserErrorString (string name, string surname)
